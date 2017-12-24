@@ -27,87 +27,98 @@ import org.logicware.jpi.PrologTerm;
 
 public class JplStructure extends JplTerm implements PrologStructure {
 
-    JplStructure(PrologProvider provider, String functor, PrologTerm... arguments) {
-	super(STRUCTURE_TYPE, provider);
-	Term[] terms = new Term[arguments.length];
-	for (int i = 0; i < arguments.length; i++) {
-	    terms[i] = unwrap(arguments[i], JplTerm.class).value;
+	JplStructure(PrologProvider provider, String functor, PrologTerm... arguments) {
+		super(STRUCTURE_TYPE, provider);
+		Term[] terms = new Term[arguments.length];
+		for (int i = 0; i < arguments.length; i++) {
+			terms[i] = unwrap(arguments[i], JplTerm.class).value;
+		}
+		value = new Compound(removeQuoted(functor), terms);
 	}
-	value = new Compound(removeQuoted(functor), terms);
-    }
 
-    JplStructure(PrologProvider provider, String functor, Term... arguments) {
-	super(STRUCTURE_TYPE, provider, new Compound(removeQuoted(functor), arguments));
-    }
-
-    private static final boolean isQuoted(String functor) {
-	if (!functor.isEmpty()) {
-	    char beginChar = functor.charAt(0);
-	    char endChar = functor.charAt(functor.length() - 1);
-	    return beginChar == '\'' && endChar == '\'';
+	JplStructure(PrologProvider provider, String functor, Term... arguments) {
+		super(STRUCTURE_TYPE, provider, new Compound(removeQuoted(functor), arguments));
 	}
-	return false;
-    }
 
-    private static final String removeQuoted(String functor) {
-	if (isQuoted(functor)) {
-	    String newFunctor = "";
-	    newFunctor += functor.substring(1, functor.length() - 1);
-	    return newFunctor;
+	JplStructure(PrologProvider provider, PrologTerm left, String operator, PrologTerm right) {
+		super(STRUCTURE_TYPE, provider);
+		Term leftOperand = left.unwrap(JplTerm.class).value;
+		Term rightOperand = right.unwrap(JplTerm.class).value;
+		value = new Compound(operator, new Term[] { leftOperand, rightOperand });
 	}
-	return functor;
-    }
 
-    private void checkIndexOutOfBound(int index, int lenght) {
-	if (index < 0 || index > lenght) {
-	    throw new ArrayIndexOutOfBoundsException(index);
+	JplStructure(PrologProvider provider, Term left, String functor, Term right) {
+		super(STRUCTURE_TYPE, provider, new Compound(functor, new Term[] { left, right }));
 	}
-    }
 
-    public PrologTerm getArgument(int index) {
-	PrologTerm[] arguments = getArguments();
-	checkIndexOutOfBound(index, arguments.length);
-	return arguments[index];
-    }
-
-    @Override
-    public PrologTerm[] getArguments() {
-	Compound structure = (Compound) value;
-	int arity = structure.arity();
-	PrologTerm[] arguments = new PrologTerm[arity];
-	for (int i = 0; i < arity; i++) {
-	    arguments[i] = toTerm(structure.arg(i + 1), PrologTerm.class);
+	private static final boolean isQuoted(String functor) {
+		if (!functor.isEmpty()) {
+			char beginChar = functor.charAt(0);
+			char endChar = functor.charAt(functor.length() - 1);
+			return beginChar == '\'' && endChar == '\'';
+		}
+		return false;
 	}
-	return arguments;
-    }
 
-    @Override
-    public int getArity() {
-	Compound structure = (Compound) value;
-	return structure.arity();
-    }
+	private static final String removeQuoted(String functor) {
+		if (isQuoted(functor)) {
+			String newFunctor = "";
+			newFunctor += functor.substring(1, functor.length() - 1);
+			return newFunctor;
+		}
+		return functor;
+	}
 
-    @Override
-    public String getFunctor() {
-	Compound structure = (Compound) value;
-	return structure.name();
-    }
+	private void checkIndexOutOfBound(int index, int lenght) {
+		if (index < 0 || index > lenght) {
+			throw new ArrayIndexOutOfBoundsException(index);
+		}
+	}
 
-    @Override
-    public String getIndicator() {
-	return getFunctor() + "/" + getArity();
-    }
+	public PrologTerm getArgument(int index) {
+		PrologTerm[] arguments = getArguments();
+		checkIndexOutOfBound(index, arguments.length);
+		return arguments[index];
+	}
 
-    @Override
-    public boolean hasIndicator(String functor, int arity) {
-	return getFunctor().equals(functor) && getArity() == arity;
-    }
+	@Override
+	public PrologTerm[] getArguments() {
+		Compound structure = (Compound) value;
+		int arity = structure.arity();
+		PrologTerm[] arguments = new PrologTerm[arity];
+		for (int i = 0; i < arity; i++) {
+			arguments[i] = toTerm(structure.arg(i + 1), PrologTerm.class);
+		}
+		return arguments;
+	}
 
-    @Override
-    public PrologTerm clone() {
-	String f = getFunctor();
-	PrologTerm[] a = getArguments();
-	return new JplStructure(provider, f, a);
-    }
+	@Override
+	public int getArity() {
+		Compound structure = (Compound) value;
+		return structure.arity();
+	}
+
+	@Override
+	public String getFunctor() {
+		Compound structure = (Compound) value;
+		return structure.name();
+	}
+
+	@Override
+	public String getIndicator() {
+		return getFunctor() + "/" + getArity();
+	}
+
+	@Override
+	public boolean hasIndicator(String functor, int arity) {
+		return getFunctor().equals(functor) && getArity() == arity;
+	}
+
+	@Override
+	public PrologTerm clone() {
+		String f = getFunctor();
+		PrologTerm[] a = getArguments();
+		return new JplStructure(provider, f, a);
+	}
 
 }

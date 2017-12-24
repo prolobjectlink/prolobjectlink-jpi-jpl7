@@ -32,75 +32,75 @@ import org.logicware.jpi.PrologTerm;
 
 public class JplInteger extends JplTerm implements PrologInteger {
 
-    public JplInteger(PrologProvider provider) {
-	super(INTEGER_TYPE, provider, new Integer(0));
-    }
+	public JplInteger(PrologProvider provider) {
+		super(INTEGER_TYPE, provider, new Integer(0));
+	}
 
-    public JplInteger(PrologProvider provider, Number value) {
-	super(INTEGER_TYPE, provider, new Integer(value.intValue()));
-    }
+	public JplInteger(PrologProvider provider, Number value) {
+		super(INTEGER_TYPE, provider, new Integer(value.intValue()));
+	}
 
-    public PrologInteger getPrologInteger() {
-	return new JplInteger(provider, getIntValue());
-    }
+	public PrologInteger getPrologInteger() {
+		return new JplInteger(provider, getIntValue());
+	}
 
-    public PrologFloat getPrologFloat() {
-	return new JplFloat(provider, getFloatValue());
-    }
+	public PrologFloat getPrologFloat() {
+		return new JplFloat(provider, getFloatValue());
+	}
 
-    public PrologDouble getPrologDouble() {
-	return new JplDouble(provider, getDoubleValue());
-    }
+	public PrologDouble getPrologDouble() {
+		return new JplDouble(provider, getDoubleValue());
+	}
 
-    public PrologLong getPrologLong() {
-	return new JplLong(provider, getLongValue());
-    }
+	public PrologLong getPrologLong() {
+		return new JplLong(provider, getLongValue());
+	}
 
-    public long getLongValue() {
-	return ((Integer) value).longValue();
-    }
+	public long getLongValue() {
+		return ((Integer) value).longValue();
+	}
 
-    public double getDoubleValue() {
-	return ((Integer) value).doubleValue();
-    }
+	public double getDoubleValue() {
+		return ((Integer) value).doubleValue();
+	}
 
-    public int getIntValue() {
-	return ((Integer) value).intValue();
-    }
+	public int getIntValue() {
+		return ((Integer) value).intValue();
+	}
 
-    public float getFloatValue() {
-	return ((Integer) value).floatValue();
-    }
+	public float getFloatValue() {
+		return ((Integer) value).floatValue();
+	}
 
-    @Override
-    public PrologTerm[] getArguments() {
-	return new JplInteger[0];
-    }
+	@Override
+	public PrologTerm[] getArguments() {
+		return new JplInteger[0];
+	}
 
-    @Override
-    public int getArity() {
-	throw new ArityError(this);
-    }
+	@Override
+	public int getArity() {
+		throw new ArityError(this);
+	}
 
-    @Override
-    public String getFunctor() {
-	throw new FunctorError(this);
-    }
+	@Override
+	public String getFunctor() {
+		throw new FunctorError(this);
+	}
 
-    @Override
-    public String getIndicator() {
-	throw new IndicatorError(this);
-    }
+	@Override
+	public String getIndicator() {
+		throw new IndicatorError(this);
+	}
 
-    @Override
-    public boolean hasIndicator(String functor, int arity) {
-	throw new IndicatorError(this);
-    }
+	@Override
+	public boolean hasIndicator(String functor, int arity) {
+		throw new IndicatorError(this);
+	}
 
-    @Override
-    public PrologTerm clone() {
-	int i = getIntValue();
-	return new JplInteger(provider, i);
-    }
+	@Override
+	public PrologTerm clone() {
+		int i = getIntValue();
+		return new JplInteger(provider, i);
+	}
 
 }

@@ -49,209 +49,209 @@ import org.logicware.jpi.PrologTerm;
 
 public abstract class JplEngine extends NativeEngine implements PrologEngine {
 
-    protected Query query;
+	protected Query query;
 
-    protected String file;
-    protected String location;
-    protected List<String> files;
+	protected String file;
+	protected String location;
+	protected List<String> files;
 
-    // used only for findall list result
-    protected static final String KEY = "X";
+	// used only for findall list result
+	protected static final String KEY = "X";
 
-    // JPL use for for fact clause true prolog term
-    protected static final Term BODY = new Atom("true");
+	// JPL use for for fact clause true prolog term
+	protected static final Term BODY = new Atom("true");
 
-    // cache file path
-    // create at OS temp directory
-    private static String CACHE = null;
+	// cache file path
+	// create at OS temp directory
+	private static String CACHE = null;
 
-    // OS temp directory path
-    protected static String TEMP = null;
+	// OS temp directory path
+	protected static String TEMP = null;
 
-    static {
+	static {
 
-	try {
-	    File file = File.createTempFile("prolobjectlink-jpi-jpl7-cache-", ".pl");
-	    TEMP = file.getParentFile().getCanonicalPath().replace(File.separatorChar, '/');
-	    CACHE = file.getCanonicalPath().replace(File.separatorChar, '/');
-	} catch (IOException e) {
-	    e.printStackTrace();
+		try {
+			File file = File.createTempFile("prolobjectlink-jpi-jpl7-cache-", ".pl");
+			TEMP = file.getParentFile().getCanonicalPath().replace(File.separatorChar, '/');
+			CACHE = file.getCanonicalPath().replace(File.separatorChar, '/');
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println(TEMP);
+		System.out.println(CACHE);
+
 	}
 
-	System.out.println(TEMP);
-	System.out.println(CACHE);
-
-    }
-
-    protected JplEngine(PrologProvider provider) {
-	this(provider, CACHE);
-	query = new Query("consult('" + CACHE + "')");
-	clean(CACHE);
-    }
-
-    protected JplEngine(PrologProvider provider, String file) {
-	super(provider);
-	this.file = file;
-	File pf = new File(file);
-	this.files = new ArrayList<String>();
-	location = pf.getAbsolutePath();
-	location = location.toLowerCase();
-	location = location.replace(File.separatorChar, '/');
-	query = new Query("consult('" + file + "')");
-    }
-
-    public final void include(String file) {
-	files.add(file);
-    }
-
-    public final void consult(String path) {
-	file = path;
-	File pf = new File(file);
-	location = pf.getAbsolutePath();
-	location = location.toLowerCase();
-	location = location.replace(File.separatorChar, '/');
-    }
-
-    public final synchronized void persist(String path) {
-	InputStream in;
-	OutputStream out;
-	try {
-	    in = new FileInputStream(location);
-	    out = new FileOutputStream(path);
-	    copy(in, out);
-	} catch (FileNotFoundException e) {
-	    e.printStackTrace();
+	protected JplEngine(PrologProvider provider) {
+		this(provider, CACHE);
+		query = new Query("consult('" + CACHE + "')");
+		clean(CACHE);
 	}
-    }
 
-    public abstract void abolish(String functor, int arity);
-
-    public final synchronized void asserta(String stringClause) {
-	asserta(Util.textToTerm(stringClause));
-    }
-
-    public final synchronized void asserta(PrologTerm head, PrologTerm... body) {
-	asserta(fromTerm(head, body, Term.class));
-    }
-
-    public abstract void asserta(Term term);
-
-    public final synchronized void assertz(String stringClause) {
-	assertz(Util.textToTerm(stringClause));
-    }
-
-    public final synchronized void assertz(PrologTerm head, PrologTerm... body) {
-	assertz(fromTerm(head, body, Term.class));
-    }
-
-    public abstract void assertz(Term term);
-
-    public final synchronized boolean clause(String stringClause) {
-	return clause(Util.textToTerm(stringClause));
-    }
-
-    public final synchronized boolean clause(PrologTerm head, PrologTerm... body) {
-	return clause(fromTerm(head, body, Term.class));
-    }
-
-    public abstract boolean clause(Term t);
-
-    public final synchronized void retract(String stringClause) {
-	retract(Util.textToTerm(stringClause));
-    }
-
-    public final synchronized void retract(PrologTerm head, PrologTerm... body) {
-	retract(provider.fromTerm(head, body, Term.class));
-    }
-
-    public abstract void retract(Term t);
-
-    public abstract PrologQuery query(String stringQuery);
-
-    public abstract PrologQuery query(PrologTerm... terms);
-
-    public final void operator(int priority, String specifier, String operator) {
-	new Query("op(" + priority + "," + specifier + ", " + operator + ")").hasSolution();
-    }
-
-    public final boolean currentPredicate(String functor, int arity) {
-	return new Query("current_predicate(" + functor + "/" + arity + ")").hasSolution();
-    }
-
-    public final boolean currentOperator(int priority, String specifier, String operator) {
-	return new Query("current_op(" + priority + "," + specifier + ", " + operator + ")").hasSolution();
-    }
-
-    public final Set<PrologIndicator> currentPredicates() {
-	Set<PrologIndicator> indicators = new HashSet<PrologIndicator>();
-	String opQuery = "findall(X/Y,current_predicate(X/Y)," + KEY + ")";
-	query = new Query(opQuery);
-	if (query.hasSolution()) {
-	    Term term = query.oneSolution().get(KEY);
-	    Term[] termArray = term.toTermArray();
-	    for (int i = 0; i < termArray.length; i++) {
-
-		Term t = termArray[i];
-
-		Term f = t.arg(1);
-		Term a = t.arg(2);
-
-		int arity = a.intValue();
-		String functor = f.name();
-
-		PredicateIndicator pi = new PredicateIndicator(functor, arity);
-		indicators.add(pi);
-
-	    }
+	protected JplEngine(PrologProvider provider, String file) {
+		super(provider);
+		this.file = file;
+		File pf = new File(file);
+		this.files = new ArrayList<String>();
+		location = pf.getAbsolutePath();
+		location = location.toLowerCase();
+		location = location.replace(File.separatorChar, '/');
+		query = new Query("consult('" + file + "')");
 	}
-	return indicators;
-    }
 
-    public final Set<PrologOperator> currentOperators() {
-	Set<PrologOperator> operators = new HashSet<PrologOperator>();
-	String opQuery = "findall(P/S/O,current_op(P,S,O)," + KEY + ")";
-	query = new Query(opQuery);
-	if (query.hasSolution()) {
-	    Term term = query.oneSolution().get(KEY);
-	    Term[] termArray = term.toTermArray();
-	    for (int i = 0; i < termArray.length; i++) {
-
-		Term t = termArray[i];
-
-		Term prio = t.arg(1).arg(1);
-		Term pos = t.arg(1).arg(2);
-		Term op = t.arg(2);
-
-		int p = prio.intValue();
-		String s = pos.name();
-		String n = op.name();
-
-		OperatorEntry o = new OperatorEntry(p, s, n);
-		operators.add(o);
-	    }
+	public final void include(String file) {
+		files.add(file);
 	}
-	return operators;
-    }
 
-    public abstract int getProgramSize();
-
-    public String getLicense() {
-	return Licenses.BSD_3;
-    }
-
-    public final String getVersion() {
-	return JPL.version_string();
-    }
-
-    public String getName() {
-	return "JPL7";
-    }
-
-    public final void dispose() {
-	files.clear();
-	if (file.equals(CACHE)) {
-	    clean(CACHE);
+	public final void consult(String path) {
+		file = path;
+		File pf = new File(file);
+		location = pf.getAbsolutePath();
+		location = location.toLowerCase();
+		location = location.replace(File.separatorChar, '/');
 	}
-    }
+
+	public final synchronized void persist(String path) {
+		InputStream in;
+		OutputStream out;
+		try {
+			in = new FileInputStream(location);
+			out = new FileOutputStream(path);
+			copy(in, out);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public abstract void abolish(String functor, int arity);
+
+	public final synchronized void asserta(String stringClause) {
+		asserta(Util.textToTerm(stringClause));
+	}
+
+	public final synchronized void asserta(PrologTerm head, PrologTerm... body) {
+		asserta(fromTerm(head, body, Term.class));
+	}
+
+	public abstract void asserta(Term term);
+
+	public final synchronized void assertz(String stringClause) {
+		assertz(Util.textToTerm(stringClause));
+	}
+
+	public final synchronized void assertz(PrologTerm head, PrologTerm... body) {
+		assertz(fromTerm(head, body, Term.class));
+	}
+
+	public abstract void assertz(Term term);
+
+	public final synchronized boolean clause(String stringClause) {
+		return clause(Util.textToTerm(stringClause));
+	}
+
+	public final synchronized boolean clause(PrologTerm head, PrologTerm... body) {
+		return clause(fromTerm(head, body, Term.class));
+	}
+
+	public abstract boolean clause(Term t);
+
+	public final synchronized void retract(String stringClause) {
+		retract(Util.textToTerm(stringClause));
+	}
+
+	public final synchronized void retract(PrologTerm head, PrologTerm... body) {
+		retract(provider.fromTerm(head, body, Term.class));
+	}
+
+	public abstract void retract(Term t);
+
+	public abstract PrologQuery query(String stringQuery);
+
+	public abstract PrologQuery query(PrologTerm... terms);
+
+	public final void operator(int priority, String specifier, String operator) {
+		new Query("op(" + priority + "," + specifier + ", " + operator + ")").hasSolution();
+	}
+
+	public final boolean currentPredicate(String functor, int arity) {
+		return new Query("current_predicate(" + functor + "/" + arity + ")").hasSolution();
+	}
+
+	public final boolean currentOperator(int priority, String specifier, String operator) {
+		return new Query("current_op(" + priority + "," + specifier + ", " + operator + ")").hasSolution();
+	}
+
+	public final Set<PrologIndicator> currentPredicates() {
+		Set<PrologIndicator> indicators = new HashSet<PrologIndicator>();
+		String opQuery = "findall(X/Y,current_predicate(X/Y)," + KEY + ")";
+		query = new Query(opQuery);
+		if (query.hasSolution()) {
+			Term term = query.oneSolution().get(KEY);
+			Term[] termArray = term.toTermArray();
+			for (int i = 0; i < termArray.length; i++) {
+
+				Term t = termArray[i];
+
+				Term f = t.arg(1);
+				Term a = t.arg(2);
+
+				int arity = a.intValue();
+				String functor = f.name();
+
+				PredicateIndicator pi = new PredicateIndicator(functor, arity);
+				indicators.add(pi);
+
+			}
+		}
+		return indicators;
+	}
+
+	public final Set<PrologOperator> currentOperators() {
+		Set<PrologOperator> operators = new HashSet<PrologOperator>();
+		String opQuery = "findall(P/S/O,current_op(P,S,O)," + KEY + ")";
+		query = new Query(opQuery);
+		if (query.hasSolution()) {
+			Term term = query.oneSolution().get(KEY);
+			Term[] termArray = term.toTermArray();
+			for (int i = 0; i < termArray.length; i++) {
+
+				Term t = termArray[i];
+
+				Term prio = t.arg(1).arg(1);
+				Term pos = t.arg(1).arg(2);
+				Term op = t.arg(2);
+
+				int p = prio.intValue();
+				String s = pos.name();
+				String n = op.name();
+
+				OperatorEntry o = new OperatorEntry(p, s, n);
+				operators.add(o);
+			}
+		}
+		return operators;
+	}
+
+	public abstract int getProgramSize();
+
+	public String getLicense() {
+		return Licenses.BSD_3;
+	}
+
+	public final String getVersion() {
+		return JPL.version_string();
+	}
+
+	public String getName() {
+		return "JPL7";
+	}
+
+	public final void dispose() {
+		files.clear();
+		if (file.equals(CACHE)) {
+			clean(CACHE);
+		}
+	}
 
 }

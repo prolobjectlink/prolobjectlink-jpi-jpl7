@@ -25,38 +25,38 @@ import org.logicware.jpi.PrologTerm;
 
 public class JplEmpty extends JplList implements PrologList {
 
-    protected JplEmpty(PrologProvider provider) {
-	super(provider);
-    }
+	protected JplEmpty(PrologProvider provider) {
+		super(provider);
+	}
 
-    @Override
-    public PrologTerm[] getArguments() {
-	return new PrologTerm[0];
-    }
+	@Override
+	public PrologTerm[] getArguments() {
+		return new PrologTerm[0];
+	}
 
-    @Override
-    public int getArity() {
-	return value.arity();
-    }
+	@Override
+	public int getArity() {
+		return value.arity();
+	}
 
-    @Override
-    public String getFunctor() {
-	return value.name();
-    }
+	@Override
+	public String getFunctor() {
+		return value.name();
+	}
 
-    @Override
-    public String getIndicator() {
-	return getFunctor() + "/" + getArity();
-    }
+	@Override
+	public String getIndicator() {
+		return getFunctor() + "/" + getArity();
+	}
 
-    @Override
-    public boolean hasIndicator(String functor, int arity) {
-	return getFunctor().equals(functor) && getArity() == arity;
-    }
+	@Override
+	public boolean hasIndicator(String functor, int arity) {
+		return getFunctor().equals(functor) && getArity() == arity;
+	}
 
-    @Override
-    public PrologTerm clone() {
-	return new JplEmpty(provider);
-    }
+	@Override
+	public PrologTerm clone() {
+		return new JplEmpty(provider);
+	}
 
 }

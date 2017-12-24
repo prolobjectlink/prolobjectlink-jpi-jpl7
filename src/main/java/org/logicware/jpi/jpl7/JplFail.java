@@ -25,38 +25,38 @@ import org.logicware.jpi.PrologTerm;
 
 public final class JplFail extends JplTerm implements PrologTerm {
 
-    protected JplFail(PrologProvider provider) {
-	super(FAIL_TYPE, provider, new Atom("fail"));
-    }
+	protected JplFail(PrologProvider provider) {
+		super(FAIL_TYPE, provider, new Atom("fail"));
+	}
 
-    @Override
-    public PrologTerm[] getArguments() {
-	return new PrologTerm[0];
-    }
+	@Override
+	public PrologTerm[] getArguments() {
+		return new PrologTerm[0];
+	}
 
-    @Override
-    public int getArity() {
-	return 0;
-    }
+	@Override
+	public int getArity() {
+		return 0;
+	}
 
-    @Override
-    public String getFunctor() {
-	return "" + value + "";
-    }
+	@Override
+	public String getFunctor() {
+		return "" + value + "";
+	}
 
-    @Override
-    public String getIndicator() {
-	return getFunctor() + "/" + getArity();
-    }
+	@Override
+	public String getIndicator() {
+		return getFunctor() + "/" + getArity();
+	}
 
-    @Override
-    public boolean hasIndicator(String functor, int arity) {
-	return getFunctor().equals(functor) && getArity() == arity;
-    }
+	@Override
+	public boolean hasIndicator(String functor, int arity) {
+		return getFunctor().equals(functor) && getArity() == arity;
+	}
 
-    @Override
-    public PrologTerm clone() {
-	return new JplFail(provider);
-    }
+	@Override
+	public PrologTerm clone() {
+		return new JplFail(provider);
+	}
 
 }

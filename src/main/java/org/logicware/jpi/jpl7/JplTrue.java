@@ -25,38 +25,38 @@ import org.logicware.jpi.PrologTerm;
 
 public final class JplTrue extends JplTerm implements PrologTerm {
 
-    protected JplTrue(PrologProvider provider) {
-	super(TRUE_TYPE, provider, new Atom("true"));
-    }
+	protected JplTrue(PrologProvider provider) {
+		super(TRUE_TYPE, provider, new Atom("true"));
+	}
 
-    @Override
-    public PrologTerm[] getArguments() {
-	return new PrologTerm[0];
-    }
+	@Override
+	public PrologTerm[] getArguments() {
+		return new PrologTerm[0];
+	}
 
-    @Override
-    public int getArity() {
-	return 0;
-    }
+	@Override
+	public int getArity() {
+		return 0;
+	}
 
-    @Override
-    public String getFunctor() {
-	return "" + value + "";
-    }
+	@Override
+	public String getFunctor() {
+		return "" + value + "";
+	}
 
-    @Override
-    public String getIndicator() {
-	return getFunctor() + "/" + getArity();
-    }
+	@Override
+	public String getIndicator() {
+		return getFunctor() + "/" + getArity();
+	}
 
-    @Override
-    public boolean hasIndicator(String functor, int arity) {
-	return getFunctor().equals(functor) && getArity() == arity;
-    }
+	@Override
+	public boolean hasIndicator(String functor, int arity) {
+		return getFunctor().equals(functor) && getArity() == arity;
+	}
 
-    @Override
-    public PrologTerm clone() {
-	return new JplTrue(provider);
-    }
+	@Override
+	public PrologTerm clone() {
+		return new JplTrue(provider);
+	}
 
 }

@@ -29,59 +29,59 @@ import org.logicware.jpi.PrologVariable;
 
 public class JplVariable extends JplTerm implements PrologVariable {
 
-    JplVariable(PrologProvider provider) {
-	super(VARIABLE_TYPE, provider, new Variable("_"));
-    }
+	JplVariable(PrologProvider provider) {
+		super(VARIABLE_TYPE, provider, new Variable("_"));
+	}
 
-    JplVariable(PrologProvider provider, String name) {
-	super(VARIABLE_TYPE, provider, new Variable(name));
-    }
+	JplVariable(PrologProvider provider, String name) {
+		super(VARIABLE_TYPE, provider, new Variable(name));
+	}
 
-    public boolean isAnonymous() {
-	return ((Variable) value).name().equals("_");
-    }
+	public boolean isAnonymous() {
+		return ((Variable) value).name().equals("_");
+	}
 
-    public String getName() {
-	return ((Variable) value).name();
-    }
+	public String getName() {
+		return ((Variable) value).name();
+	}
 
-    public void setName(String name) {
-	this.value = new Variable(name);
-    }
+	public void setName(String name) {
+		this.value = new Variable(name);
+	}
 
-    @Override
-    public PrologTerm[] getArguments() {
-	return new JplVariable[0];
-    }
+	@Override
+	public PrologTerm[] getArguments() {
+		return new JplVariable[0];
+	}
 
-    @Override
-    public int getArity() {
-	throw new ArityError(this);
-    }
+	@Override
+	public int getArity() {
+		throw new ArityError(this);
+	}
 
-    @Override
-    public String getFunctor() {
-	throw new FunctorError(this);
-    }
+	@Override
+	public String getFunctor() {
+		throw new FunctorError(this);
+	}
 
-    @Override
-    public String getIndicator() {
-	throw new IndicatorError(this);
-    }
+	@Override
+	public String getIndicator() {
+		throw new IndicatorError(this);
+	}
 
-    @Override
-    public boolean hasIndicator(String functor, int arity) {
-	throw new IndicatorError(this);
-    }
+	@Override
+	public boolean hasIndicator(String functor, int arity) {
+		throw new IndicatorError(this);
+	}
 
-    public int getPosition() {
-	throw new UnsupportedOperationException("getPosition()");
-    }
+	public int getPosition() {
+		throw new UnsupportedOperationException("getPosition()");
+	}
 
-    @Override
-    public PrologTerm clone() {
-	String n = getName();
-	return new JplVariable(provider, n);
-    }
+	@Override
+	public PrologTerm clone() {
+		String n = getName();
+		return new JplVariable(provider, n);
+	}
 
 }

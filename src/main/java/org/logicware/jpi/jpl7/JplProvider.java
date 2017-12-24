@@ -29,7 +29,6 @@ import org.logicware.jpi.PrologAtom;
 import org.logicware.jpi.PrologConverter;
 import org.logicware.jpi.PrologDouble;
 import org.logicware.jpi.PrologEngine;
-import org.logicware.jpi.PrologExpression;
 import org.logicware.jpi.PrologFloat;
 import org.logicware.jpi.PrologInteger;
 import org.logicware.jpi.PrologList;
@@ -41,119 +40,118 @@ import org.logicware.jpi.PrologVariable;
 
 public abstract class JplProvider extends AbstractProvider implements PrologProvider {
 
-    public JplProvider(PrologConverter<Term> adapter) {
-	super(adapter);
-    }
-
-    public boolean isCompliant() {
-	return true;
-    }
-
-    public boolean preserveQuotes() {
-	return true;
-    }
-
-    public PrologTerm prologNil() {
-	return new JplNil(this);
-    }
-
-    public PrologTerm prologCut() {
-	return new JplCut(this);
-    }
-
-    public PrologTerm prologFail() {
-	return new JplFail(this);
-    }
-
-    public PrologTerm prologTrue() {
-	return new JplTrue(this);
-    }
-
-    public PrologTerm prologFalse() {
-	return new JplFalse(this);
-    }
-
-    public PrologTerm prologEmpty() {
-	return new JplEmpty(this);
-    }
-
-    public PrologTerm parsePrologTerm(String term) {
-	return toTerm(Util.textToTerm(term), PrologTerm.class);
-    }
-
-    public PrologTerm[] parsePrologTerms(String stringTerms) {
-	PrologTerm[] a = new PrologTerm[0];
-	Term ptr = Util.textToTerm(stringTerms);
-	List<PrologTerm> terms = new ArrayList<PrologTerm>();
-	while (ptr.isCompound() && ptr.hasFunctor(",", 2)) {
-	    terms.add(toTerm(ptr.arg(1), PrologTerm.class));
-	    ptr = ptr.arg(2);
+	public JplProvider(PrologConverter<Term> adapter) {
+		super(adapter);
 	}
-	terms.add(toTerm(ptr, PrologTerm.class));
-	return terms.toArray(a);
-    }
 
-    public abstract PrologEngine newEngine();
+	public boolean isCompliant() {
+		return true;
+	}
 
-    public PrologAtom newAtom(String functor) {
-	return new JplAtom(this, functor);
-    }
+	public boolean preserveQuotes() {
+		return true;
+	}
 
-    public PrologFloat newFloat(Number value) {
-	return new JplFloat(this, value);
-    }
+	public PrologTerm prologNil() {
+		return new JplNil(this);
+	}
 
-    public PrologDouble newDouble(Number value) {
-	return new JplDouble(this, value);
-    }
+	public PrologTerm prologCut() {
+		return new JplCut(this);
+	}
 
-    public PrologInteger newInteger(Number value) {
-	return new JplInteger(this, value);
-    }
+	public PrologTerm prologFail() {
+		return new JplFail(this);
+	}
 
-    public PrologLong newLong(Number value) {
-	return new JplLong(this, value);
-    }
+	public PrologTerm prologTrue() {
+		return new JplTrue(this);
+	}
 
-    public PrologVariable newVariable() {
-	return new JplVariable(this);
-    }
+	public PrologTerm prologFalse() {
+		return new JplFalse(this);
+	}
 
-    public PrologVariable newVariable(String name) {
-	return new JplVariable(this, name);
-    }
+	public PrologTerm prologEmpty() {
+		return new JplEmpty(this);
+	}
 
-    public PrologVariable newVariable(int position) {
-	return newVariable();
-    }
+	public PrologTerm parsePrologTerm(String term) {
+		return toTerm(Util.textToTerm(term), PrologTerm.class);
+	}
 
-    public PrologVariable newVariable(String name, int position) {
-	return newVariable(name);
-    }
+	public PrologTerm[] parsePrologTerms(String stringTerms) {
+		PrologTerm[] a = new PrologTerm[0];
+		Term ptr = Util.textToTerm(stringTerms);
+		List<PrologTerm> terms = new ArrayList<PrologTerm>();
+		while (ptr.isCompound() && ptr.hasFunctor(",", 2)) {
+			terms.add(toTerm(ptr.arg(1), PrologTerm.class));
+			ptr = ptr.arg(2);
+		}
+		terms.add(toTerm(ptr, PrologTerm.class));
+		return terms.toArray(a);
+	}
 
-    public PrologList newList() {
-	return new JplList(this);
-    }
+	public abstract PrologEngine newEngine();
 
-    public PrologList newList(PrologTerm[] arguments) {
-	return new JplList(this, arguments);
-    }
+	public PrologAtom newAtom(String functor) {
+		return new JplAtom(this, functor);
+	}
 
-    public PrologList newList(PrologTerm head, PrologTerm tail) {
-	return new JplList(this, head, tail);
-    }
+	public PrologFloat newFloat(Number value) {
+		return new JplFloat(this, value);
+	}
 
-    public PrologList newList(PrologTerm[] arguments, PrologTerm tail) {
-	return new JplList(this, arguments, tail);
-    }
+	public PrologDouble newDouble(Number value) {
+		return new JplDouble(this, value);
+	}
 
-    public PrologStructure newStructure(String functor, PrologTerm... arguments) {
-	return new JplStructure(this, functor, arguments);
-    }
+	public PrologInteger newInteger(Number value) {
+		return new JplInteger(this, value);
+	}
 
-    @Deprecated
-    public PrologExpression newExpression(PrologTerm left, String operator, PrologTerm right) {
-	return new JplExpression(this, left, operator, right);
-    }
+	public PrologLong newLong(Number value) {
+		return new JplLong(this, value);
+	}
+
+	public PrologVariable newVariable() {
+		return new JplVariable(this);
+	}
+
+	public PrologVariable newVariable(String name) {
+		return new JplVariable(this, name);
+	}
+
+	public PrologVariable newVariable(int position) {
+		return newVariable();
+	}
+
+	public PrologVariable newVariable(String name, int position) {
+		return newVariable(name);
+	}
+
+	public PrologList newList() {
+		return new JplList(this);
+	}
+
+	public PrologList newList(PrologTerm[] arguments) {
+		return new JplList(this, arguments);
+	}
+
+	public PrologList newList(PrologTerm head, PrologTerm tail) {
+		return new JplList(this, head, tail);
+	}
+
+	public PrologList newList(PrologTerm[] arguments, PrologTerm tail) {
+		return new JplList(this, arguments, tail);
+	}
+
+	public PrologStructure newStructure(String functor, PrologTerm... arguments) {
+		return new JplStructure(this, functor, arguments);
+	}
+
+	public PrologTerm newExpression(PrologTerm left, String operator, PrologTerm right) {
+		return new JplStructure(this, left, operator, right);
+	}
 
 }

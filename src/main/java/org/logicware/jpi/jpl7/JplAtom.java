@@ -26,47 +26,47 @@ import org.logicware.jpi.PrologTerm;
 
 public final class JplAtom extends JplTerm implements PrologAtom {
 
-    public JplAtom(PrologProvider provider, String value) {
-	super(ATOM_TYPE, provider, new Atom(value));
-    }
+	public JplAtom(PrologProvider provider, String value) {
+		super(ATOM_TYPE, provider, new Atom(value));
+	}
 
-    public String getStringValue() {
-	return getFunctor();
-    }
+	public String getStringValue() {
+		return getFunctor();
+	}
 
-    public void setStringValue(String value) {
-	this.value = new Atom(value);
-    }
+	public void setStringValue(String value) {
+		this.value = new Atom(value);
+	}
 
-    @Override
-    public PrologTerm[] getArguments() {
-	return new JplAtom[0];
-    }
+	@Override
+	public PrologTerm[] getArguments() {
+		return new JplAtom[0];
+	}
 
-    @Override
-    public int getArity() {
-	return 0;
-    }
+	@Override
+	public int getArity() {
+		return 0;
+	}
 
-    @Override
-    public String getFunctor() {
-	return "" + value + "";
-    }
+	@Override
+	public String getFunctor() {
+		return "" + value + "";
+	}
 
-    @Override
-    public String getIndicator() {
-	return getFunctor() + "/" + getArity();
-    }
+	@Override
+	public String getIndicator() {
+		return getFunctor() + "/" + getArity();
+	}
 
-    @Override
-    public boolean hasIndicator(String functor, int arity) {
-	return getFunctor().equals(functor) && getArity() == arity;
-    }
+	@Override
+	public boolean hasIndicator(String functor, int arity) {
+		return getFunctor().equals(functor) && getArity() == arity;
+	}
 
-    @Override
-    public PrologTerm clone() {
-	String s = getFunctor();
-	return new JplAtom(provider, s);
-    }
+	@Override
+	public PrologTerm clone() {
+		String s = getFunctor();
+		return new JplAtom(provider, s);
+	}
 
 }
