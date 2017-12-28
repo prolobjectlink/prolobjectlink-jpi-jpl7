@@ -19,6 +19,8 @@
  */
 package org.logicware.jpi.jpl7;
 
+import static org.logicware.jpi.PrologTermType.CUT_TYPE;
+
 import org.jpl7.Atom;
 import org.logicware.jpi.PrologProvider;
 import org.logicware.jpi.PrologTerm;
@@ -29,34 +31,24 @@ public class JplCut extends JplTerm implements PrologTerm {
 		super(CUT_TYPE, provider, new Atom("!"));
 	}
 
-	@Override
 	public PrologTerm[] getArguments() {
 		return new PrologTerm[0];
 	}
 
-	@Override
 	public int getArity() {
 		return 0;
 	}
 
-	@Override
 	public String getFunctor() {
 		return "" + value + "";
 	}
 
-	@Override
 	public String getIndicator() {
 		return getFunctor() + "/" + getArity();
 	}
 
-	@Override
 	public boolean hasIndicator(String functor, int arity) {
 		return getFunctor().equals(functor) && getArity() == arity;
-	}
-
-	@Override
-	public PrologTerm clone() {
-		return new JplCut(provider);
 	}
 
 }

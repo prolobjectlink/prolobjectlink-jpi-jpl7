@@ -19,6 +19,21 @@
  */
 package org.logicware.jpi.jpl7;
 
+import static org.logicware.jpi.PrologTermType.ATOM_TYPE;
+import static org.logicware.jpi.PrologTermType.CUT_TYPE;
+import static org.logicware.jpi.PrologTermType.DOUBLE_TYPE;
+import static org.logicware.jpi.PrologTermType.EMPTY_TYPE;
+import static org.logicware.jpi.PrologTermType.FAIL_TYPE;
+import static org.logicware.jpi.PrologTermType.FALSE_TYPE;
+import static org.logicware.jpi.PrologTermType.FLOAT_TYPE;
+import static org.logicware.jpi.PrologTermType.INTEGER_TYPE;
+import static org.logicware.jpi.PrologTermType.LIST_TYPE;
+import static org.logicware.jpi.PrologTermType.LONG_TYPE;
+import static org.logicware.jpi.PrologTermType.NIL_TYPE;
+import static org.logicware.jpi.PrologTermType.STRUCTURE_TYPE;
+import static org.logicware.jpi.PrologTermType.TRUE_TYPE;
+import static org.logicware.jpi.PrologTermType.VARIABLE_TYPE;
+
 import org.jpl7.Atom;
 import org.jpl7.Compound;
 import org.jpl7.Float;
@@ -60,9 +75,7 @@ public abstract class JplConverter extends AbstractConverter<Term> implements Pr
 		} else if (prologTerm.isListNil()) {
 			return new JplEmpty(provider);
 		} else if (prologTerm.isFloat()) {
-			// return new SwiPrologFloat(((Float) prologTerm).doubleValue());
 			return new JplFloat(provider, ((Float) prologTerm).floatValue());
-			// return new SwiPrologDouble(((Float) prologTerm).doubleValue());
 		} else if (prologTerm.isBigInteger()) {
 			return new JplLong(provider, ((Integer) prologTerm).longValue());
 		} else if (prologTerm.isInteger()) {
@@ -114,29 +127,29 @@ public abstract class JplConverter extends AbstractConverter<Term> implements Pr
 
 	public Term fromTerm(PrologTerm term) {
 		switch (term.getType()) {
-		case PrologTerm.NIL_TYPE:
+		case NIL_TYPE:
 			return new Atom("nil");
-		case PrologTerm.CUT_TYPE:
+		case CUT_TYPE:
 			return new Atom("!");
-		case PrologTerm.FAIL_TYPE:
+		case FAIL_TYPE:
 			return new Atom("fail");
-		case PrologTerm.TRUE_TYPE:
+		case TRUE_TYPE:
 			return new Atom("true");
-		case PrologTerm.FALSE_TYPE:
+		case FALSE_TYPE:
 			return new Atom("false");
-		case PrologTerm.EMPTY_TYPE:
+		case EMPTY_TYPE:
 			return JplEmpty.EMPTY;
-		case PrologTerm.ATOM_TYPE:
+		case ATOM_TYPE:
 			return new Atom(removeQuoted(((PrologAtom) term).getStringValue()));
-		case PrologTerm.FLOAT_TYPE:
+		case FLOAT_TYPE:
 			return new Float(((PrologFloat) term).getFloatValue());
-		case PrologTerm.INTEGER_TYPE:
+		case INTEGER_TYPE:
 			return new Integer(((PrologInteger) term).getIntValue());
-		case PrologTerm.DOUBLE_TYPE:
+		case DOUBLE_TYPE:
 			return new Float(((PrologDouble) term).getDoubleValue());
-		case PrologTerm.LONG_TYPE:
+		case LONG_TYPE:
 			return new Integer(((PrologLong) term).getLongValue());
-		case PrologTerm.VARIABLE_TYPE:
+		case VARIABLE_TYPE:
 			String name = ((PrologVariable) term).getName();
 			Term variable = sharedPrologVariables.get(name);
 			if (variable == null) {
@@ -144,14 +157,14 @@ public abstract class JplConverter extends AbstractConverter<Term> implements Pr
 				sharedPrologVariables.put(name, variable);
 			}
 			return variable;
-		case PrologTerm.LIST_TYPE:
+		case LIST_TYPE:
 			PrologTerm[] array = term.getArguments();
 			Term list = JplEmpty.EMPTY;
 			for (int i = array.length - 1; i >= 0; --i) {
 				list = new Compound("[|]", new Term[] { fromTerm(array[i]), list });
 			}
 			return list;
-		case PrologTerm.STRUCTURE_TYPE:
+		case STRUCTURE_TYPE:
 			String functor = term.getFunctor();
 			Term[] arguments = fromTermArray(((PrologStructure) term).getArguments());
 			return new Compound(functor, arguments);

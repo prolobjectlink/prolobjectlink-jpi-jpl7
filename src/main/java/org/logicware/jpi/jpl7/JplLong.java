@@ -19,6 +19,8 @@
  */
 package org.logicware.jpi.jpl7;
 
+import static org.logicware.jpi.PrologTermType.LONG_TYPE;
+
 import org.jpl7.Integer;
 import org.logicware.jpi.ArityError;
 import org.logicware.jpi.FunctorError;
@@ -72,35 +74,24 @@ public class JplLong extends JplTerm implements PrologLong {
 		return ((Integer) value).floatValue();
 	}
 
-	@Override
 	public PrologTerm[] getArguments() {
 		return new JplLong[0];
 	}
 
-	@Override
 	public int getArity() {
 		throw new ArityError(this);
 	}
 
-	@Override
 	public String getFunctor() {
 		throw new FunctorError(this);
 	}
 
-	@Override
 	public String getIndicator() {
 		throw new IndicatorError(this);
 	}
 
-	@Override
 	public boolean hasIndicator(String functor, int arity) {
 		throw new IndicatorError(this);
-	}
-
-	@Override
-	public PrologTerm clone() {
-		long l = getLongValue();
-		return new JplLong(provider, l);
 	}
 
 }

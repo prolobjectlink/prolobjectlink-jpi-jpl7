@@ -19,6 +19,8 @@
  */
 package org.logicware.jpi.jpl7;
 
+import static org.logicware.jpi.PrologTermType.VARIABLE_TYPE;
+
 import org.jpl7.Variable;
 import org.logicware.jpi.ArityError;
 import org.logicware.jpi.FunctorError;
@@ -49,39 +51,28 @@ public class JplVariable extends JplTerm implements PrologVariable {
 		this.value = new Variable(name);
 	}
 
-	@Override
 	public PrologTerm[] getArguments() {
 		return new JplVariable[0];
 	}
 
-	@Override
 	public int getArity() {
 		throw new ArityError(this);
 	}
 
-	@Override
 	public String getFunctor() {
 		throw new FunctorError(this);
 	}
 
-	@Override
 	public String getIndicator() {
 		throw new IndicatorError(this);
 	}
 
-	@Override
 	public boolean hasIndicator(String functor, int arity) {
 		throw new IndicatorError(this);
 	}
 
 	public int getPosition() {
 		throw new UnsupportedOperationException("getPosition()");
-	}
-
-	@Override
-	public PrologTerm clone() {
-		String n = getName();
-		return new JplVariable(provider, n);
 	}
 
 }

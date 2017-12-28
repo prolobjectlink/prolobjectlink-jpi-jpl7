@@ -19,6 +19,8 @@
  */
 package org.logicware.jpi.jpl7;
 
+import static org.logicware.jpi.PrologTermType.INTEGER_TYPE;
+
 import org.jpl7.Integer;
 import org.logicware.jpi.ArityError;
 import org.logicware.jpi.FunctorError;
@@ -72,35 +74,24 @@ public class JplInteger extends JplTerm implements PrologInteger {
 		return ((Integer) value).floatValue();
 	}
 
-	@Override
 	public PrologTerm[] getArguments() {
 		return new JplInteger[0];
 	}
 
-	@Override
 	public int getArity() {
 		throw new ArityError(this);
 	}
 
-	@Override
 	public String getFunctor() {
 		throw new FunctorError(this);
 	}
 
-	@Override
 	public String getIndicator() {
 		throw new IndicatorError(this);
 	}
 
-	@Override
 	public boolean hasIndicator(String functor, int arity) {
 		throw new IndicatorError(this);
-	}
-
-	@Override
-	public PrologTerm clone() {
-		int i = getIntValue();
-		return new JplInteger(provider, i);
 	}
 
 }

@@ -19,6 +19,8 @@
  */
 package org.logicware.jpi.jpl7;
 
+import static org.logicware.jpi.PrologTermType.ATOM_TYPE;
+
 import org.jpl7.Atom;
 import org.logicware.jpi.PrologAtom;
 import org.logicware.jpi.PrologProvider;
@@ -38,35 +40,24 @@ public final class JplAtom extends JplTerm implements PrologAtom {
 		this.value = new Atom(value);
 	}
 
-	@Override
 	public PrologTerm[] getArguments() {
 		return new JplAtom[0];
 	}
 
-	@Override
 	public int getArity() {
 		return 0;
 	}
 
-	@Override
 	public String getFunctor() {
 		return "" + value + "";
 	}
 
-	@Override
 	public String getIndicator() {
 		return getFunctor() + "/" + getArity();
 	}
 
-	@Override
 	public boolean hasIndicator(String functor, int arity) {
 		return getFunctor().equals(functor) && getArity() == arity;
-	}
-
-	@Override
-	public PrologTerm clone() {
-		String s = getFunctor();
-		return new JplAtom(provider, s);
 	}
 
 }

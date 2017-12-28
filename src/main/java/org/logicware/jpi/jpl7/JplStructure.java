@@ -19,6 +19,8 @@
  */
 package org.logicware.jpi.jpl7;
 
+import static org.logicware.jpi.PrologTermType.STRUCTURE_TYPE;
+
 import org.jpl7.Compound;
 import org.jpl7.Term;
 import org.logicware.jpi.PrologProvider;
@@ -81,7 +83,6 @@ public class JplStructure extends JplTerm implements PrologStructure {
 		return arguments[index];
 	}
 
-	@Override
 	public PrologTerm[] getArguments() {
 		Compound structure = (Compound) value;
 		int arity = structure.arity();
@@ -92,33 +93,22 @@ public class JplStructure extends JplTerm implements PrologStructure {
 		return arguments;
 	}
 
-	@Override
 	public int getArity() {
 		Compound structure = (Compound) value;
 		return structure.arity();
 	}
 
-	@Override
 	public String getFunctor() {
 		Compound structure = (Compound) value;
 		return structure.name();
 	}
 
-	@Override
 	public String getIndicator() {
 		return getFunctor() + "/" + getArity();
 	}
 
-	@Override
 	public boolean hasIndicator(String functor, int arity) {
 		return getFunctor().equals(functor) && getArity() == arity;
-	}
-
-	@Override
-	public PrologTerm clone() {
-		String f = getFunctor();
-		PrologTerm[] a = getArguments();
-		return new JplStructure(provider, f, a);
 	}
 
 }

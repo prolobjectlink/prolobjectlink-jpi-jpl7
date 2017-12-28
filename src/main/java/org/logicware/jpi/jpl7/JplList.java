@@ -19,6 +19,8 @@
  */
 package org.logicware.jpi.jpl7;
 
+import static org.logicware.jpi.PrologTermType.LIST_TYPE;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -91,8 +93,7 @@ public class JplList extends JplTerm implements PrologList {
 	}
 
 	public Iterator<PrologTerm> iterator() {
-		Term list = (Term) value;
-		return new SwiPrologListIter(list);
+		return new SwiPrologListIter(value);
 	}
 
 	public PrologTerm getHead() {
@@ -105,49 +106,36 @@ public class JplList extends JplTerm implements PrologList {
 		return provider.toTerm(list.arg(2), PrologTerm.class);
 	}
 
-	@Override
 	public int getArity() {
 		return value.arity();
 	}
 
-	@Override
 	public String getFunctor() {
-		// return value.name();
 		return ".";
 	}
 
-	@Override
 	public String getIndicator() {
 		return getFunctor() + "/" + getArity();
 	}
 
-	@Override
 	public boolean hasIndicator(String functor, int arity) {
 		return getFunctor().equals(functor) && getArity() == arity;
 	}
 
-	@Override
 	public PrologTerm[] getArguments() {
 		return toTermArray(value.toTermArray(), PrologTerm[].class);
 	}
 
-	@Override
 	public String toString() {
-		String string = "[";
+		StringBuilder string = new StringBuilder("[");
 		Iterator<PrologTerm> i = iterator();
 		if (i.hasNext()) {
-			string += i.next();
+			string.append(i.next());
 		}
 		while (i.hasNext()) {
-			string += ", " + i.next();
+			string.append(", " + i.next());
 		}
-		return string += "]";
-	}
-
-	@Override
-	public PrologTerm clone() {
-		PrologTerm[] array = getArguments();
-		return new JplList(provider, array);
+		return string.append("]").toString();
 	}
 
 	private class SwiPrologListIter implements Iterator<PrologTerm> {

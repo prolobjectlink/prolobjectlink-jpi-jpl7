@@ -19,6 +19,11 @@
  */
 package org.logicware.jpi.jpl7;
 
+import static org.logicware.jpi.PrologTermType.DOUBLE_TYPE;
+import static org.logicware.jpi.PrologTermType.FLOAT_TYPE;
+import static org.logicware.jpi.PrologTermType.INTEGER_TYPE;
+import static org.logicware.jpi.PrologTermType.LONG_TYPE;
+
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.logicware.jpi.AbstractTerm;
@@ -114,16 +119,6 @@ public abstract class JplTerm extends AbstractTerm implements PrologTerm {
 		return value.isCompound();
 	}
 
-	public abstract String getIndicator();
-
-	public abstract boolean hasIndicator(String functor, int arity);
-
-	public abstract int getArity();
-
-	public abstract String getFunctor();
-
-	public abstract PrologTerm[] getArguments();
-
 	public final boolean unify(PrologTerm o) {
 
 		if (!(o instanceof JplTerm)) {
@@ -170,7 +165,6 @@ public abstract class JplTerm extends AbstractTerm implements PrologTerm {
 		int result = 1;
 		result = prime * result + type;
 		// Term not implement hashCode()
-		// result = prime * result + ((value == null) ? 0 : value.hashCode());
 		result = prime * result + ((value == null) ? 0 : value.toString().hashCode());
 		return result;
 	}
@@ -198,8 +192,5 @@ public abstract class JplTerm extends AbstractTerm implements PrologTerm {
 	public String toString() {
 		return "" + value + "";
 	}
-
-	@Override
-	public abstract PrologTerm clone();
 
 }
