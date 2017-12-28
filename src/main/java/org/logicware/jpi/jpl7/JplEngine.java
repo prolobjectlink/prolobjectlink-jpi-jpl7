@@ -36,8 +36,8 @@ import org.jpl7.JPL;
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.jpl7.Util;
+import org.logicware.jpi.AbstractEngine;
 import org.logicware.jpi.Licenses;
-import org.logicware.jpi.NativeEngine;
 import org.logicware.jpi.OperatorEntry;
 import org.logicware.jpi.PredicateIndicator;
 import org.logicware.jpi.PrologEngine;
@@ -47,7 +47,7 @@ import org.logicware.jpi.PrologProvider;
 import org.logicware.jpi.PrologQuery;
 import org.logicware.jpi.PrologTerm;
 
-public abstract class JplEngine extends NativeEngine implements PrologEngine {
+public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	protected Query query;
 
