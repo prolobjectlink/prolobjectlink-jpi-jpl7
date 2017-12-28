@@ -150,7 +150,7 @@ public abstract class JplProvider extends AbstractProvider implements PrologProv
 		return new JplStructure(this, functor, arguments);
 	}
 
-	public PrologTerm newExpression(PrologTerm left, String operator, PrologTerm right) {
+	public PrologTerm newStructure(PrologTerm left, String operator, PrologTerm right) {
 		return new JplStructure(this, left, operator, right);
 	}
 
