@@ -44,7 +44,6 @@ import org.logicware.jpi.PrologEngine;
 import org.logicware.jpi.PrologIndicator;
 import org.logicware.jpi.PrologOperator;
 import org.logicware.jpi.PrologProvider;
-import org.logicware.jpi.PrologQuery;
 import org.logicware.jpi.PrologTerm;
 
 public abstract class JplEngine extends AbstractEngine implements PrologEngine {
@@ -63,30 +62,30 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	// cache file path
 	// create at OS temp directory
-	private static String CACHE = null;
+	private static String cache = null;
 
 	// OS temp directory path
-	protected static String TEMP = null;
+	protected static String temp = null;
 
 	static {
 
 		try {
 			File file = File.createTempFile("prolobjectlink-jpi-jpl7-cache-", ".pl");
-			TEMP = file.getParentFile().getCanonicalPath().replace(File.separatorChar, '/');
-			CACHE = file.getCanonicalPath().replace(File.separatorChar, '/');
+			temp = file.getParentFile().getCanonicalPath().replace(File.separatorChar, '/');
+			cache = file.getCanonicalPath().replace(File.separatorChar, '/');
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		System.out.println(TEMP);
-		System.out.println(CACHE);
+		System.out.println(temp);
+		System.out.println(cache);
 
 	}
 
 	protected JplEngine(PrologProvider provider) {
-		this(provider, CACHE);
-		query = new Query("consult('" + CACHE + "')");
-		clean(CACHE);
+		this(provider, cache);
+		query = new Query("consult('" + cache + "')");
+		clean(cache);
 	}
 
 	protected JplEngine(PrologProvider provider, String file) {
@@ -113,18 +112,31 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	}
 
 	public final synchronized void persist(String path) {
-		InputStream in;
-		OutputStream out;
+		InputStream in = null;
+		OutputStream out = null;
 		try {
 			in = new FileInputStream(location);
 			out = new FileOutputStream(path);
 			copy(in, out);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+		} finally {
+			if (in != null) {
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
-
-	public abstract void abolish(String functor, int arity);
 
 	public final synchronized void asserta(String stringClause) {
 		asserta(Util.textToTerm(stringClause));
@@ -165,10 +177,6 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	}
 
 	public abstract void retract(Term t);
-
-	public abstract PrologQuery query(String stringQuery);
-
-	public abstract PrologQuery query(PrologTerm... terms);
 
 	public final void operator(int priority, String specifier, String operator) {
 		new Query("op(" + priority + "," + specifier + ", " + operator + ")").hasSolution();
@@ -233,8 +241,6 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		return operators;
 	}
 
-	public abstract int getProgramSize();
-
 	public String getLicense() {
 		return Licenses.BSD_3;
 	}
@@ -249,9 +255,46 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	public final void dispose() {
 		files.clear();
-		if (file.equals(CACHE)) {
-			clean(CACHE);
+		if (file.equals(cache)) {
+			clean(cache);
 		}
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((file == null) ? 0 : file.hashCode());
+		result = prime * result + ((files == null) ? 0 : files.hashCode());
+		result = prime * result + ((location == null) ? 0 : location.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		JplEngine other = (JplEngine) obj;
+		if (file == null) {
+			if (other.file != null)
+				return false;
+		} else if (!file.equals(other.file))
+			return false;
+		if (files == null) {
+			if (other.files != null)
+				return false;
+		} else if (!files.equals(other.files))
+			return false;
+		if (location == null) {
+			if (other.location != null)
+				return false;
+		} else if (!location.equals(other.location))
+			return false;
+		return true;
 	}
 
 }

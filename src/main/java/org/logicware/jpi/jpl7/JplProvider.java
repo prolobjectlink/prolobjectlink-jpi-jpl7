@@ -28,7 +28,6 @@ import org.logicware.jpi.AbstractProvider;
 import org.logicware.jpi.PrologAtom;
 import org.logicware.jpi.PrologConverter;
 import org.logicware.jpi.PrologDouble;
-import org.logicware.jpi.PrologEngine;
 import org.logicware.jpi.PrologFloat;
 import org.logicware.jpi.PrologInteger;
 import org.logicware.jpi.PrologList;
@@ -91,8 +90,6 @@ public abstract class JplProvider extends AbstractProvider implements PrologProv
 		terms.add(toTerm(ptr, PrologTerm.class));
 		return terms.toArray(a);
 	}
-
-	public abstract PrologEngine newEngine();
 
 	public PrologAtom newAtom(String functor) {
 		return new JplAtom(this, functor);

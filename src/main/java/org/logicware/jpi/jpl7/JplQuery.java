@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import org.jpl7.Query;
 import org.jpl7.Term;
@@ -118,7 +119,8 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 	public synchronized PrologTerm[][] nSolutions(int n) {
 		if (n > 0) {
 			// m:solutionSize
-			int m = 0, index = 0;
+			int m = 0;
+			int index = 0;
 			ArrayList<PrologTerm[]> all = new ArrayList<PrologTerm[]>();
 			PrologTerm[] solution = nextSolution();
 			while (solution.length > 0 && index < n) {
@@ -147,7 +149,8 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 
 	public synchronized PrologTerm[][] allSolutions() {
 		// n:solutionCount, m:solutionSize
-		int n = 0, m = 0;
+		int n = 0;
+		int m = 0;
 		ArrayList<PrologTerm[]> all = new ArrayList<PrologTerm[]>();
 		PrologTerm[] solution = nextSolution();
 		while (solution.length > 0) {
@@ -175,12 +178,11 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((consult == null) ? 0 : consult.hashCode());
-		result = prime * result + ((file == null) ? 0 : file.hashCode());
-		result = prime * result + ((files == null) ? 0 : files.hashCode());
-		result = prime * result + ((query == null) ? 0 : query.hashCode());
-		result = prime * result + ((stringQuery == null) ? 0 : stringQuery.hashCode());
+		int result = super.hashCode();
+		result = prime * result + Objects.hashCode(file);
+		result = prime * result + Objects.hashCode(files);
+		result = prime * result + Objects.hashCode(stringQuery);
+		result = prime * result + Objects.hashCode(variables);
 		return result;
 	}
 
@@ -188,16 +190,11 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
+		if (!super.equals(obj))
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
 		JplQuery other = (JplQuery) obj;
-		if (consult == null) {
-			if (other.consult != null)
-				return false;
-		} else if (!consult.equals(other.consult))
-			return false;
 		if (file == null) {
 			if (other.file != null)
 				return false;
@@ -208,17 +205,12 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 				return false;
 		} else if (!files.equals(other.files))
 			return false;
-		if (query == null) {
-			if (other.query != null)
-				return false;
-		} else if (!query.equals(other.query))
-			return false;
 		if (stringQuery == null) {
 			if (other.stringQuery != null)
 				return false;
 		} else if (!stringQuery.equals(other.stringQuery))
 			return false;
-		return true;
+		return Objects.equals(variables, other.variables);
 	}
 
 	@Override
