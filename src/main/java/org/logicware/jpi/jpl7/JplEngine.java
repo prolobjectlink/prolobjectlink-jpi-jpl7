@@ -19,6 +19,10 @@
  */
 package org.logicware.jpi.jpl7;
 
+import static org.logicware.LoggerConstants.DONT_WORRY;
+import static org.logicware.LoggerConstants.FILE_ERROR;
+import static org.logicware.LoggerConstants.FILE_NOT_FOUND;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -36,6 +40,7 @@ import org.jpl7.JPL;
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.jpl7.Util;
+import org.logicware.LoggerUtils;
 import org.logicware.jpi.AbstractEngine;
 import org.logicware.jpi.Licenses;
 import org.logicware.jpi.OperatorEntry;
@@ -68,17 +73,17 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	protected static String temp = null;
 
 	static {
-
+		File file = null;
 		try {
-			File file = File.createTempFile("prolobjectlink-jpi-jpl7-cache-", ".pl");
+			file = File.createTempFile("prolobjectlink-jpi-jpl7-cache-", ".pl");
 			temp = file.getParentFile().getCanonicalPath().replace(File.separatorChar, '/');
 			cache = file.getCanonicalPath().replace(File.separatorChar, '/');
 		} catch (IOException e) {
-			e.printStackTrace();
+			LoggerUtils.error(JplEngine.class, FILE_ERROR + file, e);
 		}
 
-		System.out.println(temp);
-		System.out.println(cache);
+		LoggerUtils.info(JplEngine.class, temp);
+		LoggerUtils.info(JplEngine.class, cache);
 
 	}
 
@@ -119,20 +124,21 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 			out = new FileOutputStream(path);
 			copy(in, out);
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			LoggerUtils.warn(getClass(), FILE_NOT_FOUND + path, e);
+			LoggerUtils.info(getClass(), DONT_WORRY + path);
 		} finally {
 			if (in != null) {
 				try {
 					in.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					LoggerUtils.error(getClass(), FILE_ERROR + path, e);
 				}
 			}
 			if (out != null) {
 				try {
 					out.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					LoggerUtils.error(getClass(), FILE_ERROR + path, e);
 				}
 			}
 		}
