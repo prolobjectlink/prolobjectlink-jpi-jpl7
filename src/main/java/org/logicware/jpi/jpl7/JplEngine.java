@@ -19,9 +19,9 @@
  */
 package org.logicware.jpi.jpl7;
 
-import static org.logicware.LoggerConstants.DONT_WORRY;
-import static org.logicware.LoggerConstants.FILE_ERROR;
-import static org.logicware.LoggerConstants.FILE_NOT_FOUND;
+import static org.logicware.logging.LoggerConstants.DONT_WORRY;
+import static org.logicware.logging.LoggerConstants.FILE_NOT_FOUND;
+import static org.logicware.logging.LoggerConstants.IO_ERROR;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,7 +40,6 @@ import org.jpl7.JPL;
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.jpl7.Util;
-import org.logicware.LoggerUtils;
 import org.logicware.jpi.AbstractEngine;
 import org.logicware.jpi.Licenses;
 import org.logicware.jpi.OperatorEntry;
@@ -50,6 +49,7 @@ import org.logicware.jpi.PrologIndicator;
 import org.logicware.jpi.PrologOperator;
 import org.logicware.jpi.PrologProvider;
 import org.logicware.jpi.PrologTerm;
+import org.logicware.logging.LoggerUtils;
 
 public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
@@ -73,13 +73,14 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	protected static String temp = null;
 
 	static {
+		
 		File file = null;
 		try {
 			file = File.createTempFile("prolobjectlink-jpi-jpl7-cache-", ".pl");
 			temp = file.getParentFile().getCanonicalPath().replace(File.separatorChar, '/');
 			cache = file.getCanonicalPath().replace(File.separatorChar, '/');
 		} catch (IOException e) {
-			LoggerUtils.error(JplEngine.class, FILE_ERROR + file, e);
+			LoggerUtils.error(JplEngine.class, IO_ERROR + file, e);
 		}
 
 		LoggerUtils.info(JplEngine.class, temp);
@@ -131,14 +132,14 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 				try {
 					in.close();
 				} catch (IOException e) {
-					LoggerUtils.error(getClass(), FILE_ERROR + path, e);
+					LoggerUtils.error(getClass(), IO_ERROR + path, e);
 				}
 			}
 			if (out != null) {
 				try {
 					out.close();
 				} catch (IOException e) {
-					LoggerUtils.error(getClass(), FILE_ERROR + path, e);
+					LoggerUtils.error(getClass(), IO_ERROR + path, e);
 				}
 			}
 		}
