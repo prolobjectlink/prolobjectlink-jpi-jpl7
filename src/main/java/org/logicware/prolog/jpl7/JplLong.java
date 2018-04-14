@@ -17,20 +17,20 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.jpi.jpl7;
+package org.logicware.prolog.jpl7;
 
-import static org.logicware.jpi.PrologTermType.LONG_TYPE;
+import static org.logicware.prolog.PrologTermType.LONG_TYPE;
 
 import org.jpl7.Integer;
-import org.logicware.jpi.ArityError;
-import org.logicware.jpi.FunctorError;
-import org.logicware.jpi.IndicatorError;
-import org.logicware.jpi.PrologDouble;
-import org.logicware.jpi.PrologFloat;
-import org.logicware.jpi.PrologInteger;
-import org.logicware.jpi.PrologLong;
-import org.logicware.jpi.PrologProvider;
-import org.logicware.jpi.PrologTerm;
+import org.logicware.prolog.ArityError;
+import org.logicware.prolog.FunctorError;
+import org.logicware.prolog.IndicatorError;
+import org.logicware.prolog.PrologDouble;
+import org.logicware.prolog.PrologFloat;
+import org.logicware.prolog.PrologInteger;
+import org.logicware.prolog.PrologLong;
+import org.logicware.prolog.PrologProvider;
+import org.logicware.prolog.PrologTerm;
 
 public class JplLong extends JplTerm implements PrologLong {
 

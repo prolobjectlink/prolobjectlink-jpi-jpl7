@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.jpi.jpl7;
+package org.logicware.prolog.jpl7;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,10 +31,10 @@ import org.jpl7.Term;
 import org.jpl7.Util;
 import org.jpl7.Variable;
 import org.logicware.RuntimeError;
-import org.logicware.jpi.AbstractQuery;
-import org.logicware.jpi.PrologEngine;
-import org.logicware.jpi.PrologQuery;
-import org.logicware.jpi.PrologTerm;
+import org.logicware.prolog.AbstractQuery;
+import org.logicware.prolog.PrologEngine;
+import org.logicware.prolog.PrologQuery;
+import org.logicware.prolog.PrologTerm;
 
 public final class JplQuery extends AbstractQuery implements PrologQuery {
 

@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.jpi.jpl7;
+package org.logicware.prolog.jpl7;
 
 import static org.logicware.logging.LoggerConstants.DONT_WORRY;
 import static org.logicware.logging.LoggerConstants.FILE_NOT_FOUND;
@@ -40,16 +40,16 @@ import org.jpl7.JPL;
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.jpl7.Util;
-import org.logicware.jpi.AbstractEngine;
-import org.logicware.jpi.Licenses;
-import org.logicware.jpi.OperatorEntry;
-import org.logicware.jpi.PredicateIndicator;
-import org.logicware.jpi.PrologEngine;
-import org.logicware.jpi.PrologIndicator;
-import org.logicware.jpi.PrologOperator;
-import org.logicware.jpi.PrologProvider;
-import org.logicware.jpi.PrologTerm;
 import org.logicware.logging.LoggerUtils;
+import org.logicware.prolog.AbstractEngine;
+import org.logicware.prolog.Licenses;
+import org.logicware.prolog.OperatorEntry;
+import org.logicware.prolog.PredicateIndicator;
+import org.logicware.prolog.PrologEngine;
+import org.logicware.prolog.PrologIndicator;
+import org.logicware.prolog.PrologOperator;
+import org.logicware.prolog.PrologProvider;
+import org.logicware.prolog.PrologTerm;
 
 public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 

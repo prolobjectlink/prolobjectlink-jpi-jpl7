@@ -17,18 +17,18 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.jpi.jpl7;
+package org.logicware.prolog.jpl7;
 
-import static org.logicware.jpi.PrologTermType.TRUE_TYPE;
+import static org.logicware.prolog.PrologTermType.NIL_TYPE;
 
 import org.jpl7.Atom;
-import org.logicware.jpi.PrologProvider;
-import org.logicware.jpi.PrologTerm;
+import org.logicware.prolog.PrologProvider;
+import org.logicware.prolog.PrologTerm;
 
-public final class JplTrue extends JplTerm implements PrologTerm {
+public final class JplNil extends JplTerm implements PrologTerm {
 
-	protected JplTrue(PrologProvider provider) {
-		super(TRUE_TYPE, provider, new Atom("true"));
+	JplNil(PrologProvider provider) {
+		super(NIL_TYPE, provider, new Atom("nil"));
 	}
 
 	public PrologTerm[] getArguments() {

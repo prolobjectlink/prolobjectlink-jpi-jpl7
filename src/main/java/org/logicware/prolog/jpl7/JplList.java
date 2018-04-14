@@ -17,9 +17,9 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.jpi.jpl7;
+package org.logicware.prolog.jpl7;
 
-import static org.logicware.jpi.PrologTermType.LIST_TYPE;
+import static org.logicware.prolog.PrologTermType.LIST_TYPE;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -27,9 +27,9 @@ import java.util.NoSuchElementException;
 import org.jpl7.Compound;
 import org.jpl7.Query;
 import org.jpl7.Term;
-import org.logicware.jpi.PrologList;
-import org.logicware.jpi.PrologProvider;
-import org.logicware.jpi.PrologTerm;
+import org.logicware.prolog.PrologList;
+import org.logicware.prolog.PrologProvider;
+import org.logicware.prolog.PrologTerm;
 
 public class JplList extends JplTerm implements PrologList {
 

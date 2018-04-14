@@ -17,15 +17,15 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.jpi.jpl7;
+package org.logicware.prolog.jpl7;
 
-import static org.logicware.jpi.PrologTermType.STRUCTURE_TYPE;
+import static org.logicware.prolog.PrologTermType.STRUCTURE_TYPE;
 
 import org.jpl7.Compound;
 import org.jpl7.Term;
-import org.logicware.jpi.PrologProvider;
-import org.logicware.jpi.PrologStructure;
-import org.logicware.jpi.PrologTerm;
+import org.logicware.prolog.PrologProvider;
+import org.logicware.prolog.PrologStructure;
+import org.logicware.prolog.PrologTerm;
 
 public class JplStructure extends JplTerm implements PrologStructure {
 
@@ -39,7 +39,8 @@ public class JplStructure extends JplTerm implements PrologStructure {
 	}
 
 	JplStructure(PrologProvider provider, String functor, Term... arguments) {
-		super(STRUCTURE_TYPE, provider, new Compound(removeQuoted(functor), arguments));
+		super(STRUCTURE_TYPE, provider);
+		value = new Compound(removeQuoted(functor), arguments);
 	}
 
 	JplStructure(PrologProvider provider, PrologTerm left, String operator, PrologTerm right) {
@@ -53,34 +54,9 @@ public class JplStructure extends JplTerm implements PrologStructure {
 		super(STRUCTURE_TYPE, provider, new Compound(functor, new Term[] { left, right }));
 	}
 
-	private static final boolean isQuoted(String functor) {
-		if (!functor.isEmpty()) {
-			char beginChar = functor.charAt(0);
-			char endChar = functor.charAt(functor.length() - 1);
-			return beginChar == '\'' && endChar == '\'';
-		}
-		return false;
-	}
-
-	private static final String removeQuoted(String functor) {
-		if (isQuoted(functor)) {
-			String newFunctor = "";
-			newFunctor += functor.substring(1, functor.length() - 1);
-			return newFunctor;
-		}
-		return functor;
-	}
-
-	private void checkIndexOutOfBound(int index, int lenght) {
-		if (index < 0 || index > lenght) {
-			throw new ArrayIndexOutOfBoundsException(index);
-		}
-	}
-
 	public PrologTerm getArgument(int index) {
-		PrologTerm[] arguments = getArguments();
-		checkIndexOutOfBound(index, arguments.length);
-		return arguments[index];
+		checkIndex(index, getArity());
+		return getArguments()[index];
 	}
 
 	public PrologTerm[] getArguments() {

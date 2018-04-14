@@ -17,25 +17,25 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.jpi.jpl7;
+package org.logicware.prolog.jpl7;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jpl7.Term;
 import org.jpl7.Util;
-import org.logicware.jpi.AbstractProvider;
-import org.logicware.jpi.PrologAtom;
-import org.logicware.jpi.PrologConverter;
-import org.logicware.jpi.PrologDouble;
-import org.logicware.jpi.PrologFloat;
-import org.logicware.jpi.PrologInteger;
-import org.logicware.jpi.PrologList;
-import org.logicware.jpi.PrologLong;
-import org.logicware.jpi.PrologProvider;
-import org.logicware.jpi.PrologStructure;
-import org.logicware.jpi.PrologTerm;
-import org.logicware.jpi.PrologVariable;
+import org.logicware.prolog.AbstractProvider;
+import org.logicware.prolog.PrologAtom;
+import org.logicware.prolog.PrologConverter;
+import org.logicware.prolog.PrologDouble;
+import org.logicware.prolog.PrologFloat;
+import org.logicware.prolog.PrologInteger;
+import org.logicware.prolog.PrologList;
+import org.logicware.prolog.PrologLong;
+import org.logicware.prolog.PrologProvider;
+import org.logicware.prolog.PrologStructure;
+import org.logicware.prolog.PrologTerm;
+import org.logicware.prolog.PrologVariable;
 
 public abstract class JplProvider extends AbstractProvider implements PrologProvider {
 

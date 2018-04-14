@@ -17,19 +17,19 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.jpi.jpl7;
+package org.logicware.prolog.jpl7;
 
-import static org.logicware.jpi.PrologTermType.DOUBLE_TYPE;
-import static org.logicware.jpi.PrologTermType.FLOAT_TYPE;
-import static org.logicware.jpi.PrologTermType.INTEGER_TYPE;
-import static org.logicware.jpi.PrologTermType.LONG_TYPE;
+import static org.logicware.prolog.PrologTermType.DOUBLE_TYPE;
+import static org.logicware.prolog.PrologTermType.FLOAT_TYPE;
+import static org.logicware.prolog.PrologTermType.INTEGER_TYPE;
+import static org.logicware.prolog.PrologTermType.LONG_TYPE;
 
 import org.jpl7.Query;
 import org.jpl7.Term;
-import org.logicware.jpi.AbstractTerm;
-import org.logicware.jpi.PrologProvider;
-import org.logicware.jpi.PrologTerm;
-import org.logicware.jpi.UnknownTermError;
+import org.logicware.prolog.AbstractTerm;
+import org.logicware.prolog.PrologProvider;
+import org.logicware.prolog.PrologTerm;
+import org.logicware.prolog.UnknownTermError;
 
 public abstract class JplTerm extends AbstractTerm implements PrologTerm {
 
@@ -117,6 +117,10 @@ public abstract class JplTerm extends AbstractTerm implements PrologTerm {
 
 	public final boolean isCompound() {
 		return value.isCompound();
+	}
+
+	public final PrologTerm getTerm() {
+		return this;
 	}
 
 	public final boolean unify(PrologTerm o) {

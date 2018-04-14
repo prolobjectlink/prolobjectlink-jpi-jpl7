@@ -17,22 +17,22 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.jpi.jpl7;
+package org.logicware.prolog.jpl7;
 
-import static org.logicware.jpi.PrologTermType.ATOM_TYPE;
-import static org.logicware.jpi.PrologTermType.CUT_TYPE;
-import static org.logicware.jpi.PrologTermType.DOUBLE_TYPE;
-import static org.logicware.jpi.PrologTermType.EMPTY_TYPE;
-import static org.logicware.jpi.PrologTermType.FAIL_TYPE;
-import static org.logicware.jpi.PrologTermType.FALSE_TYPE;
-import static org.logicware.jpi.PrologTermType.FLOAT_TYPE;
-import static org.logicware.jpi.PrologTermType.INTEGER_TYPE;
-import static org.logicware.jpi.PrologTermType.LIST_TYPE;
-import static org.logicware.jpi.PrologTermType.LONG_TYPE;
-import static org.logicware.jpi.PrologTermType.NIL_TYPE;
-import static org.logicware.jpi.PrologTermType.STRUCTURE_TYPE;
-import static org.logicware.jpi.PrologTermType.TRUE_TYPE;
-import static org.logicware.jpi.PrologTermType.VARIABLE_TYPE;
+import static org.logicware.prolog.PrologTermType.ATOM_TYPE;
+import static org.logicware.prolog.PrologTermType.CUT_TYPE;
+import static org.logicware.prolog.PrologTermType.DOUBLE_TYPE;
+import static org.logicware.prolog.PrologTermType.EMPTY_TYPE;
+import static org.logicware.prolog.PrologTermType.FAIL_TYPE;
+import static org.logicware.prolog.PrologTermType.FALSE_TYPE;
+import static org.logicware.prolog.PrologTermType.FLOAT_TYPE;
+import static org.logicware.prolog.PrologTermType.INTEGER_TYPE;
+import static org.logicware.prolog.PrologTermType.LIST_TYPE;
+import static org.logicware.prolog.PrologTermType.LONG_TYPE;
+import static org.logicware.prolog.PrologTermType.NIL_TYPE;
+import static org.logicware.prolog.PrologTermType.STRUCTURE_TYPE;
+import static org.logicware.prolog.PrologTermType.TRUE_TYPE;
+import static org.logicware.prolog.PrologTermType.VARIABLE_TYPE;
 
 import org.jpl7.Atom;
 import org.jpl7.Compound;
@@ -41,17 +41,17 @@ import org.jpl7.Integer;
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.jpl7.Variable;
-import org.logicware.jpi.AbstractConverter;
-import org.logicware.jpi.PrologAtom;
-import org.logicware.jpi.PrologConverter;
-import org.logicware.jpi.PrologDouble;
-import org.logicware.jpi.PrologFloat;
-import org.logicware.jpi.PrologInteger;
-import org.logicware.jpi.PrologLong;
-import org.logicware.jpi.PrologStructure;
-import org.logicware.jpi.PrologTerm;
-import org.logicware.jpi.PrologVariable;
-import org.logicware.jpi.UnknownTermError;
+import org.logicware.prolog.AbstractConverter;
+import org.logicware.prolog.PrologAtom;
+import org.logicware.prolog.PrologConverter;
+import org.logicware.prolog.PrologDouble;
+import org.logicware.prolog.PrologFloat;
+import org.logicware.prolog.PrologInteger;
+import org.logicware.prolog.PrologLong;
+import org.logicware.prolog.PrologStructure;
+import org.logicware.prolog.PrologTerm;
+import org.logicware.prolog.PrologVariable;
+import org.logicware.prolog.UnknownTermError;
 
 public abstract class JplConverter extends AbstractConverter<Term> implements PrologConverter<Term> {
 

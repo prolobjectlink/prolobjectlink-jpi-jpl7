@@ -17,22 +17,31 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.jpi.jpl7;
+package org.logicware.prolog.jpl7;
 
-import static org.logicware.jpi.PrologTermType.FALSE_TYPE;
+import static org.logicware.prolog.PrologTermType.ATOM_TYPE;
 
 import org.jpl7.Atom;
-import org.logicware.jpi.PrologProvider;
-import org.logicware.jpi.PrologTerm;
+import org.logicware.prolog.PrologAtom;
+import org.logicware.prolog.PrologProvider;
+import org.logicware.prolog.PrologTerm;
 
-public final class JplFalse extends JplTerm implements PrologTerm {
+public final class JplAtom extends JplTerm implements PrologAtom {
 
-	protected JplFalse(PrologProvider provider) {
-		super(FALSE_TYPE, provider, new Atom("false"));
+	public JplAtom(PrologProvider provider, String value) {
+		super(ATOM_TYPE, provider, new Atom(value));
+	}
+
+	public String getStringValue() {
+		return getFunctor();
+	}
+
+	public void setStringValue(String value) {
+		this.value = new Atom(value);
 	}
 
 	public PrologTerm[] getArguments() {
-		return new PrologTerm[0];
+		return new JplAtom[0];
 	}
 
 	public int getArity() {

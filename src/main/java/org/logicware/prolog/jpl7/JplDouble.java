@@ -17,29 +17,29 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.jpi.jpl7;
+package org.logicware.prolog.jpl7;
 
-import static org.logicware.jpi.PrologTermType.FLOAT_TYPE;
+import static org.logicware.prolog.PrologTermType.DOUBLE_TYPE;
 
 import org.jpl7.Float;
-import org.logicware.jpi.ArityError;
-import org.logicware.jpi.FunctorError;
-import org.logicware.jpi.IndicatorError;
-import org.logicware.jpi.PrologDouble;
-import org.logicware.jpi.PrologFloat;
-import org.logicware.jpi.PrologInteger;
-import org.logicware.jpi.PrologLong;
-import org.logicware.jpi.PrologProvider;
-import org.logicware.jpi.PrologTerm;
+import org.logicware.prolog.ArityError;
+import org.logicware.prolog.FunctorError;
+import org.logicware.prolog.IndicatorError;
+import org.logicware.prolog.PrologDouble;
+import org.logicware.prolog.PrologFloat;
+import org.logicware.prolog.PrologInteger;
+import org.logicware.prolog.PrologLong;
+import org.logicware.prolog.PrologProvider;
+import org.logicware.prolog.PrologTerm;
 
-public final class JplFloat extends JplTerm implements PrologFloat {
+public final class JplDouble extends JplTerm implements PrologDouble {
 
-	public JplFloat(PrologProvider provider) {
-		super(FLOAT_TYPE, provider, new Float(0));
+	public JplDouble(PrologProvider provider) {
+		super(DOUBLE_TYPE, provider, new Float(0));
 	}
 
-	public JplFloat(PrologProvider provider, Number value) {
-		super(FLOAT_TYPE, provider, new Float(value.floatValue()));
+	public JplDouble(PrologProvider provider, Number value) {
+		super(DOUBLE_TYPE, provider, new Float(value.doubleValue()));
 	}
 
 	public PrologInteger getPrologInteger() {
@@ -47,7 +47,7 @@ public final class JplFloat extends JplTerm implements PrologFloat {
 	}
 
 	public PrologFloat getPrologFloat() {
-		return new JplFloat(provider, getFloatValue());
+		return new JplFloat(provider, getDoubleValue());
 	}
 
 	public PrologDouble getPrologDouble() {
@@ -75,7 +75,7 @@ public final class JplFloat extends JplTerm implements PrologFloat {
 	}
 
 	public PrologTerm[] getArguments() {
-		return new JplFloat[0];
+		return new JplDouble[0];
 	}
 
 	public int getArity() {

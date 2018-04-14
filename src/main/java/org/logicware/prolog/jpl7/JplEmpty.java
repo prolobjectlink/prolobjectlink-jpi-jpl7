@@ -17,36 +17,39 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.jpi.jpl7;
+package org.logicware.prolog.jpl7;
 
-import static org.logicware.jpi.PrologTermType.NIL_TYPE;
+import org.logicware.prolog.PrologList;
+import org.logicware.prolog.PrologProvider;
+import org.logicware.prolog.PrologTerm;
 
-import org.jpl7.Atom;
-import org.logicware.jpi.PrologProvider;
-import org.logicware.jpi.PrologTerm;
+public class JplEmpty extends JplList implements PrologList {
 
-public final class JplNil extends JplTerm implements PrologTerm {
-
-	JplNil(PrologProvider provider) {
-		super(NIL_TYPE, provider, new Atom("nil"));
+	protected JplEmpty(PrologProvider provider) {
+		super(provider);
 	}
 
+	@Override
 	public PrologTerm[] getArguments() {
 		return new PrologTerm[0];
 	}
 
+	@Override
 	public int getArity() {
-		return 0;
+		return value.arity();
 	}
 
+	@Override
 	public String getFunctor() {
-		return "" + value + "";
+		return value.name();
 	}
 
+	@Override
 	public String getIndicator() {
 		return getFunctor() + "/" + getArity();
 	}
 
+	@Override
 	public boolean hasIndicator(String functor, int arity) {
 		return getFunctor().equals(functor) && getArity() == arity;
 	}
