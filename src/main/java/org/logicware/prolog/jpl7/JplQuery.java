@@ -175,6 +175,17 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 		return toTermMapArray(swiSolutions, PrologTerm.class);
 	}
 
+	public synchronized List<Map<String, PrologTerm>> all() {
+		List<Map<String, PrologTerm>> v = null;
+		Map<String, Term>[] s = query.allSolutions();
+		v = new ArrayList<Map<String, PrologTerm>>(s.length);
+		for (int i = 0; i < s.length; i++) {
+			Map<String, Term> map = s[i];
+			v.add(toTermMap(map, PrologTerm.class));
+		}
+		return v;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
