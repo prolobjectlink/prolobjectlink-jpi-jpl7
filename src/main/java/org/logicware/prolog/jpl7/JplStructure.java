@@ -19,13 +19,13 @@
  */
 package org.logicware.prolog.jpl7;
 
-import static org.logicware.prolog.PrologTermType.STRUCTURE_TYPE;
+import static org.logicware.pdb.prolog.PrologTermType.STRUCTURE_TYPE;
 
 import org.jpl7.Compound;
 import org.jpl7.Term;
-import org.logicware.prolog.PrologProvider;
-import org.logicware.prolog.PrologStructure;
-import org.logicware.prolog.PrologTerm;
+import org.logicware.pdb.prolog.PrologProvider;
+import org.logicware.pdb.prolog.PrologStructure;
+import org.logicware.pdb.prolog.PrologTerm;
 
 public class JplStructure extends JplTerm implements PrologStructure {
 

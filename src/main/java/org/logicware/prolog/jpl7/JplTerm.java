@@ -19,17 +19,17 @@
  */
 package org.logicware.prolog.jpl7;
 
-import static org.logicware.prolog.PrologTermType.DOUBLE_TYPE;
-import static org.logicware.prolog.PrologTermType.FLOAT_TYPE;
-import static org.logicware.prolog.PrologTermType.INTEGER_TYPE;
-import static org.logicware.prolog.PrologTermType.LONG_TYPE;
+import static org.logicware.pdb.prolog.PrologTermType.DOUBLE_TYPE;
+import static org.logicware.pdb.prolog.PrologTermType.FLOAT_TYPE;
+import static org.logicware.pdb.prolog.PrologTermType.INTEGER_TYPE;
+import static org.logicware.pdb.prolog.PrologTermType.LONG_TYPE;
 
 import org.jpl7.Query;
 import org.jpl7.Term;
-import org.logicware.prolog.AbstractTerm;
-import org.logicware.prolog.PrologProvider;
-import org.logicware.prolog.PrologTerm;
-import org.logicware.prolog.UnknownTermError;
+import org.logicware.pdb.prolog.AbstractTerm;
+import org.logicware.pdb.prolog.PrologProvider;
+import org.logicware.pdb.prolog.PrologTerm;
+import org.logicware.pdb.prolog.UnknownTermError;
 
 public abstract class JplTerm extends AbstractTerm implements PrologTerm {
 

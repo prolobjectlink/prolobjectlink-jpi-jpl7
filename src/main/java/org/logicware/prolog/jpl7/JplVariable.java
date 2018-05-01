@@ -19,15 +19,15 @@
  */
 package org.logicware.prolog.jpl7;
 
-import static org.logicware.prolog.PrologTermType.VARIABLE_TYPE;
+import static org.logicware.pdb.prolog.PrologTermType.VARIABLE_TYPE;
 
 import org.jpl7.Variable;
-import org.logicware.prolog.ArityError;
-import org.logicware.prolog.FunctorError;
-import org.logicware.prolog.IndicatorError;
-import org.logicware.prolog.PrologProvider;
-import org.logicware.prolog.PrologTerm;
-import org.logicware.prolog.PrologVariable;
+import org.logicware.pdb.prolog.ArityError;
+import org.logicware.pdb.prolog.FunctorError;
+import org.logicware.pdb.prolog.IndicatorError;
+import org.logicware.pdb.prolog.PrologProvider;
+import org.logicware.pdb.prolog.PrologTerm;
+import org.logicware.pdb.prolog.PrologVariable;
 
 public class JplVariable extends JplTerm implements PrologVariable {
 

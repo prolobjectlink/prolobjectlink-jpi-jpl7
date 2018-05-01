@@ -19,9 +19,9 @@
  */
 package org.logicware.prolog.jpl7;
 
-import static org.logicware.logging.LoggerConstants.DONT_WORRY;
-import static org.logicware.logging.LoggerConstants.FILE_NOT_FOUND;
-import static org.logicware.logging.LoggerConstants.IO_ERROR;
+import static org.logicware.pdb.logging.LoggerConstants.DONT_WORRY;
+import static org.logicware.pdb.logging.LoggerConstants.FILE_NOT_FOUND;
+import static org.logicware.pdb.logging.LoggerConstants.IO;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,16 +40,16 @@ import org.jpl7.JPL;
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.jpl7.Util;
-import org.logicware.logging.LoggerUtils;
-import org.logicware.prolog.AbstractEngine;
-import org.logicware.prolog.Licenses;
-import org.logicware.prolog.OperatorEntry;
-import org.logicware.prolog.PredicateIndicator;
-import org.logicware.prolog.PrologEngine;
-import org.logicware.prolog.PrologIndicator;
-import org.logicware.prolog.PrologOperator;
-import org.logicware.prolog.PrologProvider;
-import org.logicware.prolog.PrologTerm;
+import org.logicware.pdb.Licenses;
+import org.logicware.pdb.logging.LoggerUtils;
+import org.logicware.pdb.prolog.AbstractEngine;
+import org.logicware.pdb.prolog.OperatorEntry;
+import org.logicware.pdb.prolog.PredicateIndicator;
+import org.logicware.pdb.prolog.PrologEngine;
+import org.logicware.pdb.prolog.PrologIndicator;
+import org.logicware.pdb.prolog.PrologOperator;
+import org.logicware.pdb.prolog.PrologProvider;
+import org.logicware.pdb.prolog.PrologTerm;
 
 public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
@@ -80,10 +80,9 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 			temp = file.getParentFile().getCanonicalPath().replace(File.separatorChar, '/');
 			cache = file.getCanonicalPath().replace(File.separatorChar, '/');
 		} catch (IOException e) {
-			LoggerUtils.error(JplEngine.class, IO_ERROR, e);
+			LoggerUtils.error(JplEngine.class, IO, e);
 		}
 
-		LoggerUtils.info(JplEngine.class, temp);
 		LoggerUtils.info(JplEngine.class, cache);
 
 	}
@@ -132,14 +131,14 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 				try {
 					in.close();
 				} catch (IOException e) {
-					LoggerUtils.error(getClass(), IO_ERROR + path, e);
+					LoggerUtils.error(getClass(), IO + path, e);
 				}
 			}
 			if (out != null) {
 				try {
 					out.close();
 				} catch (IOException e) {
-					LoggerUtils.error(getClass(), IO_ERROR + path, e);
+					LoggerUtils.error(getClass(), IO + path, e);
 				}
 			}
 		}

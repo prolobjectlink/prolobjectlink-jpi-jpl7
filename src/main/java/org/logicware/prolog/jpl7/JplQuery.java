@@ -30,11 +30,11 @@ import org.jpl7.Query;
 import org.jpl7.Term;
 import org.jpl7.Util;
 import org.jpl7.Variable;
-import org.logicware.RuntimeError;
-import org.logicware.prolog.AbstractQuery;
-import org.logicware.prolog.PrologEngine;
-import org.logicware.prolog.PrologQuery;
-import org.logicware.prolog.PrologTerm;
+import org.logicware.pdb.RuntimeError;
+import org.logicware.pdb.prolog.AbstractEngine;
+import org.logicware.pdb.prolog.AbstractQuery;
+import org.logicware.pdb.prolog.PrologQuery;
+import org.logicware.pdb.prolog.PrologTerm;
 
 public final class JplQuery extends AbstractQuery implements PrologQuery {
 
@@ -58,7 +58,7 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 		}
 	}
 
-	public JplQuery(PrologEngine engine, String file, List<String> files, String stringQuery) {
+	public JplQuery(AbstractEngine engine, String file, List<String> files, String stringQuery) {
 		super(engine);
 
 		this.file = file;

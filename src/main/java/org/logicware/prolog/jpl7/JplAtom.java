@@ -19,12 +19,12 @@
  */
 package org.logicware.prolog.jpl7;
 
-import static org.logicware.prolog.PrologTermType.ATOM_TYPE;
+import static org.logicware.pdb.prolog.PrologTermType.ATOM_TYPE;
 
 import org.jpl7.Atom;
-import org.logicware.prolog.PrologAtom;
-import org.logicware.prolog.PrologProvider;
-import org.logicware.prolog.PrologTerm;
+import org.logicware.pdb.prolog.PrologAtom;
+import org.logicware.pdb.prolog.PrologProvider;
+import org.logicware.pdb.prolog.PrologTerm;
 
 public final class JplAtom extends JplTerm implements PrologAtom {
 

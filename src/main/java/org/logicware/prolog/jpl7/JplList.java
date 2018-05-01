@@ -19,7 +19,7 @@
  */
 package org.logicware.prolog.jpl7;
 
-import static org.logicware.prolog.PrologTermType.LIST_TYPE;
+import static org.logicware.pdb.prolog.PrologTermType.LIST_TYPE;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -27,9 +27,9 @@ import java.util.NoSuchElementException;
 import org.jpl7.Compound;
 import org.jpl7.Query;
 import org.jpl7.Term;
-import org.logicware.prolog.PrologList;
-import org.logicware.prolog.PrologProvider;
-import org.logicware.prolog.PrologTerm;
+import org.logicware.pdb.prolog.PrologList;
+import org.logicware.pdb.prolog.PrologProvider;
+import org.logicware.pdb.prolog.PrologTerm;
 
 public class JplList extends JplTerm implements PrologList {
 

@@ -19,18 +19,18 @@
  */
 package org.logicware.prolog.jpl7;
 
-import static org.logicware.prolog.PrologTermType.INTEGER_TYPE;
+import static org.logicware.pdb.prolog.PrologTermType.INTEGER_TYPE;
 
 import org.jpl7.Integer;
-import org.logicware.prolog.ArityError;
-import org.logicware.prolog.FunctorError;
-import org.logicware.prolog.IndicatorError;
-import org.logicware.prolog.PrologDouble;
-import org.logicware.prolog.PrologFloat;
-import org.logicware.prolog.PrologInteger;
-import org.logicware.prolog.PrologLong;
-import org.logicware.prolog.PrologProvider;
-import org.logicware.prolog.PrologTerm;
+import org.logicware.pdb.prolog.ArityError;
+import org.logicware.pdb.prolog.FunctorError;
+import org.logicware.pdb.prolog.IndicatorError;
+import org.logicware.pdb.prolog.PrologDouble;
+import org.logicware.pdb.prolog.PrologFloat;
+import org.logicware.pdb.prolog.PrologInteger;
+import org.logicware.pdb.prolog.PrologLong;
+import org.logicware.pdb.prolog.PrologProvider;
+import org.logicware.pdb.prolog.PrologTerm;
 
 public class JplInteger extends JplTerm implements PrologInteger {
 

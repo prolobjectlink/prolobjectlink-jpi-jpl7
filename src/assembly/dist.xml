@@ -15,6 +15,7 @@
 			<outputDirectory>/</outputDirectory>
 			<includes>
 				<include>LICENSE*</include>
+				<include>NOTICE*</include>
 				<include>README*</include>
 			</includes>
 		</fileSet>
