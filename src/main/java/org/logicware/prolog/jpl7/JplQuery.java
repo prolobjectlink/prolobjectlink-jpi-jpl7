@@ -20,7 +20,6 @@
 package org.logicware.prolog.jpl7;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +29,6 @@ import org.jpl7.Query;
 import org.jpl7.Term;
 import org.jpl7.Util;
 import org.jpl7.Variable;
-import org.logicware.platform.RuntimeError;
 import org.logicware.prolog.AbstractEngine;
 import org.logicware.prolog.AbstractQuery;
 import org.logicware.prolog.PrologQuery;
@@ -81,7 +79,7 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 	}
 
 	public synchronized boolean hasMoreSolutions() {
-		return query.hasNext();
+		return query.hasMoreSolutions();
 	}
 
 	public synchronized PrologTerm[] oneSolution() {
@@ -109,37 +107,24 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 	}
 
 	public synchronized Map<String, PrologTerm> nextVariablesSolution() {
-		if (query.hasMoreSolutions()) {
-			Map<String, Term> swiSolution = query.nextSolution();
-			return toTermMap(swiSolution, PrologTerm.class);
-		}
-		return new HashMap<String, PrologTerm>();
+		Map<String, Term> swiSolution = query.nextSolution();
+		return toTermMap(swiSolution, PrologTerm.class);
 	}
 
 	public synchronized PrologTerm[][] nSolutions(int n) {
-		if (n > 0) {
-			// m:solutionSize
-			int m = 0;
-			int index = 0;
-			ArrayList<PrologTerm[]> all = new ArrayList<PrologTerm[]>();
-			PrologTerm[] solution = nextSolution();
-			while (solution.length > 0 && index < n) {
-				m = solution.length > m ? solution.length : m;
-				index++;
-				all.add(solution);
-				solution = nextSolution();
-			}
-
-			PrologTerm[][] allSolutions = new PrologTerm[n][m];
-			for (int i = 0; i < n; i++) {
-				solution = all.get(i);
-				for (int j = 0; j < m; j++) {
-					allSolutions[i][j] = solution[j];
+		Map<String, Term>[] s = query.nSolutions(n);
+		if (s != null && s.length > 0) {
+			int m = s[0].size();
+			PrologTerm[][] matrix = new PrologTerm[n][m];
+			for (int i = 0; i < s.length; i++) {
+				int index = 0;
+				for (Iterator<String> iter = variables.iterator(); iter.hasNext();) {
+					matrix[i][index++] = toTerm(s[i].get(iter.next()), PrologTerm.class);
 				}
 			}
-			return allSolutions;
+			return matrix;
 		}
-		throw new RuntimeError("Impossible find " + n + " solutions");
+		return new PrologTerm[0][0];
 	}
 
 	public synchronized Map<String, PrologTerm>[] nVariablesSolutions(int n) {
@@ -148,26 +133,20 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 	}
 
 	public synchronized PrologTerm[][] allSolutions() {
-		// n:solutionCount, m:solutionSize
-		int n = 0;
-		int m = 0;
-		ArrayList<PrologTerm[]> all = new ArrayList<PrologTerm[]>();
-		PrologTerm[] solution = nextSolution();
-		while (solution.length > 0) {
-			m = solution.length > m ? solution.length : m;
-			n++;
-			all.add(solution);
-			solution = nextSolution();
-		}
-
-		PrologTerm[][] allSolutions = new PrologTerm[n][m];
-		for (int i = 0; i < n; i++) {
-			solution = all.get(i);
-			for (int j = 0; j < m; j++) {
-				allSolutions[i][j] = solution[j];
+		Map<String, Term>[] s = query.allSolutions();
+		if (s != null && s.length > 0) {
+			int n = s.length;
+			int m = s[0].size();
+			PrologTerm[][] matrix = new PrologTerm[n][m];
+			for (int i = 0; i < s.length; i++) {
+				int index = 0;
+				for (Iterator<String> iter = variables.iterator(); iter.hasNext();) {
+					matrix[i][index++] = toTerm(s[i].get(iter.next()), PrologTerm.class);
+				}
 			}
+			return matrix;
 		}
-		return allSolutions;
+		return new PrologTerm[0][0];
 	}
 
 	public synchronized Map<String, PrologTerm>[] allVariablesSolutions() {
