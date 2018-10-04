@@ -188,18 +188,21 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 		if (file == null) {
 			if (other.file != null)
 				return false;
-		} else if (!file.equals(other.file))
+		} else if (!file.equals(other.file)) {
 			return false;
+		}
 		if (files == null) {
 			if (other.files != null)
 				return false;
-		} else if (!files.equals(other.files))
+		} else if (!files.equals(other.files)) {
 			return false;
+		}
 		if (stringQuery == null) {
 			if (other.stringQuery != null)
 				return false;
-		} else if (!stringQuery.equals(other.stringQuery))
+		} else if (!stringQuery.equals(other.stringQuery)) {
 			return false;
+		}
 		return Objects.equals(variables, other.variables);
 	}
 

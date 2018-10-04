@@ -288,18 +288,21 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		if (file == null) {
 			if (other.file != null)
 				return false;
-		} else if (!file.equals(other.file))
+		} else if (!file.equals(other.file)) {
 			return false;
+		}
 		if (files == null) {
 			if (other.files != null)
 				return false;
-		} else if (!files.equals(other.files))
+		} else if (!files.equals(other.files)) {
 			return false;
+		}
 		if (location == null) {
 			if (other.location != null)
 				return false;
-		} else if (!location.equals(other.location))
+		} else if (!location.equals(other.location)) {
 			return false;
+		}
 		return true;
 	}
 
