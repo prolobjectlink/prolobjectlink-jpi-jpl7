@@ -19,11 +19,11 @@
  */
 package org.logicware.prolog.jpl7;
 
-import static org.logicware.pdb.prolog.PrologTermType.CUT_TYPE;
+import static org.logicware.prolog.PrologTermType.CUT_TYPE;
 
 import org.jpl7.Atom;
-import org.logicware.pdb.prolog.PrologProvider;
-import org.logicware.pdb.prolog.PrologTerm;
+import org.logicware.prolog.PrologProvider;
+import org.logicware.prolog.PrologTerm;
 
 public class JplCut extends JplTerm implements PrologTerm {
 

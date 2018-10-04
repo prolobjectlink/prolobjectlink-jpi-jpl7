@@ -19,9 +19,9 @@
  */
 package org.logicware.prolog.jpl7;
 
-import org.logicware.pdb.prolog.PrologList;
-import org.logicware.pdb.prolog.PrologProvider;
-import org.logicware.pdb.prolog.PrologTerm;
+import org.logicware.prolog.PrologList;
+import org.logicware.prolog.PrologProvider;
+import org.logicware.prolog.PrologTerm;
 
 public class JplEmpty extends JplList implements PrologList {
 

@@ -30,11 +30,11 @@ import org.jpl7.Query;
 import org.jpl7.Term;
 import org.jpl7.Util;
 import org.jpl7.Variable;
-import org.logicware.pdb.RuntimeError;
-import org.logicware.pdb.prolog.AbstractEngine;
-import org.logicware.pdb.prolog.AbstractQuery;
-import org.logicware.pdb.prolog.PrologQuery;
-import org.logicware.pdb.prolog.PrologTerm;
+import org.logicware.platform.RuntimeError;
+import org.logicware.prolog.AbstractEngine;
+import org.logicware.prolog.AbstractQuery;
+import org.logicware.prolog.PrologQuery;
+import org.logicware.prolog.PrologTerm;
 
 public final class JplQuery extends AbstractQuery implements PrologQuery {
 
