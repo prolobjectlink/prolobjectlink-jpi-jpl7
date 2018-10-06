@@ -245,7 +245,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	}
 
 	public String getLicense() {
-		return Licenses.BSD_3;
+		return Licenses.LGPL_V3;
 	}
 
 	public final String getVersion() {
