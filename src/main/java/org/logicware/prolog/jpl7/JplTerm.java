@@ -24,6 +24,7 @@ import static org.logicware.prolog.PrologTermType.FLOAT_TYPE;
 import static org.logicware.prolog.PrologTermType.INTEGER_TYPE;
 import static org.logicware.prolog.PrologTermType.LONG_TYPE;
 
+import org.jpl7.Atom;
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.logicware.prolog.AbstractTerm;
@@ -35,6 +36,7 @@ public abstract class JplTerm extends AbstractTerm implements PrologTerm {
 
 	protected Term value;
 
+	public static final Term JPL_TRUE = new Atom("true");
 	protected static final String SIMPLE_ATOM_REGEX = ".|[a-z][A-Za-z0-9_]*";
 
 	protected JplTerm(int type, PrologProvider provider) {

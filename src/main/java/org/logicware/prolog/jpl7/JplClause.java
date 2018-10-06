@@ -19,36 +19,20 @@
  */
 package org.logicware.prolog.jpl7;
 
-import static org.logicware.prolog.PrologTermType.TRUE_TYPE;
-
-import org.jpl7.Atom;
+import org.logicware.prolog.AbstractClause;
+import org.logicware.prolog.PrologClause;
 import org.logicware.prolog.PrologProvider;
 import org.logicware.prolog.PrologTerm;
 
-public final class JplTrue extends JplTerm implements PrologTerm {
+public class JplClause extends AbstractClause implements PrologClause {
 
-	protected JplTrue(PrologProvider provider) {
-		super(TRUE_TYPE, provider, JPL_TRUE);
+	public JplClause(PrologProvider provider, PrologTerm head, boolean dynamic, boolean multifile,
+			boolean discontiguous) {
+		super(provider, head, dynamic, multifile, discontiguous);
 	}
 
-	public PrologTerm[] getArguments() {
-		return new PrologTerm[0];
+	public JplClause(PrologProvider provider, PrologTerm head, PrologTerm body, boolean dynamic, boolean multifile,
+			boolean discontiguous) {
+		super(provider, head, body, dynamic, multifile, discontiguous);
 	}
-
-	public int getArity() {
-		return 0;
-	}
-
-	public String getFunctor() {
-		return "" + value + "";
-	}
-
-	public String getIndicator() {
-		return getFunctor() + "/" + getArity();
-	}
-
-	public boolean hasIndicator(String functor, int arity) {
-		return getFunctor().equals(functor) && getArity() == arity;
-	}
-
 }
