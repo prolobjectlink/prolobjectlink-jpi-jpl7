@@ -55,6 +55,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	protected Query query;
 
+	protected String tmp;
 	protected String file;
 	protected String location;
 	protected List<String> files;
@@ -89,8 +90,8 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	protected JplEngine(PrologProvider provider) {
 		this(provider, cache);
-		query = new Query("consult('" + cache + "')");
 		clean(cache);
+		query = new Query("consult('" + cache + "')");
 	}
 
 	protected JplEngine(PrologProvider provider, String file) {
@@ -102,10 +103,6 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		location = location.toLowerCase();
 		location = location.replace(File.separatorChar, '/');
 		query = new Query("consult('" + file + "')");
-	}
-
-	public final void include(String file) {
-		files.add(file);
 	}
 
 	public final void consult(String path) {
