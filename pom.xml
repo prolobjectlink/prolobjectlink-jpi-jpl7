@@ -40,17 +40,23 @@
 	</developers>
 
 	<scm>
-		<url>D:\Desarrollo\EclipseWorkspace\eclipse-java-neon-workspace\prolobjectlink-jpl7\.git</url>
+		<url>http://gitlab.delnet.cu/logicware/prolobjectlink-jpi-jpl7.git</url>
 	</scm>
 
 	<ciManagement>
 		<system>jenkins</system>
-		<url>http://opteron:8080/jenkins/</url>
+		<url>http://jenkins.delnet.cu:8080/jenkins/</url>
 	</ciManagement>
+
+	<issueManagement>
+		<system>Bugzilla</system>
+		<url>http://bugzilla.delnet.cu/</url>
+	</issueManagement>
 
 	<distributionManagement>
 		<downloadUrl>http://www.logicware.org/download</downloadUrl>
 	</distributionManagement>
+
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
