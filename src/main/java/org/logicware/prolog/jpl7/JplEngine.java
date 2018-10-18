@@ -75,9 +75,8 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	static {
 
-		File file = null;
 		try {
-			file = File.createTempFile("prolobjectlink-jpi-jpl7-cache-", ".pl");
+			File file = File.createTempFile("prolobjectlink-jpi-jpl7-cache-", ".pl");
 			temp = file.getParentFile().getCanonicalPath().replace(File.separatorChar, '/');
 			cache = file.getCanonicalPath().replace(File.separatorChar, '/');
 		} catch (IOException e) {
