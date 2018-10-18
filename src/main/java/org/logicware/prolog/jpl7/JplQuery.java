@@ -36,184 +36,178 @@ import org.logicware.prolog.PrologTerm;
 
 public final class JplQuery extends AbstractQuery implements PrologQuery {
 
-	protected final String file;
-	private final List<String> files;
-	private final String stringQuery;
+    protected final String file;
+    private final String stringQuery;
 
-	private Query query;
-	private Query consult;
+    private final Query query;
+    private final Query consult;
 
-	private final List<String> variables = new ArrayList<String>();
+    private final List<String> variables = new ArrayList<String>();
 
-	private void enumerateVariables(List<String> vector, Term term) {
-		if (!(term instanceof Variable)) {
-			Term[] terms = term.args();
-			for (Term t : terms) {
-				enumerateVariables(vector, t);
-			}
-		} else if (!vector.contains(term.name())) {
-			vector.add(term.name());
-		}
-	}
+    private void enumerateVariables(List<String> vector, Term term) {
+        if (!(term instanceof Variable)) {
+            Term[] terms = term.args();
+            for (Term t : terms) {
+                enumerateVariables(vector, t);
+            }
+        } else if (!vector.contains(term.name())) {
+            vector.add(term.name());
+        }
+    }
 
-	public JplQuery(AbstractEngine engine, String file, List<String> files, String stringQuery) {
-		super(engine);
+    public JplQuery(AbstractEngine engine, String file, List<String> files, String stringQuery) {
+        super(engine);
 
-		this.file = file;
-		this.files = files;
-		this.stringQuery = stringQuery;
+        this.file = file;
+        this.stringQuery = stringQuery;
 
-		// saving variable order
-		enumerateVariables(variables, Util.textToTerm(stringQuery));
+        // saving variable order
+        enumerateVariables(variables, Util.textToTerm(stringQuery));
 
-		this.consult = new Query("consult('" + file + "')");
-		this.query = new Query(stringQuery);
+        this.consult = new Query("consult('" + file + "')");
+        this.query = new Query(stringQuery);
 
-		this.consult.hasSolution();
-		this.query.hasSolution();
+        this.consult.hasSolution();
+        this.query.hasSolution();
 
-	}
+    }
 
-	public synchronized boolean hasSolution() {
-		return query.hasSolution();
-	}
+    public synchronized boolean hasSolution() {
+        return query.hasSolution();
+    }
 
-	public synchronized boolean hasMoreSolutions() {
-		return query.hasMoreSolutions();
-	}
+    public synchronized boolean hasMoreSolutions() {
+        return query.hasMoreSolutions();
+    }
 
-	public synchronized PrologTerm[] oneSolution() {
-		int index = 0;
-		Map<String, PrologTerm> solution = oneVariablesSolution();
-		PrologTerm[] array = new PrologTerm[solution.size()];
-		for (Iterator<String> i = variables.iterator(); i.hasNext();) {
-			array[index++] = solution.get(i.next());
-		}
-		return array;
-	}
+    public synchronized PrologTerm[] oneSolution() {
+        int index = 0;
+        Map<String, PrologTerm> solution = oneVariablesSolution();
+        PrologTerm[] array = new PrologTerm[solution.size()];
+        for (Iterator<String> i = variables.iterator(); i.hasNext();) {
+            array[index++] = solution.get(i.next());
+        }
+        return array;
+    }
 
-	public synchronized Map<String, PrologTerm> oneVariablesSolution() {
-		Map<String, Term> swiSolution = query.oneSolution();
-		return toTermMap(swiSolution, PrologTerm.class);
-	}
+    public synchronized Map<String, PrologTerm> oneVariablesSolution() {
+        Map<String, Term> swiSolution = query.oneSolution();
+        return toTermMap(swiSolution, PrologTerm.class);
+    }
 
-	public synchronized PrologTerm[] nextSolution() {
-		Map<String, PrologTerm> solution = nextVariablesSolution();
-		PrologTerm[] array = new PrologTerm[solution.size()];
-		for (int i = 0; i < array.length; i++) {
-			array[i] = solution.get(variables.get(i));
-		}
-		return array;
-	}
+    public synchronized PrologTerm[] nextSolution() {
+        Map<String, PrologTerm> solution = nextVariablesSolution();
+        PrologTerm[] array = new PrologTerm[solution.size()];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = solution.get(variables.get(i));
+        }
+        return array;
+    }
 
-	public synchronized Map<String, PrologTerm> nextVariablesSolution() {
-		Map<String, Term> swiSolution = query.nextSolution();
-		return toTermMap(swiSolution, PrologTerm.class);
-	}
+    public synchronized Map<String, PrologTerm> nextVariablesSolution() {
+        Map<String, Term> swiSolution = query.nextSolution();
+        return toTermMap(swiSolution, PrologTerm.class);
+    }
 
-	public synchronized PrologTerm[][] nSolutions(int n) {
-		Map<String, Term>[] s = query.nSolutions(n);
-		if (s != null && s.length > 0) {
-			int m = s[0].size();
-			PrologTerm[][] matrix = new PrologTerm[n][m];
-			for (int i = 0; i < s.length; i++) {
-				int index = 0;
-				for (Iterator<String> iter = variables.iterator(); iter.hasNext();) {
-					matrix[i][index++] = toTerm(s[i].get(iter.next()), PrologTerm.class);
-				}
-			}
-			return matrix;
-		}
-		return new PrologTerm[0][0];
-	}
+    public synchronized PrologTerm[][] nSolutions(int n) {
+        Map<String, Term>[] s = query.nSolutions(n);
+        if (s != null && s.length > 0) {
+            int m = s[0].size();
+            PrologTerm[][] matrix = new PrologTerm[n][m];
+            for (int i = 0; i < s.length; i++) {
+                int index = 0;
+                for (Iterator<String> iter = variables.iterator(); iter.hasNext();) {
+                    matrix[i][index++] = toTerm(s[i].get(iter.next()), PrologTerm.class);
+                }
+            }
+            return matrix;
+        }
+        return new PrologTerm[0][0];
+    }
 
-	public synchronized Map<String, PrologTerm>[] nVariablesSolutions(int n) {
-		Map<String, Term>[] swiSolutions = query.nSolutions(n);
-		return toTermMapArray(swiSolutions, PrologTerm.class);
-	}
+    public synchronized Map<String, PrologTerm>[] nVariablesSolutions(int n) {
+        Map<String, Term>[] swiSolutions = query.nSolutions(n);
+        return toTermMapArray(swiSolutions, PrologTerm.class);
+    }
 
-	public synchronized PrologTerm[][] allSolutions() {
-		Map<String, Term>[] s = query.allSolutions();
-		if (s != null && s.length > 0) {
-			int n = s.length;
-			int m = s[0].size();
-			PrologTerm[][] matrix = new PrologTerm[n][m];
-			for (int i = 0; i < s.length; i++) {
-				int index = 0;
-				for (Iterator<String> iter = variables.iterator(); iter.hasNext();) {
-					matrix[i][index++] = toTerm(s[i].get(iter.next()), PrologTerm.class);
-				}
-			}
-			return matrix;
-		}
-		return new PrologTerm[0][0];
-	}
+    public synchronized PrologTerm[][] allSolutions() {
+        Map<String, Term>[] s = query.allSolutions();
+        if (s != null && s.length > 0) {
+            int n = s.length;
+            int m = s[0].size();
+            PrologTerm[][] matrix = new PrologTerm[n][m];
+            for (int i = 0; i < s.length; i++) {
+                int index = 0;
+                for (Iterator<String> iter = variables.iterator(); iter.hasNext();) {
+                    matrix[i][index++] = toTerm(s[i].get(iter.next()), PrologTerm.class);
+                }
+            }
+            return matrix;
+        }
+        return new PrologTerm[0][0];
+    }
 
-	public synchronized Map<String, PrologTerm>[] allVariablesSolutions() {
-		Map<String, Term>[] swiSolutions = query.allSolutions();
-		return toTermMapArray(swiSolutions, PrologTerm.class);
-	}
+    public synchronized Map<String, PrologTerm>[] allVariablesSolutions() {
+        Map<String, Term>[] swiSolutions = query.allSolutions();
+        return toTermMapArray(swiSolutions, PrologTerm.class);
+    }
 
-	public synchronized List<Map<String, PrologTerm>> all() {
-		List<Map<String, PrologTerm>> v = null;
-		Map<String, Term>[] s = query.allSolutions();
-		v = new ArrayList<Map<String, PrologTerm>>(s.length);
-		for (int i = 0; i < s.length; i++) {
-			Map<String, Term> map = s[i];
-			v.add(toTermMap(map, PrologTerm.class));
-		}
-		return v;
-	}
+    public synchronized List<Map<String, PrologTerm>> all() {
+        Map<String, Term>[] s = query.allSolutions();
+        List<Map<String, PrologTerm>> v = new ArrayList<Map<String, PrologTerm>>(s.length);
+        for (Map<String, Term> map : s) {
+            v.add(toTermMap(map, PrologTerm.class));
+        }
+        return v;
+    }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + Objects.hashCode(file);
-		result = prime * result + Objects.hashCode(files);
-		result = prime * result + Objects.hashCode(stringQuery);
-		result = prime * result + Objects.hashCode(variables);
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + Objects.hashCode(file);
+        result = prime * result + Objects.hashCode(stringQuery);
+        result = prime * result + Objects.hashCode(variables);
+        return result;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		JplQuery other = (JplQuery) obj;
-		if (file == null) {
-			if (other.file != null)
-				return false;
-		} else if (!file.equals(other.file)) {
-			return false;
-		}
-		if (files == null) {
-			if (other.files != null)
-				return false;
-		} else if (!files.equals(other.files)) {
-			return false;
-		}
-		if (stringQuery == null) {
-			if (other.stringQuery != null)
-				return false;
-		} else if (!stringQuery.equals(other.stringQuery)) {
-			return false;
-		}
-		return Objects.equals(variables, other.variables);
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!super.equals(obj)) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        JplQuery other = (JplQuery) obj;
+        if (file == null) {
+            if (other.file != null) {
+                return false;
+            }
+        } else if (!file.equals(other.file)) {
+            return false;
+        }
+        if (stringQuery == null) {
+            if (other.stringQuery != null) {
+                return false;
+            }
+        } else if (!stringQuery.equals(other.stringQuery)) {
+            return false;
+        }
+        return Objects.equals(variables, other.variables);
+    }
 
-	@Override
-	public synchronized String toString() {
-		return "" + query + "";
-	}
+    @Override
+    public synchronized String toString() {
+        return "" + query + "";
+    }
 
-	public synchronized void dispose() {
-		consult.close();
-		query.close();
-	}
+    public synchronized void dispose() {
+        consult.close();
+        query.close();
+    }
 
 }
