@@ -55,7 +55,7 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
         }
     }
 
-    public JplQuery(AbstractEngine engine, String file, List<String> files, String stringQuery) {
+    public JplQuery(AbstractEngine engine, String file, String stringQuery) {
         super(engine);
 
         this.file = file;
