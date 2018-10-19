@@ -30,9 +30,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.jpl7.Atom;
@@ -58,7 +56,6 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	protected String tmp;
 	protected String file;
 	protected String location;
-	protected List<String> files;
 
 	// used only for findall list result
 	protected static final String KEY = "X";
@@ -97,7 +94,6 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		super(provider);
 		this.file = file;
 		File pf = new File(file);
-		this.files = new ArrayList<String>();
 		location = pf.getAbsolutePath();
 		location = location.toLowerCase();
 		location = location.replace(File.separatorChar, '/');
@@ -199,20 +195,16 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		if (query.hasSolution()) {
 			Term term = query.oneSolution().get(KEY);
 			Term[] termArray = term.toTermArray();
-			for (int i = 0; i < termArray.length; i++) {
-
-				Term t = termArray[i];
-
-				Term f = t.arg(1);
-				Term a = t.arg(2);
-
-				int arity = a.intValue();
-				String functor = f.name();
-
-				PredicateIndicator pi = new PredicateIndicator(functor, arity);
-				indicators.add(pi);
-
-			}
+                    for (Term t : termArray) {
+                        Term f = t.arg(1);
+                        Term a = t.arg(2);
+                        
+                        int arity = a.intValue();
+                        String functor = f.name();
+                        
+                        PredicateIndicator pi = new PredicateIndicator(functor, arity);
+                        indicators.add(pi);
+                    }
 		}
 		return indicators;
 	}
@@ -224,21 +216,18 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		if (query.hasSolution()) {
 			Term term = query.oneSolution().get(KEY);
 			Term[] termArray = term.toTermArray();
-			for (int i = 0; i < termArray.length; i++) {
-
-				Term t = termArray[i];
-
-				Term prio = t.arg(1).arg(1);
-				Term pos = t.arg(1).arg(2);
-				Term op = t.arg(2);
-
-				int p = prio.intValue();
-				String s = pos.name();
-				String n = op.name();
-
-				OperatorEntry o = new OperatorEntry(p, s, n);
-				operators.add(o);
-			}
+                    for (Term t : termArray) {
+                        Term prio = t.arg(1).arg(1);
+                        Term pos = t.arg(1).arg(2);
+                        Term op = t.arg(2);
+                        
+                        int p = prio.intValue();
+                        String s = pos.name();
+                        String n = op.name();
+                        
+                        OperatorEntry o = new OperatorEntry(p, s, n);
+                        operators.add(o);
+                    }
 		}
 		return operators;
 	}
@@ -256,7 +245,6 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	}
 
 	public final void dispose() {
-		files.clear();
 		if (file.equals(cache)) {
 			clean(cache);
 		}
@@ -267,7 +255,6 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((file == null) ? 0 : file.hashCode());
-		result = prime * result + ((files == null) ? 0 : files.hashCode());
 		result = prime * result + ((location == null) ? 0 : location.hashCode());
 		return result;
 	}
@@ -285,12 +272,6 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 			if (other.file != null)
 				return false;
 		} else if (!file.equals(other.file)) {
-			return false;
-		}
-		if (files == null) {
-			if (other.files != null)
-				return false;
-		} else if (!files.equals(other.files)) {
 			return false;
 		}
 		if (location == null) {
