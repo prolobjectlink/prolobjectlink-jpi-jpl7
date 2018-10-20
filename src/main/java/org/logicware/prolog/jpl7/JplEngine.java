@@ -19,19 +19,15 @@
  */
 package org.logicware.prolog.jpl7;
 
-import static org.logicware.platform.logging.LoggerConstants.DONT_WORRY;
 import static org.logicware.platform.logging.LoggerConstants.FILE_NOT_FOUND;
 import static org.logicware.platform.logging.LoggerConstants.IO;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -185,29 +181,20 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	}
 
 	public final synchronized void persist(String path) {
-		InputStream in = null;
-		OutputStream out = null;
+		PrintWriter writer = null;
 		try {
-			in = new FileInputStream(location);
-			out = new FileOutputStream(path);
-			copy(in, out);
-		} catch (FileNotFoundException e) {
-			LoggerUtils.warn(getClass(), FILE_NOT_FOUND + path, e);
-			LoggerUtils.info(getClass(), DONT_WORRY + path);
-		} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (IOException e) {
-					LoggerUtils.error(getClass(), IO + path, e);
-				}
+			Iterator<PrologClause> i = iterator();
+			writer = new PrintWriter(new FileOutputStream(path, false));
+			while (i.hasNext()) {
+				PrologClause c = i.next();
+				writer.append("" + c + "");
+				writer.append("\n");
 			}
-			if (out != null) {
-				try {
-					out.close();
-				} catch (IOException e) {
-					LoggerUtils.error(getClass(), IO + path, e);
-				}
+		} catch (FileNotFoundException e) {
+			LoggerUtils.error(getClass(), IO + cache, e);
+		} finally {
+			if (writer != null) {
+				writer.close();
 			}
 		}
 	}
