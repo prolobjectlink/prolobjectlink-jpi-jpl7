@@ -133,7 +133,8 @@ public class JplList extends JplTerm implements PrologList {
 			string.append(i.next());
 		}
 		while (i.hasNext()) {
-			string.append(", " + i.next());
+			string.append(", ");
+                        string.append(i.next());
 		}
 		return string.append("]").toString();
 	}

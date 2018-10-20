@@ -21,7 +21,6 @@ package org.logicware.prolog.jpl7;
 
 import static org.logicware.prolog.PrologTermType.TRUE_TYPE;
 
-import org.jpl7.Atom;
 import org.logicware.prolog.PrologProvider;
 import org.logicware.prolog.PrologTerm;
 

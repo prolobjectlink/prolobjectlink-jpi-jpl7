@@ -104,13 +104,13 @@ public abstract class JplConverter extends AbstractConverter<Term> implements Pr
 
 					Term term = query.oneSolution().get(key);
 					Term[] termArray = term.toTermArray();
-					for (int i = 0; i < termArray.length; i++) {
-						if (termArray[i].name().equals(functor)) {
-							Term left = compound.arg(1);
-							Term right = compound.arg(2);
-							return new JplStructure(provider, left, functor, right);
-						}
-					}
+                                    for (Term termArray1 : termArray) {
+                                        if (termArray1.name().equals(functor)) {
+                                            Term left = compound.arg(1);
+                                            Term right = compound.arg(2);
+                                            return new JplStructure(provider, left, functor, right);
+                                        }
+                                    }
 
 				}
 			}

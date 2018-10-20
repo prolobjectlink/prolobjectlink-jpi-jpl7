@@ -103,11 +103,11 @@ public abstract class JplTerm extends AbstractTerm implements PrologTerm {
 			if (query.hasSolution()) {
 				Term term = query.oneSolution().get(key);
 				Term[] termArray = term.toTermArray();
-				for (int i = 0; i < termArray.length; i++) {
-					if (termArray[i].name().equals(getFunctor())) {
-						return true;
-					}
-				}
+                            for (Term termArray1 : termArray) {
+                                if (termArray1.name().equals(getFunctor())) {
+                                    return true;
+                                }
+                            }
 			}
 		}
 		return false;
