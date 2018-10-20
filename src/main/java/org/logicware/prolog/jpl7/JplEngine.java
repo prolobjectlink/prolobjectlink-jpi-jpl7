@@ -59,30 +59,34 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	protected Query query;
 
-	protected String tmp;
-	protected String file;
-	protected String location;
-
 	// used only for findall list result
 	protected static final String KEY = "X";
 
-	// JPL use for for fact clause true prolog term
+	// JPL use for fact clauses true prolog term
 	protected static final Term BODY = new Atom("true");
 
-	// cache file path
-	// create at OS temp directory
+	// cache file in OS temporal directory
 	protected String cache = null;
 
-	// OS temp directory path
+	// absolute location of cache in OS
+	protected String location;
+
+	// OS temporal directory path
 	protected String temp = null;
 
-	protected JplEngine(PrologProvider provider) {
-		super(provider);
+	// formulated string for consult(f)
+	private String consultCacheFile;
 
+	// formulated string for consult(f),
+	private String consultCacheFileAnd;
+
+	private void initialization() {
 		try {
 			File f = File.createTempFile("prolobjectlink-jpi-jpl7-cache-", ".pl");
 			temp = f.getParentFile().getCanonicalPath().replace(File.separatorChar, '/');
 			cache = f.getCanonicalPath().replace(File.separatorChar, '/');
+			consultCacheFile = "consult('" + cache + "')";
+			consultCacheFileAnd = consultCacheFile + ",";
 		} catch (IOException e) {
 			LoggerUtils.error(JplEngine.class, IO, e);
 		}
@@ -93,30 +97,9 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		location = pf.getAbsolutePath();
 		location = location.toLowerCase();
 		location = location.replace(File.separatorChar, '/');
-		query = new Query("consult('" + cache + "')");
 	}
 
-	protected JplEngine(PrologProvider provider, String path) {
-		super(provider);
-
-		try {
-			File f = File.createTempFile("prolobjectlink-jpi-jpl7-cache-", ".pl");
-			temp = f.getParentFile().getCanonicalPath().replace(File.separatorChar, '/');
-			cache = f.getCanonicalPath().replace(File.separatorChar, '/');
-		} catch (IOException e) {
-			LoggerUtils.error(JplEngine.class, IO, e);
-		}
-
-		LoggerUtils.info(JplEngine.class, cache);
-
-		File pf = new File(cache);
-		location = pf.getAbsolutePath();
-		location = location.toLowerCase();
-		location = location.replace(File.separatorChar, '/');
-		consult(path);
-	}
-
-	protected final void open(String path, boolean append) {
+	private void open(String path, boolean append) {
 
 		FileReader reader = null;
 		PrintWriter writer = null;
@@ -156,8 +139,20 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 			}
 		}
 
-		query = new Query("consult('" + cache + "')");
+		query = new Query(consultCacheFile);
 
+	}
+
+	protected JplEngine(PrologProvider provider) {
+		super(provider);
+		initialization();
+		consult(cache);
+	}
+
+	protected JplEngine(PrologProvider provider, String path) {
+		super(provider);
+		initialization();
+		consult(path);
 	}
 
 	public final void consult(String path) {
@@ -339,7 +334,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		}
 		query = new Query("" +
 
-				"consult('" + cache + "')," +
+				consultCacheFileAnd +
 
 				"clause(" + h + "," + b + ")"
 
@@ -408,21 +403,21 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	}
 
 	public final void operator(int priority, String specifier, String operator) {
-		new Query("consult('" + cache + "'),op(" + priority + "," + specifier + ", " + operator + ")").hasSolution();
+		new Query(consultCacheFileAnd + "op(" + priority + "," + specifier + ", " + operator + ")").hasSolution();
 	}
 
 	public final boolean currentPredicate(String functor, int arity) {
-		return new Query("consult('" + cache + "'), current_predicate(" + functor + "/" + arity + ")").hasSolution();
+		return new Query(consultCacheFileAnd + "current_predicate(" + functor + "/" + arity + ")").hasSolution();
 	}
 
 	public final boolean currentOperator(int priority, String specifier, String operator) {
-		return new Query("consult('" + cache + "'),current_op(" + priority + "," + specifier + ", " + operator + ")")
+		return new Query(consultCacheFileAnd + "current_op(" + priority + "," + specifier + ", " + operator + ")")
 				.hasSolution();
 	}
 
 	public final Set<PrologIndicator> currentPredicates() {
 		Set<PrologIndicator> indicators = new HashSet<PrologIndicator>();
-		String opQuery = "consult('" + cache + "'),findall(X/Y,current_predicate(X/Y)," + KEY + ")";
+		String opQuery = consultCacheFileAnd + "findall(X/Y,current_predicate(X/Y)," + KEY + ")";
 		query = new Query(opQuery);
 		if (query.hasSolution()) {
 			Term term = query.oneSolution().get(KEY);
@@ -443,7 +438,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	public final Set<PrologOperator> currentOperators() {
 		Set<PrologOperator> operators = new HashSet<PrologOperator>();
-		String opQuery = "findall(P/S/O,current_op(P,S,O)," + KEY + ")";
+		String opQuery = consultCacheFileAnd + "findall(P/S/O,current_op(P,S,O)," + KEY + ")";
 		query = new Query(opQuery);
 		if (query.hasSolution()) {
 			Term term = query.oneSolution().get(KEY);
@@ -464,7 +459,17 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		return operators;
 	}
 
-	public String getLicense() {
+	public final synchronized int getProgramSize() {
+		int counter = 0;
+		Iterator<?> i = iterator();
+		while (i.hasNext()) {
+			counter++;
+			i.next();
+		}
+		return counter;
+	}
+
+	public final String getLicense() {
 		return Licenses.LGPL_V3;
 	}
 
@@ -472,7 +477,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		return JPL.version_string();
 	}
 
-	public String getName() {
+	public final String getName() {
 		return "JPL7";
 	}
 
@@ -487,7 +492,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((file == null) ? 0 : file.hashCode());
+		result = prime * result + ((cache == null) ? 0 : cache.hashCode());
 		result = prime * result + ((location == null) ? 0 : location.hashCode());
 		return result;
 	}
@@ -501,10 +506,10 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		if (getClass() != obj.getClass())
 			return false;
 		JplEngine other = (JplEngine) obj;
-		if (file == null) {
-			if (other.file != null)
+		if (cache == null) {
+			if (other.cache != null)
 				return false;
-		} else if (!file.equals(other.file)) {
+		} else if (!cache.equals(other.cache)) {
 			return false;
 		}
 		if (location == null) {

@@ -134,7 +134,7 @@ public class JplList extends JplTerm implements PrologList {
 		}
 		while (i.hasNext()) {
 			string.append(", ");
-                        string.append(i.next());
+			string.append(i.next());
 		}
 		return string.append("]").toString();
 	}
@@ -169,7 +169,7 @@ public class JplList extends JplTerm implements PrologList {
 		}
 
 		public void remove() {
-			// TODO
+			throw new UnsupportedOperationException();
 		}
 
 	}
