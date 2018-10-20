@@ -116,7 +116,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		consult(path);
 	}
 
-	public final void consult(String path) {
+	protected final void open(String path, boolean append) {
 
 		FileReader reader = null;
 		PrintWriter writer = null;
@@ -124,7 +124,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 		try {
 			reader = new FileReader(path);
-			writer = new PrintWriter(new FileOutputStream(cache, true));
+			writer = new PrintWriter(new FileOutputStream(cache, append));
 			buffer = new BufferedReader(reader);
 			String line = buffer.readLine();
 			while (line != null) {
@@ -157,10 +157,15 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		}
 
 		query = new Query("consult('" + cache + "')");
+
+	}
+
+	public final void consult(String path) {
+		open(path, false);
 	}
 
 	public final void include(String path) {
-		consult(path);
+		open(path, true);
 	}
 
 	public final synchronized void abolish(String functor, int arity) {
@@ -220,8 +225,52 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		asserta(fromTerm(head, body, Term.class));
 	}
 
-	public final synchronized void asserta(Term term) {
-		// TODO Auto-generated method stub
+	public final synchronized void asserta(Term t) {
+
+		Term termHead = t;
+		Term termBody = BODY;
+		if (t.hasFunctor(":-", 2)) {
+			termHead = t.arg(1);
+			termBody = t.arg(2);
+		}
+
+		PrologTerm th = toTerm(termHead, PrologTerm.class);
+		PrologTerm tb = toTerm(termBody, PrologTerm.class);
+
+		PrintWriter writer = null;
+		try {
+			Iterator<PrologClause> i = iterator();
+			writer = new PrintWriter(new FileOutputStream(cache, false));
+
+			// add first
+			writer.append("" + t + "");
+			writer.append('.');
+			writer.append('\n');
+
+			// copy all except current term
+			while (i.hasNext()) {
+				PrologClause c = i.next();
+				PrologTerm head = c.getHead();
+				PrologTerm body = c.getBody();
+				if (body == null) {
+					body = provider.prologTrue();
+				}
+
+				// using unify because equals is a strong condition
+				if (!(th.unify(head) && tb.unify(body))) {
+					writer.append("" + c + "");
+					writer.append('\n');
+				}
+			}
+
+		} catch (FileNotFoundException e) {
+			LoggerUtils.error(getClass(), IO + cache, e);
+		} finally {
+			if (writer != null) {
+				writer.close();
+			}
+		}
+
 	}
 
 	public final synchronized void assertz(String stringClause) {
@@ -255,7 +304,9 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 				if (body == null) {
 					body = provider.prologTrue();
 				}
-				if (th.equals(head) && tb.equals(body)) {
+
+				// using unify because equals is a strong condition
+				if (th.unify(head) && tb.unify(body)) {
 					return;
 				}
 			}
@@ -327,7 +378,9 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 				if (body == null) {
 					body = provider.prologTrue();
 				}
-				if (!(th.equals(head) && tb.equals(body))) {
+
+				// using unify because equals is a strong condition
+				if (!(th.unify(head) && tb.unify(body))) {
 					writer.append("" + c + "");
 					writer.append('\n');
 				}
