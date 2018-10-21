@@ -27,6 +27,7 @@ import java.util.NoSuchElementException;
 import org.jpl7.Compound;
 import org.jpl7.Query;
 import org.jpl7.Term;
+import org.logicware.platform.AbstractIterator;
 import org.logicware.prolog.PrologList;
 import org.logicware.prolog.PrologProvider;
 import org.logicware.prolog.PrologTerm;
@@ -139,7 +140,7 @@ public class JplList extends JplTerm implements PrologList {
 		return string.append("]").toString();
 	}
 
-	private class SwiPrologListIter implements Iterator<PrologTerm> {
+	private class SwiPrologListIter extends AbstractIterator<PrologTerm> implements Iterator<PrologTerm> {
 
 		private Term ptr;
 		private int index;
