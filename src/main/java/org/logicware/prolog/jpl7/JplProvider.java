@@ -47,10 +47,6 @@ public abstract class JplProvider extends AbstractProvider implements PrologProv
 		return true;
 	}
 
-	public boolean preserveQuotes() {
-		return true;
-	}
-
 	public PrologTerm prologNil() {
 		return new JplNil(this);
 	}
@@ -111,20 +107,12 @@ public abstract class JplProvider extends AbstractProvider implements PrologProv
 		return new JplLong(this, value);
 	}
 
-	public PrologVariable newVariable() {
+	public PrologVariable newVariable(int position) {
 		return new JplVariable(this);
 	}
 
-	public PrologVariable newVariable(String name) {
-		return new JplVariable(this, name);
-	}
-
-	public PrologVariable newVariable(int position) {
-		return newVariable();
-	}
-
 	public PrologVariable newVariable(String name, int position) {
-		return newVariable(name);
+		return new JplVariable(this, name);
 	}
 
 	public PrologList newList() {
