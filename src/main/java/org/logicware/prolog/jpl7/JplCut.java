@@ -25,7 +25,7 @@ import org.jpl7.Atom;
 import org.logicware.prolog.PrologProvider;
 import org.logicware.prolog.PrologTerm;
 
-public class JplCut extends JplTerm implements PrologTerm {
+public final class JplCut extends JplTerm implements PrologTerm {
 
 	protected JplCut(PrologProvider provider) {
 		super(CUT_TYPE, provider, new Atom("!"));
@@ -40,7 +40,10 @@ public class JplCut extends JplTerm implements PrologTerm {
 	}
 
 	public String getFunctor() {
-		return "" + value + "";
+		String v = "" + value + "";
+		int end = v.length() - 1;
+		v = v.substring(1, end);
+		return v;
 	}
 
 	public String getIndicator() {

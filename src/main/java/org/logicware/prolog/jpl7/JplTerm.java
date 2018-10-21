@@ -19,6 +19,7 @@
  */
 package org.logicware.prolog.jpl7;
 
+import static org.logicware.prolog.PrologTermType.CUT_TYPE;
 import static org.logicware.prolog.PrologTermType.DOUBLE_TYPE;
 import static org.logicware.prolog.PrologTermType.FLOAT_TYPE;
 import static org.logicware.prolog.PrologTermType.INTEGER_TYPE;
@@ -103,11 +104,11 @@ public abstract class JplTerm extends AbstractTerm implements PrologTerm {
 			if (query.hasSolution()) {
 				Term term = query.oneSolution().get(key);
 				Term[] termArray = term.toTermArray();
-                            for (Term termArray1 : termArray) {
-                                if (termArray1.name().equals(getFunctor())) {
-                                    return true;
-                                }
-                            }
+				for (Term termArray1 : termArray) {
+					if (termArray1.name().equals(getFunctor())) {
+						return true;
+					}
+				}
 			}
 		}
 		return false;
@@ -126,18 +127,18 @@ public abstract class JplTerm extends AbstractTerm implements PrologTerm {
 	}
 
 	public final boolean unify(PrologTerm o) {
-
 		if (!(o instanceof JplTerm)) {
 			throw new UnknownTermError(o);
 		}
+		return unify(((JplTerm) o).value);
+	}
 
-		Term term = ((JplTerm) o).value;
-		Query query = new Query("unify_with_occurs_check(" + value + "," + term + ")");
+	protected final boolean unify(Term o) {
+		String q = "unify_with_occurs_check(" + value + "," + o + ")";
+		Query query = new Query(q);
 		boolean result = query.hasSolution();
 		query.close();
-
 		return result;
-
 	}
 
 	public final int compareTo(PrologTerm o) {
@@ -189,7 +190,7 @@ public abstract class JplTerm extends AbstractTerm implements PrologTerm {
 		if (value == null) {
 			if (other.value != null)
 				return false;
-		} else if (!value.equals(other.value)) {
+		} else if (!unify(other.value)) {
 			return false;
 		}
 		return true;
@@ -197,6 +198,9 @@ public abstract class JplTerm extends AbstractTerm implements PrologTerm {
 
 	@Override
 	public String toString() {
+		if (type == CUT_TYPE) {
+			return getFunctor();
+		}
 		return "" + value + "";
 	}
 
