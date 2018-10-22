@@ -19,8 +19,8 @@
  */
 package org.logicware.prolog.jpl7;
 
-import static org.logicware.platform.logging.LoggerConstants.FILE_NOT_FOUND;
-import static org.logicware.platform.logging.LoggerConstants.IO;
+import static org.logicware.logging.LoggerConstants.FILE_NOT_FOUND;
+import static org.logicware.logging.LoggerConstants.IO;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,8 +38,8 @@ import org.jpl7.JPL;
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.jpl7.Util;
-import org.logicware.platform.Licenses;
-import org.logicware.platform.logging.LoggerUtils;
+import org.logicware.Licenses;
+import org.logicware.logging.LoggerUtils;
 import org.logicware.prolog.AbstractEngine;
 import org.logicware.prolog.OperatorEntry;
 import org.logicware.prolog.PredicateIndicator;
