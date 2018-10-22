@@ -508,4 +508,8 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		return true;
 	}
 
+	public final String getCache() {
+		return cache;
+	}
+
 }
