@@ -62,13 +62,10 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	protected static final Term BODY = new Atom("true");
 
 	// cache file in OS temporal directory
-	protected String cache = null;
+	private static String cache = null;
 
 	// absolute location of cache in OS
-	protected String location;
-
-	// OS temporal directory path
-	protected String temp = null;
+	private String location;
 
 	// formulated string for consult(f)
 	private String consultCacheFile;
@@ -76,23 +73,23 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	// formulated string for consult(f),
 	private String consultCacheFileAnd;
 
-	private void initialization() {
+	static {
 		try {
 			File f = File.createTempFile("prolobjectlink-jpi-jpl7-cache-", ".pl");
-			temp = f.getParentFile().getCanonicalPath().replace(File.separatorChar, '/');
 			cache = f.getCanonicalPath().replace(File.separatorChar, '/');
-			consultCacheFile = "consult('" + cache + "')";
-			consultCacheFileAnd = consultCacheFile + ",";
 		} catch (IOException e) {
 			LoggerUtils.error(JplEngine.class, IO, e);
 		}
-
 		LoggerUtils.info(JplEngine.class, cache);
+	}
 
+	private void initialization() {
 		File pf = new File(cache);
 		location = pf.getAbsolutePath();
 		location = location.toLowerCase();
 		location = location.replace(File.separatorChar, '/');
+		consultCacheFile = "consult('" + cache + "')";
+		consultCacheFileAnd = consultCacheFile + ",";
 	}
 
 	private void open(String path, boolean append) {
@@ -151,11 +148,13 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		consult(path);
 	}
 
-	public final void consult(String path) {
+	protected abstract Iterator<PrologClause> iterator(String path);
+
+	public final synchronized void consult(String path) {
 		open(path, false);
 	}
 
-	public final void include(String path) {
+	public final synchronized void include(String path) {
 		open(path, true);
 	}
 
@@ -376,11 +375,11 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		}
 	}
 
-	public final PrologQuery query(String stringQuery) {
+	public final synchronized PrologQuery query(String stringQuery) {
 		return new JplQuery(this, cache, stringQuery);
 	}
 
-	public final PrologQuery query(PrologTerm... terms) {
+	public final synchronized PrologQuery query(PrologTerm... terms) {
 		StringBuilder buffer = new StringBuilder();
 		int length = terms.length;
 		for (int i = 0; i < length; i++) {
@@ -389,20 +388,20 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		return query("" + buffer + "");
 	}
 
-	public final void operator(int priority, String specifier, String operator) {
+	public final synchronized void operator(int priority, String specifier, String operator) {
 		new Query(consultCacheFileAnd + "op(" + priority + "," + specifier + ", " + operator + ")").hasSolution();
 	}
 
-	public final boolean currentPredicate(String functor, int arity) {
+	public final synchronized boolean currentPredicate(String functor, int arity) {
 		return new Query(consultCacheFileAnd + "current_predicate(" + functor + "/" + arity + ")").hasSolution();
 	}
 
-	public final boolean currentOperator(int priority, String specifier, String operator) {
+	public final synchronized boolean currentOperator(int priority, String specifier, String operator) {
 		return new Query(consultCacheFileAnd + "current_op(" + priority + "," + specifier + ", " + operator + ")")
 				.hasSolution();
 	}
 
-	public final Set<PrologIndicator> currentPredicates() {
+	public final synchronized Set<PrologIndicator> currentPredicates() {
 		Set<PrologIndicator> indicators = new HashSet<PrologIndicator>();
 		String opQuery = consultCacheFileAnd + "findall(X/Y,current_predicate(X/Y)," + KEY + ")";
 		query = new Query(opQuery);
@@ -423,7 +422,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		return indicators;
 	}
 
-	public final Set<PrologOperator> currentOperators() {
+	public final synchronized Set<PrologOperator> currentOperators() {
 		Set<PrologOperator> operators = new HashSet<PrologOperator>();
 		String opQuery = consultCacheFileAnd + "findall(P/S/O,current_op(P,S,O)," + KEY + ")";
 		query = new Query(opQuery);
@@ -469,10 +468,9 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	}
 
 	public final void dispose() {
+		query.close();
 		File c = new File(cache);
-		if (c.delete()) {
-			LoggerUtils.info(getClass(), "Deleted " + cache);
-		}
+		c.deleteOnExit();
 	}
 
 	@Override
@@ -493,12 +491,6 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		if (getClass() != obj.getClass())
 			return false;
 		JplEngine other = (JplEngine) obj;
-		if (cache == null) {
-			if (other.cache != null)
-				return false;
-		} else if (!cache.equals(other.cache)) {
-			return false;
-		}
 		if (location == null) {
 			if (other.location != null)
 				return false;
@@ -506,6 +498,10 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 			return false;
 		}
 		return true;
+	}
+
+	public final synchronized Iterator<PrologClause> iterator() {
+		return iterator(location);
 	}
 
 	public final String getCache() {
