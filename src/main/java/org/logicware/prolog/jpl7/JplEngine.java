@@ -136,6 +136,27 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	}
 
+	private synchronized Set<PrologIndicator> predicates() {
+		Set<PrologIndicator> indicators = new HashSet<PrologIndicator>();
+		String opQuery = consultCacheFileAnd + "findall(X/Y,current_predicate(X/Y)," + KEY + ")";
+		query = new Query(opQuery);
+		if (query.hasSolution()) {
+			Term term = query.oneSolution().get(KEY);
+			Term[] termArray = term.toTermArray();
+			for (Term t : termArray) {
+				Term f = t.arg(1);
+				Term a = t.arg(2);
+	
+				int arity = a.intValue();
+				String functor = f.name();
+	
+				PredicateIndicator pi = new PredicateIndicator(functor, arity);
+				indicators.add(pi);
+			}
+		}
+		return indicators;
+	}
+
 	protected JplEngine(PrologProvider provider) {
 		super(provider);
 		initialization();
@@ -401,27 +422,6 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 				.hasSolution();
 	}
 
-	public final synchronized Set<PrologIndicator> currentPredicates() {
-		Set<PrologIndicator> indicators = new HashSet<PrologIndicator>();
-		String opQuery = consultCacheFileAnd + "findall(X/Y,current_predicate(X/Y)," + KEY + ")";
-		query = new Query(opQuery);
-		if (query.hasSolution()) {
-			Term term = query.oneSolution().get(KEY);
-			Term[] termArray = term.toTermArray();
-			for (Term t : termArray) {
-				Term f = t.arg(1);
-				Term a = t.arg(2);
-
-				int arity = a.intValue();
-				String functor = f.name();
-
-				PredicateIndicator pi = new PredicateIndicator(functor, arity);
-				indicators.add(pi);
-			}
-		}
-		return indicators;
-	}
-
 	public final synchronized Set<PrologOperator> currentOperators() {
 		Set<PrologOperator> operators = new HashSet<PrologOperator>();
 		String opQuery = consultCacheFileAnd + "findall(P/S/O,current_op(P,S,O)," + KEY + ")";
@@ -453,6 +453,29 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 			i.next();
 		}
 		return counter;
+	}
+
+	public final synchronized Set<PrologIndicator> getPredicates() {
+		Set<PrologIndicator> pis = predicates();
+		Set<PrologIndicator> builtins = getBuiltIns();
+		for (PrologIndicator prologIndicator : pis) {
+			if (!builtins.contains(prologIndicator)) {
+				pis.remove(prologIndicator);
+			}
+		}
+		return pis;
+	}
+
+	public final synchronized Set<PrologIndicator> getBuiltIns() {
+		Set<PrologIndicator> pis = predicates();
+		Set<PrologClause> clauses = getProgramClauses();
+		for (PrologClause prologClause : clauses) {
+			PrologIndicator pi = prologClause.getPrologIndicator();
+			if (pis.contains(pi)) {
+				pis.remove(pi);
+			}
+		}
+		return pis;
 	}
 
 	public final String getLicense() {
