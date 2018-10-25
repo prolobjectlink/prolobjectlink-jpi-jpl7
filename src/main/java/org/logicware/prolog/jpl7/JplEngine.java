@@ -38,6 +38,7 @@ import org.jpl7.JPL;
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.jpl7.Util;
+import org.logicware.ArrayIterator;
 import org.logicware.Licenses;
 import org.logicware.logging.LoggerUtils;
 import org.logicware.prolog.AbstractEngine;
@@ -146,10 +147,10 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 			for (Term t : termArray) {
 				Term f = t.arg(1);
 				Term a = t.arg(2);
-	
+
 				int arity = a.intValue();
 				String functor = f.name();
-	
+
 				PredicateIndicator pi = new PredicateIndicator(functor, arity);
 				indicators.add(pi);
 			}
@@ -400,12 +401,15 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		return new JplQuery(this, cache, stringQuery);
 	}
 
-	public final synchronized PrologQuery query(PrologTerm... terms) {
+	public final synchronized PrologQuery query(PrologTerm term, PrologTerm... terms) {
+		Iterator<PrologTerm> i = new ArrayIterator<PrologTerm>(terms);
 		StringBuilder buffer = new StringBuilder();
-		int length = terms.length;
-		for (int i = 0; i < length; i++) {
-			buffer.append(i < length - 1 ? terms[i] + ", " : terms[i]);
+		buffer.append("" + term + "");
+		while (i.hasNext()) {
+			buffer.append(',');
+			buffer.append(i.next());
 		}
+		buffer.append(".");
 		return query("" + buffer + "");
 	}
 
