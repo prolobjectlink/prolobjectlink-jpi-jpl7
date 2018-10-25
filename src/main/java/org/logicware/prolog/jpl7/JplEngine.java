@@ -401,6 +401,17 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		return new JplQuery(this, cache, stringQuery);
 	}
 
+	public final synchronized PrologQuery query(PrologTerm[] terms) {
+		Iterator<PrologTerm> i = new ArrayIterator<PrologTerm>(terms);
+		StringBuilder buffer = new StringBuilder();
+		while (i.hasNext()) {
+			buffer.append(',');
+			buffer.append(i.next());
+		}
+		buffer.append(".");
+		return query("" + buffer + "");
+	}
+
 	public final synchronized PrologQuery query(PrologTerm term, PrologTerm... terms) {
 		Iterator<PrologTerm> i = new ArrayIterator<PrologTerm>(terms);
 		StringBuilder buffer = new StringBuilder();
