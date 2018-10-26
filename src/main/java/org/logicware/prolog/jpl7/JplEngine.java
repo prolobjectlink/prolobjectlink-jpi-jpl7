@@ -105,6 +105,10 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 			buffer = new BufferedReader(reader);
 			String line = buffer.readLine();
 			while (line != null) {
+				/*
+				 * TODO We need a dedicated variable scanner for save variable name because SWI
+				 * lost original variables names in main memory
+				 */
 				writer.append(line);
 				writer.append('\n');
 				line = buffer.readLine();

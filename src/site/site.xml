@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- #%L
-  prolobjectlink-jpi-jpl7
+  prolobjectlink-jpi
   %%
   Copyright (C) 2012 - 2018 Logicware Project
   %%
@@ -34,6 +34,7 @@
 			<item name="Introduction" href="index.html" />
 			<item name="Release Notes" href="changes-report.html" />
 			<item name="License" href="http://www.apache.org/licenses/" />
+			<item name="User Guide" href="prolobjectlink-jpi.pdf" />
 			<item name="Download" href="download.html" />
 			<item name="FAQ" href="faq.html" />
 		</menu>
