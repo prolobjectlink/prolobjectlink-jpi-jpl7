@@ -22,17 +22,10 @@ package org.logicware.prolog.jpl7;
 import static org.logicware.prolog.PrologTermType.LONG_TYPE;
 
 import org.jpl7.Integer;
-import org.logicware.prolog.ArityError;
-import org.logicware.prolog.FunctorError;
-import org.logicware.prolog.IndicatorError;
-import org.logicware.prolog.PrologDouble;
-import org.logicware.prolog.PrologFloat;
-import org.logicware.prolog.PrologInteger;
 import org.logicware.prolog.PrologLong;
 import org.logicware.prolog.PrologProvider;
-import org.logicware.prolog.PrologTerm;
 
-public class JplLong extends JplTerm implements PrologLong {
+public final class JplLong extends JplInteger implements PrologLong {
 
 	public JplLong(PrologProvider provider) {
 		super(LONG_TYPE, provider, new Integer(0));
@@ -40,58 +33,6 @@ public class JplLong extends JplTerm implements PrologLong {
 
 	public JplLong(PrologProvider provider, Number value) {
 		super(LONG_TYPE, provider, new Integer(value.longValue()));
-	}
-
-	public PrologInteger getPrologInteger() {
-		return new JplInteger(provider, getIntValue());
-	}
-
-	public PrologFloat getPrologFloat() {
-		return new JplFloat(provider, getFloatValue());
-	}
-
-	public PrologDouble getPrologDouble() {
-		return new JplDouble(provider, getDoubleValue());
-	}
-
-	public PrologLong getPrologLong() {
-		return new JplLong(provider, getLongValue());
-	}
-
-	public long getLongValue() {
-		return ((Integer) value).longValue();
-	}
-
-	public double getDoubleValue() {
-		return ((Integer) value).doubleValue();
-	}
-
-	public int getIntValue() {
-		return ((Integer) value).intValue();
-	}
-
-	public float getFloatValue() {
-		return ((Integer) value).floatValue();
-	}
-
-	public PrologTerm[] getArguments() {
-		return new JplLong[0];
-	}
-
-	public int getArity() {
-		throw new ArityError(this);
-	}
-
-	public String getFunctor() {
-		throw new FunctorError(this);
-	}
-
-	public String getIndicator() {
-		throw new IndicatorError(this);
-	}
-
-	public boolean hasIndicator(String functor, int arity) {
-		throw new IndicatorError(this);
 	}
 
 }

@@ -99,17 +99,7 @@
 				<version>3.1</version>
 				<configuration>
 					<nohelp>true</nohelp>
-					<!-- <source>1.8</source> -->
-					<!-- <target>1.8</target> -->
 				</configuration>
-				<!-- <executions> -->
-				<!-- <execution> -->
-				<!-- <id>attach-javadocs</id> -->
-				<!-- <goals> -->
-				<!-- <goal>jar</goal> -->
-				<!-- </goals> -->
-				<!-- </execution> -->
-				<!-- </executions> -->
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -149,7 +139,7 @@
 					<failOnMissingHeader>true</failOnMissingHeader>
 					<acceptPomPackaging>true</acceptPomPackaging>
 					<licenseName>apache_v2</licenseName>
-					<dryRun>true</dryRun>
+					<!-- <dryRun>true</dryRun> -->
 					<addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
 					<roots>
 						<root>src/main</root>
