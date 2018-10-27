@@ -40,7 +40,6 @@ import org.jpl7.Util;
 import org.logicware.ArrayIterator;
 import org.logicware.logging.LoggerUtils;
 import org.logicware.prolog.AbstractEngine;
-import org.logicware.prolog.OperatorEntry;
 import org.logicware.prolog.PredicateIndicator;
 import org.logicware.prolog.PrologClause;
 import org.logicware.prolog.PrologEngine;
@@ -437,7 +436,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 				String s = pos.name();
 				String n = op.name();
 
-				OperatorEntry o = new OperatorEntry(p, s, n);
+				PrologOperator o = new JplOperator(p, s, n);
 				operators.add(o);
 			}
 		}
