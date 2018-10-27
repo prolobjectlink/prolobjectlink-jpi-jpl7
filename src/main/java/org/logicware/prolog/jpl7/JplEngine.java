@@ -34,12 +34,10 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.jpl7.Atom;
-import org.jpl7.JPL;
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.jpl7.Util;
 import org.logicware.ArrayIterator;
-import org.logicware.Licenses;
 import org.logicware.logging.LoggerUtils;
 import org.logicware.prolog.AbstractEngine;
 import org.logicware.prolog.OperatorEntry;
@@ -81,7 +79,6 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		} catch (IOException e) {
 			LoggerUtils.error(JplEngine.class, IO, e);
 		}
-		LoggerUtils.info(JplEngine.class, cache);
 	}
 
 	private void initialization() {
@@ -163,7 +160,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	}
 
 	private void writeExcept(Iterator<PrologClause> i, PrintWriter writer, Term t) {
-		
+
 		Term termHead = t;
 		Term termBody = BODY;
 		if (t.hasFunctor(":-", 2)) {
@@ -478,18 +475,6 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 			}
 		}
 		return pis;
-	}
-
-	public final String getLicense() {
-		return Licenses.LGPL_V3;
-	}
-
-	public final String getVersion() {
-		return JPL.version_string();
-	}
-
-	public final String getName() {
-		return "JPL7";
 	}
 
 	public final void dispose() {
