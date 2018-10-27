@@ -162,6 +162,36 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		return indicators;
 	}
 
+	private void writeExcept(Iterator<PrologClause> i, PrintWriter writer, Term t) {
+		
+		Term termHead = t;
+		Term termBody = BODY;
+		if (t.hasFunctor(":-", 2)) {
+			termHead = t.arg(1);
+			termBody = t.arg(2);
+		}
+
+		PrologTerm th = toTerm(termHead, PrologTerm.class);
+		PrologTerm tb = toTerm(termBody, PrologTerm.class);
+
+		// copy all except current term
+		while (i.hasNext()) {
+			PrologClause c = i.next();
+			PrologTerm head = c.getHead();
+			PrologTerm body = c.getBody();
+			if (body == null) {
+				body = provider.prologTrue();
+			}
+
+			// using unify because equals is a strong condition
+			if (!(th.unify(head) && tb.unify(body))) {
+				writer.append("" + c + "");
+				writer.append('\n');
+			}
+		}
+
+	}
+
 	protected JplEngine(PrologProvider provider) {
 		super(provider);
 		initialization();
@@ -232,17 +262,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		asserta(fromTerm(head, body, Term.class));
 	}
 
-	public final synchronized void asserta(Term t) {
-
-		Term termHead = t;
-		Term termBody = BODY;
-		if (t.hasFunctor(":-", 2)) {
-			termHead = t.arg(1);
-			termBody = t.arg(2);
-		}
-
-		PrologTerm th = toTerm(termHead, PrologTerm.class);
-		PrologTerm tb = toTerm(termBody, PrologTerm.class);
+	private synchronized void asserta(Term t) {
 
 		PrintWriter writer = null;
 		try {
@@ -254,21 +274,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 			writer.append('.');
 			writer.append('\n');
 
-			// copy all except current term
-			while (i.hasNext()) {
-				PrologClause c = i.next();
-				PrologTerm head = c.getHead();
-				PrologTerm body = c.getBody();
-				if (body == null) {
-					body = provider.prologTrue();
-				}
-
-				// using unify because equals is a strong condition
-				if (!(th.unify(head) && tb.unify(body))) {
-					writer.append("" + c + "");
-					writer.append('\n');
-				}
-			}
+			writeExcept(i, writer, t);
 
 		} catch (FileNotFoundException e) {
 			LoggerUtils.error(getClass(), IO + cache, e);
@@ -288,7 +294,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		assertz(fromTerm(head, body, Term.class));
 	}
 
-	public final synchronized void assertz(Term t) {
+	private synchronized void assertz(Term t) {
 
 		Term termHead = t;
 		Term termBody = BODY;
@@ -337,7 +343,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		return clause(fromTerm(head, body, Term.class));
 	}
 
-	public final synchronized boolean clause(Term t) {
+	private synchronized boolean clause(Term t) {
 		Term h = t;
 		Term b = BODY;
 		if (t.hasFunctor(":-", 2)) {
@@ -362,36 +368,13 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		retract(provider.fromTerm(head, body, Term.class));
 	}
 
-	public final synchronized void retract(Term t) {
-
-		Term termHead = t;
-		Term termBody = BODY;
-		if (t.hasFunctor(":-", 2)) {
-			termHead = t.arg(1);
-			termBody = t.arg(2);
-		}
-
-		PrologTerm th = toTerm(termHead, PrologTerm.class);
-		PrologTerm tb = toTerm(termBody, PrologTerm.class);
+	private synchronized void retract(Term t) {
 
 		PrintWriter writer = null;
 		try {
 			Iterator<PrologClause> i = iterator();
 			writer = new PrintWriter(new FileOutputStream(cache, false));
-			while (i.hasNext()) {
-				PrologClause c = i.next();
-				PrologTerm head = c.getHead();
-				PrologTerm body = c.getBody();
-				if (body == null) {
-					body = provider.prologTrue();
-				}
-
-				// using unify because equals is a strong condition
-				if (!(th.unify(head) && tb.unify(body))) {
-					writer.append("" + c + "");
-					writer.append('\n');
-				}
-			}
+			writeExcept(i, writer, t);
 		} catch (FileNotFoundException e) {
 			LoggerUtils.error(getClass(), IO + cache, e);
 		} finally {

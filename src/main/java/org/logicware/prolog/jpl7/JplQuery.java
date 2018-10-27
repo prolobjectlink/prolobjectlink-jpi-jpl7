@@ -56,7 +56,18 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 		}
 	}
 
-	public JplQuery(AbstractEngine engine, String file, String stringQuery) {
+	private PrologTerm[][] matrix(Map<String, Term>[] s, int n, int m) {
+		PrologTerm[][] matrix = new PrologTerm[n][m];
+		for (int i = 0; i < s.length; i++) {
+			int index = 0;
+			for (Iterator<String> iter = variables.iterator(); iter.hasNext();) {
+				matrix[i][index++] = toTerm(s[i].get(iter.next()), PrologTerm.class);
+			}
+		}
+		return matrix;
+	}
+
+	JplQuery(AbstractEngine engine, String file, String stringQuery) {
 		super(engine);
 
 		if (stringQuery != null && stringQuery.length() > 0) {
@@ -123,14 +134,7 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 			Map<String, Term>[] s = query.nSolutions(n);
 			if (s != null && s.length > 0) {
 				int m = s[0].size();
-				PrologTerm[][] matrix = new PrologTerm[n][m];
-				for (int i = 0; i < s.length; i++) {
-					int index = 0;
-					for (Iterator<String> iter = variables.iterator(); iter.hasNext();) {
-						matrix[i][index++] = toTerm(s[i].get(iter.next()), PrologTerm.class);
-					}
-				}
-				return matrix;
+				return matrix(s, n, m);
 			}
 		}
 		return new PrologTerm[0][0];
@@ -150,14 +154,7 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 			if (s != null && s.length > 0) {
 				int n = s.length;
 				int m = s[0].size();
-				PrologTerm[][] matrix = new PrologTerm[n][m];
-				for (int i = 0; i < s.length; i++) {
-					int index = 0;
-					for (Iterator<String> iter = variables.iterator(); iter.hasNext();) {
-						matrix[i][index++] = toTerm(s[i].get(iter.next()), PrologTerm.class);
-					}
-				}
-				return matrix;
+				return matrix(s, n, m);
 			}
 		}
 		return new PrologTerm[0][0];
