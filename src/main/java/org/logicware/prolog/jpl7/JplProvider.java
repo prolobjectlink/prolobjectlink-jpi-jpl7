@@ -71,11 +71,11 @@ public abstract class JplProvider extends AbstractProvider implements PrologProv
 		return new JplEmpty(this);
 	}
 
-	public PrologTerm parsePrologTerm(String term) {
+	public PrologTerm parseTerm(String term) {
 		return toTerm(Util.textToTerm(term), PrologTerm.class);
 	}
 
-	public PrologTerm[] parsePrologTerms(String stringTerms) {
+	public PrologTerm[] parseTerms(String stringTerms) {
 		PrologTerm[] a = new PrologTerm[0];
 		Term ptr = Util.textToTerm(stringTerms);
 		List<PrologTerm> terms = new ArrayList<PrologTerm>();
