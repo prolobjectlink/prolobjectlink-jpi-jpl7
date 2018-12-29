@@ -1,6 +1,6 @@
 /*
  * #%L
- * prolobjectlink-jpi-zprolog
+ * prolobjectlink-jpi-jpl7
  * %%
  * Copyright (C) 2012 - 2017 Logicware Project
  * %%

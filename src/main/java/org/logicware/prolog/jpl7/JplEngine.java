@@ -112,13 +112,13 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		} catch (FileNotFoundException e) {
 			LoggerUtils.error(getClass(), FILE_NOT_FOUND, e);
 		} catch (IOException e) {
-			LoggerUtils.error(getClass(), IO + path, e);
+			LoggerUtils.error(getClass(), IO, e);
 		} finally {
 			if (reader != null) {
 				try {
 					reader.close();
 				} catch (IOException e) {
-					LoggerUtils.error(getClass(), IO + path, e);
+					LoggerUtils.error(getClass(), IO, e);
 				}
 			}
 			if (writer != null) {
@@ -128,7 +128,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 				try {
 					buffer.close();
 				} catch (IOException e) {
-					LoggerUtils.error(getClass(), IO + path, e);
+					LoggerUtils.error(getClass(), IO, e);
 				}
 			}
 		}
