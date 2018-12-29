@@ -55,7 +55,7 @@ import org.logicware.prolog.UnknownTermError;
 
 public abstract class JplConverter extends AbstractConverter<Term> implements PrologConverter<Term> {
 
-	public PrologTerm toTerm(Term prologTerm) {
+	public final PrologTerm toTerm(Term prologTerm) {
 		if (prologTerm.isAtom()) {
 			String functor = prologTerm.name();
 			if (functor.equals("nil")) {
@@ -104,13 +104,13 @@ public abstract class JplConverter extends AbstractConverter<Term> implements Pr
 
 					Term term = query.oneSolution().get(key);
 					Term[] termArray = term.toTermArray();
-                                    for (Term termArray1 : termArray) {
-                                        if (termArray1.name().equals(functor)) {
-                                            Term left = compound.arg(1);
-                                            Term right = compound.arg(2);
-                                            return new JplStructure(provider, left, functor, right);
-                                        }
-                                    }
+					for (Term termArray1 : termArray) {
+						if (termArray1.name().equals(functor)) {
+							Term left = compound.arg(1);
+							Term right = compound.arg(2);
+							return new JplStructure(provider, left, functor, right);
+						}
+					}
 
 				}
 			}
@@ -125,7 +125,7 @@ public abstract class JplConverter extends AbstractConverter<Term> implements Pr
 		throw new UnknownTermError(prologTerm);
 	}
 
-	public Term fromTerm(PrologTerm term) {
+	public final Term fromTerm(PrologTerm term) {
 		switch (term.getType()) {
 		case NIL_TYPE:
 			return new Atom("nil");
@@ -173,7 +173,7 @@ public abstract class JplConverter extends AbstractConverter<Term> implements Pr
 		}
 	}
 
-	public Term[] fromTermArray(PrologTerm[] terms) {
+	public final Term[] fromTermArray(PrologTerm[] terms) {
 		Term[] prologTerms = new Term[terms.length];
 		for (int i = 0; i < terms.length; i++) {
 			prologTerms[i] = fromTerm(terms[i]);
@@ -181,7 +181,7 @@ public abstract class JplConverter extends AbstractConverter<Term> implements Pr
 		return prologTerms;
 	}
 
-	public Term fromTerm(PrologTerm head, PrologTerm[] body) {
+	public final Term fromTerm(PrologTerm head, PrologTerm[] body) {
 		Term clauseHead = fromTerm(head);
 		if (body != null && body.length > 0) {
 			Term clauseBody = fromTerm(body[body.length - 1]);
