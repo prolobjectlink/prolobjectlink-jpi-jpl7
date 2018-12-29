@@ -32,16 +32,16 @@ public final class JplClauses extends LinkedList<PrologClause> implements Prolog
 
 	private final String indicator;
 
-	JplClauses(String indicator) {
+	public JplClauses(String indicator) {
 		this.indicator = indicator;
 	}
 
-	JplClauses(String indicator, PrologClause e) {
+	public JplClauses(String indicator, PrologClause e) {
 		this(indicator);
 		add(e);
 	}
 
-	JplClauses(String indicator, Collection<? extends PrologClause> clauses) {
+	public JplClauses(String indicator, Collection<? extends PrologClause> clauses) {
 		this(indicator);
 		addAll(clauses);
 	}
@@ -171,7 +171,7 @@ public final class JplClauses extends LinkedList<PrologClause> implements Prolog
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;

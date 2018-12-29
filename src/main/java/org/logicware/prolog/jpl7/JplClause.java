@@ -24,14 +24,22 @@ import org.logicware.prolog.PrologClause;
 import org.logicware.prolog.PrologProvider;
 import org.logicware.prolog.PrologTerm;
 
-public class JplClause extends AbstractClause implements PrologClause {
+public abstract class JplClause extends AbstractClause implements PrologClause {
 
-	public JplClause(PrologProvider provider, PrologTerm head, boolean dynamic, boolean multifile,
+	protected JplClause(PrologProvider provider, PrologTerm head) {
+		super(provider, head, false, false, false);
+	}
+
+	protected JplClause(PrologProvider provider, PrologTerm head, PrologTerm body) {
+		super(provider, head, body, false, false, false);
+	}
+
+	protected JplClause(PrologProvider provider, PrologTerm head, boolean dynamic, boolean multifile,
 			boolean discontiguous) {
 		super(provider, head, dynamic, multifile, discontiguous);
 	}
 
-	public JplClause(PrologProvider provider, PrologTerm head, PrologTerm body, boolean dynamic, boolean multifile,
+	protected JplClause(PrologProvider provider, PrologTerm head, PrologTerm body, boolean dynamic, boolean multifile,
 			boolean discontiguous) {
 		super(provider, head, body, dynamic, multifile, discontiguous);
 	}
