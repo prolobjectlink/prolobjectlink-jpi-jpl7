@@ -44,7 +44,7 @@ import org.logicware.prolog.PrologProvider;
 import org.logicware.prolog.PrologStructure;
 import org.logicware.prolog.PrologTerm;
 
-public final class JplParser extends JplConverter implements PrologParser {
+public abstract class JplParser extends JplConverter implements PrologParser {
 
 	public PrologList parseList(String stringList) {
 		return (PrologList) parseTerm(stringList);
@@ -78,14 +78,10 @@ public final class JplParser extends JplConverter implements PrologParser {
 		} else {
 			clauseTerm = Util.textToTerm(clause);
 		}
-		return createClause(clauseTerm);
+		return getClause(clauseTerm);
 	}
 
-	private JplClause createClause(Term clauseTerm) {
-		// TODO Auto-generated method stub
-		System.out.println(clauseTerm);
-		return null;
-	}
+	protected abstract JplClause getClause(Term clauseTerm);
 
 	public Set<PrologClause> parseProgram(String file) {
 		return parseProgram(new File(file));
@@ -106,7 +102,7 @@ public final class JplParser extends JplConverter implements PrologParser {
 				if (line.lastIndexOf('.') == line.length() - 1) {
 					b.append(line.substring(0, line.length() - 1));
 					Term clauseTerm = Util.textToTerm("" + b + "");
-					JplClause c = createClause(clauseTerm);
+					JplClause c = getClause(clauseTerm);
 
 					b = new StringBuilder();
 				} else {
