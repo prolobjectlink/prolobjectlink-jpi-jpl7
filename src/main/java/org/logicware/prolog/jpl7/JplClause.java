@@ -2,7 +2,7 @@
  * #%L
  * prolobjectlink-jpi-jpl7
  * %%
- * Copyright (C) 2012 - 2017 Logicware Project
+ * Copyright (C) 2012 - 2017 WorkLogic Project
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ import org.logicware.prolog.PrologClause;
 import org.logicware.prolog.PrologProvider;
 import org.logicware.prolog.PrologTerm;
 
-public abstract class JplClause extends AbstractClause implements PrologClause {
+public class JplClause extends AbstractClause implements PrologClause {
 
 	protected JplClause(PrologProvider provider, PrologTerm head) {
 		super(provider, head, false, false, false);

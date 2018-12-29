@@ -2,7 +2,7 @@
  * #%L
  * prolobjectlink-jpi-jpl7
  * %%
- * Copyright (C) 2012 - 2017 Logicware Project
+ * Copyright (C) 2012 - 2017 WorkLogic Project
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,18 +19,17 @@
  */
 package org.logicware.prolog.jpl7;
 
-import static org.logicware.logging.LoggerConstants.FILE_NOT_FOUND;
 import static org.logicware.logging.LoggerConstants.IO;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.jpl7.Atom;
@@ -48,10 +47,9 @@ import org.logicware.prolog.PrologOperator;
 import org.logicware.prolog.PrologProvider;
 import org.logicware.prolog.PrologQuery;
 import org.logicware.prolog.PrologTerm;
+import org.logicware.prolog.PrologTermType;
 
 public abstract class JplEngine extends AbstractEngine implements PrologEngine {
-
-	protected Query query;
 
 	// used only for findall list result
 	protected static final String KEY = "X";
@@ -65,11 +63,14 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	// absolute location of cache in OS
 	private String location;
 
-	// formulated string for consult(f)
-	private String consultCacheFile;
-
 	// formulated string for consult(f),
 	private String consultCacheFileAnd;
+
+	// parser to obtain terms from text
+	private final JplParser parser = new JplParser();
+
+	// main memory prolog program
+	protected JplProgram program = new JplProgram();
 
 	static {
 		try {
@@ -85,62 +86,14 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		location = pf.getAbsolutePath();
 		location = location.toLowerCase();
 		location = location.replace(File.separatorChar, '/');
-		consultCacheFile = "consult('" + cache + "')";
+		String consultCacheFile = "consult('" + cache + "')";
 		consultCacheFileAnd = consultCacheFile + ",";
 	}
 
-	private void open(String path, boolean append) {
-
-		FileReader reader = null;
-		PrintWriter writer = null;
-		BufferedReader buffer = null;
-
-		try {
-			reader = new FileReader(path);
-			writer = new PrintWriter(new FileOutputStream(cache, append));
-			buffer = new BufferedReader(reader);
-			String line = buffer.readLine();
-			while (line != null) {
-				/*
-				 * TODO We need a dedicated variable scanner for save variable name because SWI
-				 * lost original variables names in main memory
-				 */
-				writer.append(line);
-				writer.append('\n');
-				line = buffer.readLine();
-			}
-		} catch (FileNotFoundException e) {
-			LoggerUtils.error(getClass(), FILE_NOT_FOUND, e);
-		} catch (IOException e) {
-			LoggerUtils.error(getClass(), IO, e);
-		} finally {
-			if (reader != null) {
-				try {
-					reader.close();
-				} catch (IOException e) {
-					LoggerUtils.error(getClass(), IO, e);
-				}
-			}
-			if (writer != null) {
-				writer.close();
-			}
-			if (buffer != null) {
-				try {
-					buffer.close();
-				} catch (IOException e) {
-					LoggerUtils.error(getClass(), IO, e);
-				}
-			}
-		}
-
-		query = new Query(consultCacheFile);
-
-	}
-
-	private synchronized Set<PrologIndicator> predicates() {
+	private Set<PrologIndicator> predicates() {
 		Set<PrologIndicator> indicators = new HashSet<PrologIndicator>();
 		String opQuery = consultCacheFileAnd + "findall(X/Y,current_predicate(X/Y)," + KEY + ")";
-		query = new Query(opQuery);
+		Query query = new Query(opQuery);
 		if (query.hasSolution()) {
 			Term term = query.oneSolution().get(KEY);
 			Term[] termArray = term.toTermArray();
@@ -158,36 +111,6 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		return indicators;
 	}
 
-	private void writeExcept(Iterator<PrologClause> i, PrintWriter writer, Term t) {
-
-		Term termHead = t;
-		Term termBody = BODY;
-		if (t.hasFunctor(":-", 2)) {
-			termHead = t.arg(1);
-			termBody = t.arg(2);
-		}
-
-		PrologTerm th = toTerm(termHead, PrologTerm.class);
-		PrologTerm tb = toTerm(termBody, PrologTerm.class);
-
-		// copy all except current term
-		while (i.hasNext()) {
-			PrologClause c = i.next();
-			PrologTerm head = c.getHead();
-			PrologTerm body = c.getBody();
-			if (body == null) {
-				body = provider.prologTrue();
-			}
-
-			// using unify because equals is a strong condition
-			if (!(th.unify(head) && tb.unify(body))) {
-				writer.append("" + c + "");
-				writer.append('\n');
-			}
-		}
-
-	}
-
 	protected JplEngine(PrologProvider provider) {
 		super(provider);
 		initialization();
@@ -202,36 +125,33 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	protected abstract Iterator<PrologClause> iterator(String path);
 
-	public final synchronized void consult(String path) {
-		open(path, false);
-	}
-
-	public final synchronized void include(String path) {
-		open(path, true);
-	}
-
-	public final synchronized void abolish(String functor, int arity) {
-		PrintWriter writer = null;
-		try {
-			Iterator<PrologClause> i = iterator();
-			writer = new PrintWriter(new FileOutputStream(cache, false));
-			while (i.hasNext()) {
-				PrologClause c = i.next();
-				if (!c.getIndicator().equals(functor + "/" + arity)) {
-					writer.append("" + c + "");
-					writer.append('\n');
+	public Iterator<PrologClause> iterator() {
+		List<PrologClause> cls = new ArrayList<PrologClause>();
+		for (List<Term> family : program.getClauses().values()) {
+			for (Term clause : family) {
+				if (clause.hasFunctor(":-", 2)) {
+					PrologTerm head = toTerm(clause.arg(1), PrologTerm.class);
+					PrologTerm body = toTerm(clause.arg(2), PrologTerm.class);
+					if (body.getType() != PrologTermType.TRUE_TYPE) {
+						cls.add(new JplClause(provider, head, body, false, false, false));
+					} else {
+						cls.add(new JplClause(provider, head, false, false, false));
+					}
 				}
 			}
-		} catch (FileNotFoundException e) {
-			LoggerUtils.error(getClass(), IO + cache, e);
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
 		}
+		return new PrologProgramIterator(cls);
 	}
 
-	public final synchronized void persist(String path) {
+	public void include(String path) {
+		program.add(parser.parseProgram(path));
+	}
+
+	public void consult(String path) {
+		program = parser.parseProgram(path);
+	}
+
+	public void persist(String path) {
 		PrintWriter writer = null;
 		try {
 			Iterator<PrologClause> i = iterator();
@@ -250,141 +170,73 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		}
 	}
 
-	public final synchronized void asserta(String stringClause) {
+	public void abolish(String functor, int arity) {
+		program.removeAll(functor, arity);
+	}
+
+	public final void asserta(String stringClause) {
 		asserta(Util.textToTerm(stringClause));
 	}
 
-	public final synchronized void asserta(PrologTerm head, PrologTerm... body) {
+	public final void asserta(PrologTerm head, PrologTerm... body) {
 		asserta(fromTerm(head, body, Term.class));
 	}
 
-	private synchronized void asserta(Term t) {
-
-		PrintWriter writer = null;
-		try {
-			Iterator<PrologClause> i = iterator();
-			writer = new PrintWriter(new FileOutputStream(cache, false));
-
-			// add first
-			writer.append("" + t + "");
-			writer.append('.');
-			writer.append('\n');
-
-			writeExcept(i, writer, t);
-
-		} catch (FileNotFoundException e) {
-			LoggerUtils.error(getClass(), IO + cache, e);
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
-		}
-
+	private void asserta(Term t) {
+		program.push(t);
 	}
 
-	public final synchronized void assertz(String stringClause) {
+	public final void assertz(String stringClause) {
 		assertz(Util.textToTerm(stringClause));
 	}
 
-	public final synchronized void assertz(PrologTerm head, PrologTerm... body) {
+	public final void assertz(PrologTerm head, PrologTerm... body) {
 		assertz(fromTerm(head, body, Term.class));
 	}
 
-	private synchronized void assertz(Term t) {
-
-		Term termHead = t;
-		Term termBody = BODY;
-		if (t.hasFunctor(":-", 2)) {
-			termHead = t.arg(1);
-			termBody = t.arg(2);
-		}
-
-		PrologTerm th = toTerm(termHead, PrologTerm.class);
-		PrologTerm tb = toTerm(termBody, PrologTerm.class);
-
-		PrintWriter writer = null;
-		try {
-			Iterator<PrologClause> i = iterator();
-			writer = new PrintWriter(new FileOutputStream(cache, true));
-			while (i.hasNext()) {
-				PrologClause c = i.next();
-				PrologTerm head = c.getHead();
-				PrologTerm body = c.getBody();
-				if (body == null) {
-					body = provider.prologTrue();
-				}
-
-				// using unify because equals is a strong condition
-				if (th.unify(head) && tb.unify(body)) {
-					return;
-				}
-			}
-			writer.append("" + t + "");
-			writer.append('.');
-			writer.append('\n');
-		} catch (FileNotFoundException e) {
-			LoggerUtils.error(getClass(), IO + cache, e);
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
-		}
+	private void assertz(Term t) {
+		program.add(t);
 	}
 
-	public final synchronized boolean clause(String stringClause) {
+	public final boolean clause(String stringClause) {
 		return clause(Util.textToTerm(stringClause));
 	}
 
-	public final synchronized boolean clause(PrologTerm head, PrologTerm... body) {
+	public final boolean clause(PrologTerm head, PrologTerm... body) {
 		return clause(fromTerm(head, body, Term.class));
 	}
 
-	private synchronized boolean clause(Term t) {
+	private boolean clause(Term t) {
 		Term h = t;
 		Term b = BODY;
 		if (t.hasFunctor(":-", 2)) {
 			h = t.arg(1);
 			b = t.arg(2);
 		}
-		query = new Query("" +
+		return new JplQuery(
 
-				consultCacheFileAnd +
+				this, cache, "clause(" + h + "," + b + ")"
 
-				"clause(" + h + "," + b + ")"
-
-		);
-		return query.hasSolution();
+		).hasSolution();
 	}
 
-	public final synchronized void retract(String stringClause) {
+	public final void retract(String stringClause) {
 		retract(Util.textToTerm(stringClause));
 	}
 
-	public final synchronized void retract(PrologTerm head, PrologTerm... body) {
+	public final void retract(PrologTerm head, PrologTerm... body) {
 		retract(provider.fromTerm(head, body, Term.class));
 	}
 
-	private synchronized void retract(Term t) {
-
-		PrintWriter writer = null;
-		try {
-			Iterator<PrologClause> i = iterator();
-			writer = new PrintWriter(new FileOutputStream(cache, false));
-			writeExcept(i, writer, t);
-		} catch (FileNotFoundException e) {
-			LoggerUtils.error(getClass(), IO + cache, e);
-		} finally {
-			if (writer != null) {
-				writer.close();
-			}
-		}
+	private void retract(Term t) {
+		program.remove(t);
 	}
 
-	public final synchronized PrologQuery query(String stringQuery) {
+	public final PrologQuery query(String stringQuery) {
 		return new JplQuery(this, cache, stringQuery);
 	}
 
-	public final synchronized PrologQuery query(PrologTerm[] terms) {
+	public final PrologQuery query(PrologTerm[] terms) {
 		Iterator<PrologTerm> i = new ArrayIterator<PrologTerm>(terms);
 		StringBuilder buffer = new StringBuilder();
 		while (i.hasNext()) {
@@ -395,7 +247,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		return query("" + buffer + "");
 	}
 
-	public final synchronized PrologQuery query(PrologTerm term, PrologTerm... terms) {
+	public final PrologQuery query(PrologTerm term, PrologTerm... terms) {
 		Iterator<PrologTerm> i = new ArrayIterator<PrologTerm>(terms);
 		StringBuilder buffer = new StringBuilder();
 		buffer.append("" + term + "");
@@ -407,23 +259,23 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		return query("" + buffer + "");
 	}
 
-	public final synchronized void operator(int priority, String specifier, String operator) {
+	public final void operator(int priority, String specifier, String operator) {
 		new Query(consultCacheFileAnd + "op(" + priority + "," + specifier + ", " + operator + ")").hasSolution();
 	}
 
-	public final synchronized boolean currentPredicate(String functor, int arity) {
+	public final boolean currentPredicate(String functor, int arity) {
 		return new Query(consultCacheFileAnd + "current_predicate(" + functor + "/" + arity + ")").hasSolution();
 	}
 
-	public final synchronized boolean currentOperator(int priority, String specifier, String operator) {
+	public final boolean currentOperator(int priority, String specifier, String operator) {
 		return new Query(consultCacheFileAnd + "current_op(" + priority + "," + specifier + ", " + operator + ")")
 				.hasSolution();
 	}
 
-	public final synchronized Set<PrologOperator> currentOperators() {
+	public final Set<PrologOperator> currentOperators() {
 		Set<PrologOperator> operators = new HashSet<PrologOperator>();
 		String opQuery = consultCacheFileAnd + "findall(P/S/O,current_op(P,S,O)," + KEY + ")";
-		query = new Query(opQuery);
+		Query query = new Query(opQuery);
 		if (query.hasSolution()) {
 			Term term = query.oneSolution().get(KEY);
 			Term[] termArray = term.toTermArray();
@@ -443,17 +295,11 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		return operators;
 	}
 
-	public final synchronized int getProgramSize() {
-		int counter = 0;
-		Iterator<?> i = iterator();
-		while (i.hasNext()) {
-			counter++;
-			i.next();
-		}
-		return counter;
+	public int getProgramSize() {
+		return program.size();
 	}
 
-	public final synchronized Set<PrologIndicator> getPredicates() {
+	public final Set<PrologIndicator> getPredicates() {
 		Set<PrologIndicator> pis = predicates();
 		Set<PrologIndicator> builtins = getBuiltIns();
 		for (PrologIndicator prologIndicator : pis) {
@@ -464,7 +310,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		return pis;
 	}
 
-	public final synchronized Set<PrologIndicator> getBuiltIns() {
+	public final Set<PrologIndicator> getBuiltIns() {
 		Set<PrologIndicator> pis = predicates();
 		Set<PrologClause> clauses = getProgramClauses();
 		for (PrologClause prologClause : clauses) {
@@ -477,17 +323,20 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	}
 
 	public final void dispose() {
-		query.close();
 		File c = new File(cache);
 		c.deleteOnExit();
+	}
+
+	public final String getCache() {
+		return cache;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((cache == null) ? 0 : cache.hashCode());
 		result = prime * result + ((location == null) ? 0 : location.hashCode());
+		result = prime * result + ((program == null) ? 0 : program.hashCode());
 		return result;
 	}
 
@@ -506,15 +355,13 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		} else if (!location.equals(other.location)) {
 			return false;
 		}
+		if (program == null) {
+			if (other.program != null)
+				return false;
+		} else if (!program.equals(other.program)) {
+			return false;
+		}
 		return true;
-	}
-
-	public final synchronized Iterator<PrologClause> iterator() {
-		return iterator(location);
-	}
-
-	public final String getCache() {
-		return cache;
 	}
 
 }

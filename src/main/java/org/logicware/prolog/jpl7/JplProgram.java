@@ -2,7 +2,7 @@
  * #%L
  * prolobjectlink-jpi-jpl7
  * %%
- * Copyright (C) 2012 - 2017 Logicware Project
+ * Copyright (C) 2012 - 2017 WorkLogic Project
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,40 +27,53 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.logicware.prolog.PrologClause;
+import org.jpl7.Term;
+import org.logicware.RuntimeError;
 import org.logicware.prolog.PrologClauses;
-import org.logicware.prolog.PrologGoal;
-import org.logicware.prolog.PrologProgram;
 
-public final class JplProgram extends AbstractSet<PrologClauses> implements PrologProgram {
+public final class JplProgram extends AbstractSet<List<Term>> {
 
 	// program initializations goals
-	private final List<PrologGoal> goals = new LinkedList<PrologGoal>();
+	private final List<Term> goals = new LinkedList<Term>();
 
 	// list of directives goals
-	private final List<PrologGoal> directives = new LinkedList<PrologGoal>();
+	private final List<Term> directives = new LinkedList<Term>();
 
 	// program (data base) in read order
-	private final LinkedHashMap<String, PrologClauses> clauses = new LinkedHashMap<String, PrologClauses>();
+	private final LinkedHashMap<String, List<Term>> clauses = new LinkedHashMap<String, List<Term>>();
 
-	public PrologClauses get(String key) {
+	private String getKey(List<Term> cls) {
+		String msg = "Empty clause list";
+		if (!cls.isEmpty()) {
+			Term t = cls.get(0);
+			String key = t.name();
+			key += "/" + t.arity();
+			return key;
+		}
+		throw new RuntimeError(msg);
+	}
+
+	public List<Term> get(String key) {
 		return clauses.get(key);
 	}
 
-	public void add(PrologClause clause) {
-		String key = clause.getIndicator();
-		PrologClauses family = get(key);
+	public void add(Term clause) {
+		String key = clause.name();
+		key += "/" + clause.arity();
+		List<Term> family = get(key);
 		if (family == null) {
-			clauses.put(key, new JplClauses(key, clause));
-		} else {
+			family = new LinkedList<Term>();
+			family.add(clause);
+			clauses.put(key, family);
+		} else if (!family.contains(clause)) {
 			family.add(clause);
 		}
 	}
 
 	@Override
-	public boolean add(PrologClauses cls) {
-		String key = cls.getIndicator();
-		PrologClauses family = get(key);
+	public boolean add(List<Term> cls) {
+		String key = getKey(cls);
+		List<Term> family = get(key);
 		if (family != null) {
 			family.addAll(cls);
 		} else {
@@ -69,7 +82,7 @@ public final class JplProgram extends AbstractSet<PrologClauses> implements Prol
 		return true;
 	}
 
-	public void add(PrologProgram program) {
+	public void add(JplProgram program) {
 		goals.addAll(program.getGoals());
 		clauses.putAll(program.getClauses());
 		directives.addAll(program.getDirectives());
@@ -78,10 +91,12 @@ public final class JplProgram extends AbstractSet<PrologClauses> implements Prol
 	@Override
 	public boolean remove(Object o) {
 
-		if (o instanceof PrologClause) {
-			PrologClause c = (PrologClause) o;
-			String key = c.getIndicator();
-			PrologClauses family = get(key);
+		if (o instanceof Term) {
+			Term c = (Term) o;
+			int arity = c.arity();
+			String name = c.name();
+			String key = name + "/" + arity;
+			List<Term> family = get(key);
 			if (family != null) {
 				return family.remove(c);
 			}
@@ -90,21 +105,25 @@ public final class JplProgram extends AbstractSet<PrologClauses> implements Prol
 		else if (o instanceof PrologClauses) {
 			PrologClauses cs = (PrologClauses) o;
 			String key = cs.getIndicator();
-			PrologClauses oldFamily = clauses.remove(key);
+			List<Term> oldFamily = clauses.remove(key);
 			return oldFamily != null;
 		}
 
 		return false;
 	}
 
-	public void push(PrologClause clause) {
-		String key = clause.getIndicator();
-		PrologClauses family = clauses.remove(key);
-		PrologClauses cs = new JplClauses(key, clause);
-		if (family != null) {
-			for (PrologClause prologClause : family) {
-				cs.add(prologClause);
+	public void push(Term clause) {
+		String key = clause.name();
+		key += "/" + clause.arity();
+		List<Term> family = clauses.remove(key);
+		List<Term> cs = new LinkedList<Term>();
+		if (family != null && !family.contains(clause)) {
+			cs.add(clause);
+			for (Term term : family) {
+				cs.add(term);
 			}
+		} else {
+			cs.add(clause);
 		}
 		clauses.put(key, cs);
 	}
@@ -117,89 +136,35 @@ public final class JplProgram extends AbstractSet<PrologClauses> implements Prol
 		removeAll(functor + "/" + arity);
 	}
 
-	public List<PrologGoal> getDirectives() {
+	public List<Term> getDirectives() {
 		return directives;
 	}
 
-	public boolean addDirective(PrologGoal directive) {
+	public boolean addDirective(Term directive) {
 		return directives.add(directive);
 	}
 
-	public boolean removeDirective(PrologGoal directive) {
+	public boolean removeDirective(Term directive) {
 		return directives.remove(directive);
 	}
 
-	public List<PrologGoal> getGoals() {
+	public List<Term> getGoals() {
 		return goals;
 	}
 
-	public boolean addGoal(PrologGoal goal) {
+	public boolean addGoal(Term goal) {
 		return goals.add(goal);
 	}
 
-	public boolean removeGoal(PrologGoal goal) {
+	public boolean removeGoal(Term goal) {
 		return goals.remove(goal);
-	}
-
-	public void markDynamic(String functor, int arity) {
-		PrologClauses cls = get(functor + "/" + arity);
-		if (cls instanceof JplClauses) {
-			((JplClauses) cls).markDynamic();
-		}
-	}
-
-	public void unmarkDynamic(String functor, int arity) {
-		PrologClauses cls = get(functor + "/" + arity);
-		if (cls instanceof JplClauses) {
-			((JplClauses) cls).unmarkDynamic();
-		}
-	}
-
-	public boolean isDynamic(String functor, int arity) {
-		return get(functor + "/" + arity).isDynamic();
-	}
-
-	public void markMultifile(String functor, int arity) {
-		PrologClauses cls = get(functor + "/" + arity);
-		if (cls instanceof JplClauses) {
-			((JplClauses) cls).markMultifile();
-		}
-	}
-
-	public void unmarkMultifile(String functor, int arity) {
-		PrologClauses cls = get(functor + "/" + arity);
-		if (cls instanceof JplClauses) {
-			((JplClauses) cls).unmarkMultifile();
-		}
-	}
-
-	public boolean isMultifile(String functor, int arity) {
-		return get(functor + "/" + arity).isMultifile();
-	}
-
-	public void markDiscontiguous(String functor, int arity) {
-		PrologClauses cls = get(functor + "/" + arity);
-		if (cls instanceof JplClauses) {
-			((JplClauses) cls).markDiscontiguous();
-		}
-	}
-
-	public void unmarkDiscontiguous(String functor, int arity) {
-		PrologClauses cls = get(functor + "/" + arity);
-		if (cls instanceof JplClauses) {
-			((JplClauses) cls).unmarkDiscontiguous();
-		}
-	}
-
-	public boolean isDiscontiguous(String functor, int arity) {
-		return get(functor + "/" + arity).isDiscontiguous();
 	}
 
 	public Set<String> getIndicators() {
 		return clauses.keySet();
 	}
 
-	public Map<String, PrologClauses> getClauses() {
+	public Map<String, List<Term>> getClauses() {
 		return clauses;
 	}
 
@@ -208,7 +173,7 @@ public final class JplProgram extends AbstractSet<PrologClauses> implements Prol
 		StringBuilder families = new StringBuilder();
 
 		if (!directives.isEmpty()) {
-			Iterator<PrologGoal> i = directives.iterator();
+			Iterator<Term> i = directives.iterator();
 			while (i.hasNext()) {
 				families.append(":-");
 				families.append(i.next());
@@ -217,7 +182,7 @@ public final class JplProgram extends AbstractSet<PrologClauses> implements Prol
 		}
 
 		if (!clauses.isEmpty()) {
-			Iterator<PrologClauses> i = iterator();
+			Iterator<List<Term>> i = iterator();
 			while (i.hasNext()) {
 				families.append(i.next());
 				families.append("\n");
@@ -225,6 +190,28 @@ public final class JplProgram extends AbstractSet<PrologClauses> implements Prol
 		}
 
 		return "" + families + "";
+	}
+
+	@Override
+	public Iterator<List<Term>> iterator() {
+		return clauses.values().iterator();
+	}
+
+	@Override
+	public int size() {
+		int size = 0;
+		Iterator<List<Term>> i = iterator();
+		while (i.hasNext()) {
+			size += i.next().size();
+		}
+		return size;
+	}
+
+	@Override
+	public void clear() {
+		goals.clear();
+		clauses.clear();
+		directives.clear();
 	}
 
 	@Override
@@ -245,34 +232,14 @@ public final class JplProgram extends AbstractSet<PrologClauses> implements Prol
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		JplProgram o = (JplProgram) obj;
-		return clauses.equals(o.clauses) &&
-
-				directives.equals(o.directives) &&
-
-				goals.equals(o.goals);
-	}
-
-	@Override
-	public Iterator<PrologClauses> iterator() {
-		return clauses.values().iterator();
-	}
-
-	@Override
-	public void clear() {
-		goals.clear();
-		clauses.clear();
-		directives.clear();
-	}
-
-	@Override
-	public int size() {
-		int size = 0;
-		Iterator<PrologClauses> i = iterator();
-		while (i.hasNext()) {
-			size += i.next().size();
+		JplProgram other = (JplProgram) obj;
+		if (!clauses.equals(other.clauses)) {
+			return false;
 		}
-		return size;
+		if (!directives.equals(other.directives)) {
+			return false;
+		}
+		return goals.equals(other.goals);
 	}
 
 }

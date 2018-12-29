@@ -12,7 +12,7 @@
 	<inceptionYear>2012</inceptionYear>
 
 	<organization>
-		<name>Logicware Project</name>
+		<name>WorkLogic Project</name>
 		<url>http://www.logicware.org</url>
 	</organization>
 
@@ -29,7 +29,7 @@
 			<id>jzalacain</id>
 			<name>Jose Zalacain</name>
 			<email>jzalacain@nauta.cu</email>
-			<organization>Logicware Project</organization>
+			<organization>WorkLogic Project</organization>
 			<organizationUrl>http://www.logicware.org</organizationUrl>
 			<roles>
 				<role>architect</role>
