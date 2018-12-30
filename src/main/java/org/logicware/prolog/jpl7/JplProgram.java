@@ -107,9 +107,7 @@ public final class JplProgram extends AbstractSet<List<Term>> {
 
 		if (o instanceof Term) {
 			Term c = (Term) o;
-			int arity = c.arity();
-			String name = c.name();
-			String key = name + "/" + arity;
+			String key = getKey(c);
 			List<Term> family = get(key);
 			if (family != null) {
 				return family.remove(c);
