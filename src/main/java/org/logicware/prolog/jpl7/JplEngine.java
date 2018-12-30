@@ -152,13 +152,8 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	public void persist(String path) {
 		PrintWriter writer = null;
 		try {
-			Iterator<PrologClause> i = iterator();
 			writer = new PrintWriter(new FileOutputStream(path, false));
-			while (i.hasNext()) {
-				PrologClause c = i.next();
-				writer.append("" + c + "");
-				writer.append("\n");
-			}
+			writer.print(program);
 		} catch (FileNotFoundException e) {
 			LoggerUtils.error(getClass(), IO + cache, e);
 		} finally {
@@ -293,7 +288,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		return operators;
 	}
 
-	public int getProgramSize() {
+	public final int getProgramSize() {
 		return program.size();
 	}
 

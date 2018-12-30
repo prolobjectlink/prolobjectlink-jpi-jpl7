@@ -42,6 +42,17 @@ public final class JplProgram extends AbstractSet<List<Term>> {
 	// program (data base) in read order
 	private final LinkedHashMap<String, List<Term>> clauses = new LinkedHashMap<String, List<Term>>();
 
+	private String getKey(Term clause) {
+		String key = clause.name();
+		key += "/" + clause.arity();
+		if (key.equals(":-/2")) {
+			key = clause.arg(1).name();
+			key += "/";
+			key += clause.arg(1).arity();
+		}
+		return key;
+	}
+
 	private String getKey(List<Term> cls) {
 		String msg = "Empty clause list";
 		if (!cls.isEmpty()) {
@@ -58,8 +69,7 @@ public final class JplProgram extends AbstractSet<List<Term>> {
 	}
 
 	public void add(Term clause) {
-		String key = clause.name();
-		key += "/" + clause.arity();
+		String key = getKey(clause);
 		List<Term> family = get(key);
 		if (family == null) {
 			family = new LinkedList<Term>();
@@ -113,8 +123,7 @@ public final class JplProgram extends AbstractSet<List<Term>> {
 	}
 
 	public void push(Term clause) {
-		String key = clause.name();
-		key += "/" + clause.arity();
+		String key = getKey(clause);
 		List<Term> family = clauses.remove(key);
 		List<Term> cs = new LinkedList<Term>();
 		if (family != null && !family.contains(clause)) {
@@ -203,7 +212,6 @@ public final class JplProgram extends AbstractSet<List<Term>> {
 		Iterator<List<Term>> i = iterator();
 		while (i.hasNext()) {
 			List<Term> n = i.next();
-			System.out.println(n);
 			size += n.size();
 		}
 		return size;
