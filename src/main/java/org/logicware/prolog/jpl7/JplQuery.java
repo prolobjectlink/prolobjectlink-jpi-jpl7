@@ -181,7 +181,7 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 	}
 
 	@Override
-	public int hashCode() {
+	public synchronized int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + Objects.hashCode(file);
@@ -191,7 +191,7 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public synchronized boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}

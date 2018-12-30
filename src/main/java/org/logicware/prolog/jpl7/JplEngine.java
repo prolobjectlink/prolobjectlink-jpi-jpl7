@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.jpl7.Atom;
@@ -49,6 +50,11 @@ import org.logicware.prolog.PrologQuery;
 import org.logicware.prolog.PrologTerm;
 import org.logicware.prolog.PrologTermType;
 
+/**
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
 public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	// used only for findall list result
@@ -60,85 +66,31 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	// cache file in OS temporal directory
 	private static String cache = null;
 
-	// absolute location of cache in OS
-	private String location;
-
-	// formulated string for consult(f),
-	private String consultCacheFileAnd;
-
 	// parser to obtain terms from text
 	private final JplParser parser = new JplParser();
 
 	// main memory prolog program
 	protected JplProgram program = new JplProgram();
 
+	// formulated string for < consult(cache), >
+	private static String consultCacheComma;
 	static {
 		try {
 			File f = File.createTempFile("prolobjectlink-jpi-jpl7-cache-", ".pl");
 			cache = f.getCanonicalPath().replace(File.separatorChar, '/');
+			consultCacheComma = "consult('" + cache + "'),";
 		} catch (IOException e) {
 			LoggerUtils.error(JplEngine.class, IO, e);
 		}
 	}
 
-	private void initialization() {
-		File pf = new File(cache);
-		location = pf.getAbsolutePath();
-		location = location.toLowerCase();
-		location = location.replace(File.separatorChar, '/');
-		String consultCacheFile = "consult('" + cache + "')";
-		consultCacheFileAnd = consultCacheFile + ",";
-	}
-
-	private Set<PrologIndicator> predicates() {
-		Set<PrologIndicator> indicators = new HashSet<PrologIndicator>();
-		String opQuery = consultCacheFileAnd + "findall(X/Y,current_predicate(X/Y)," + KEY + ")";
-		Query query = new Query(opQuery);
-		if (query.hasSolution()) {
-			Term term = query.oneSolution().get(KEY);
-			Term[] termArray = term.toTermArray();
-			for (Term t : termArray) {
-				Term f = t.arg(1);
-				Term a = t.arg(2);
-
-				int arity = a.intValue();
-				String functor = f.name();
-
-				PredicateIndicator pi = new PredicateIndicator(functor, arity);
-				indicators.add(pi);
-			}
-		}
-		return indicators;
-	}
-
 	protected JplEngine(PrologProvider provider) {
 		super(provider);
-		initialization();
-		consult(cache);
 	}
 
 	protected JplEngine(PrologProvider provider, String path) {
 		super(provider);
-		initialization();
 		consult(path);
-	}
-
-	public final Iterator<PrologClause> iterator() {
-		List<PrologClause> cls = new ArrayList<PrologClause>();
-		for (List<Term> family : program.getClauses().values()) {
-			for (Term clause : family) {
-				if (clause.hasFunctor(":-", 2)) {
-					PrologTerm head = toTerm(clause.arg(1), PrologTerm.class);
-					PrologTerm body = toTerm(clause.arg(2), PrologTerm.class);
-					if (body.getType() != PrologTermType.TRUE_TYPE) {
-						cls.add(new JplClause(provider, head, body, false, false, false));
-					} else {
-						cls.add(new JplClause(provider, head, false, false, false));
-					}
-				}
-			}
-		}
-		return new PrologProgramIterator(cls);
 	}
 
 	public final void include(String path) {
@@ -259,21 +211,21 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	}
 
 	public final void operator(int priority, String specifier, String operator) {
-		new Query(consultCacheFileAnd + "op(" + priority + "," + specifier + ", " + operator + ")").hasSolution();
+		new Query(consultCacheComma + "op(" + priority + "," + specifier + ", " + operator + ")").hasSolution();
 	}
 
 	public final boolean currentPredicate(String functor, int arity) {
-		return new Query(consultCacheFileAnd + "current_predicate(" + functor + "/" + arity + ")").hasSolution();
+		return new Query(consultCacheComma + "current_predicate(" + functor + "/" + arity + ")").hasSolution();
 	}
 
 	public final boolean currentOperator(int priority, String specifier, String operator) {
-		return new Query(consultCacheFileAnd + "current_op(" + priority + "," + specifier + ", " + operator + ")")
+		return new Query(consultCacheComma + "current_op(" + priority + "," + specifier + ", " + operator + ")")
 				.hasSolution();
 	}
 
 	public final Set<PrologOperator> currentOperators() {
 		Set<PrologOperator> operators = new HashSet<PrologOperator>();
-		String opQuery = consultCacheFileAnd + "findall(P/S/O,current_op(P,S,O)," + KEY + ")";
+		String opQuery = consultCacheComma + "findall(P/S/O,current_op(P,S,O)," + KEY + ")";
 		Query query = new Query(opQuery);
 		if (query.hasSolution()) {
 			Term term = query.oneSolution().get(KEY);
@@ -321,9 +273,50 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		return pis;
 	}
 
+	private Set<PrologIndicator> predicates() {
+		Set<PrologIndicator> indicators = new HashSet<PrologIndicator>();
+		String stringQuery = "consult('" + cache + "')," + "findall(X/Y,current_predicate(X/Y)," + KEY + ")";
+		PrologQuery query = new JplQuery(this, cache, stringQuery);
+		if (query.hasSolution()) {
+			Map<String, PrologTerm>[] s = query.allVariablesSolutions();
+			for (Map<String, PrologTerm> map : s) {
+				for (PrologTerm term : map.values()) {
+					if (term.isCompound()) {
+						int arity = term.getArity();
+						String functor = term.getFunctor();
+						PredicateIndicator pi = new PredicateIndicator(functor, arity);
+						indicators.add(pi);
+					}
+				}
+			}
+		}
+		return indicators;
+	}
+
+	public final Iterator<PrologClause> iterator() {
+		List<PrologClause> cls = new ArrayList<PrologClause>();
+		for (List<Term> family : program.getClauses().values()) {
+			for (Term clause : family) {
+				if (clause.hasFunctor(":-", 2)) {
+					PrologTerm head = toTerm(clause.arg(1), PrologTerm.class);
+					PrologTerm body = toTerm(clause.arg(2), PrologTerm.class);
+					if (body.getType() != PrologTermType.TRUE_TYPE) {
+						cls.add(new JplClause(provider, head, body, false, false, false));
+					} else {
+						cls.add(new JplClause(provider, head, false, false, false));
+					}
+				} else {
+					cls.add(new JplClause(provider, toTerm(clause, PrologTerm.class), false, false, false));
+				}
+			}
+		}
+		return new PrologProgramIterator(cls);
+	}
+
 	public final void dispose() {
 		File c = new File(cache);
 		c.deleteOnExit();
+		program.clear();
 	}
 
 	public final String getCache() {
@@ -334,7 +327,6 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + ((location == null) ? 0 : location.hashCode());
 		result = prime * result + ((program == null) ? 0 : program.hashCode());
 		return result;
 	}
@@ -348,12 +340,6 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		if (getClass() != obj.getClass())
 			return false;
 		JplEngine other = (JplEngine) obj;
-		if (location == null) {
-			if (other.location != null)
-				return false;
-		} else if (!location.equals(other.location)) {
-			return false;
-		}
 		if (program == null) {
 			if (other.program != null)
 				return false;
