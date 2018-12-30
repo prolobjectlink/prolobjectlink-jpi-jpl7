@@ -202,7 +202,9 @@ public final class JplProgram extends AbstractSet<List<Term>> {
 		int size = 0;
 		Iterator<List<Term>> i = iterator();
 		while (i.hasNext()) {
-			size += i.next().size();
+			List<Term> n = i.next();
+			System.out.println(n);
+			size += n.size();
 		}
 		return size;
 	}

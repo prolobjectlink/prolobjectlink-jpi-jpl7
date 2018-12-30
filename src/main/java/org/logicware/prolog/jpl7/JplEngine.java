@@ -123,8 +123,6 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		consult(path);
 	}
 
-	protected abstract Iterator<PrologClause> iterator(String path);
-
 	public Iterator<PrologClause> iterator() {
 		List<PrologClause> cls = new ArrayList<PrologClause>();
 		for (List<Term> family : program.getClauses().values()) {
