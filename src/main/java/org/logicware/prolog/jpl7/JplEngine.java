@@ -143,10 +143,12 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	public final void include(String path) {
 		program.add(parser.parseProgram(path));
+		persist(cache);
 	}
 
 	public final void consult(String path) {
 		program = parser.parseProgram(path);
+		persist(cache);
 	}
 
 	public final void persist(String path) {
@@ -165,6 +167,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	public final void abolish(String functor, int arity) {
 		program.removeAll(functor, arity);
+		persist(cache);
 	}
 
 	public final void asserta(String stringClause) {
@@ -177,6 +180,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	private void asserta(Term t) {
 		program.push(t);
+		persist(cache);
 	}
 
 	public final void assertz(String stringClause) {
@@ -189,6 +193,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	private void assertz(Term t) {
 		program.add(t);
+		persist(cache);
 	}
 
 	public final boolean clause(String stringClause) {
@@ -223,6 +228,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	private void retract(Term t) {
 		program.remove(t);
+		persist(cache);
 	}
 
 	public final PrologQuery query(String stringQuery) {
