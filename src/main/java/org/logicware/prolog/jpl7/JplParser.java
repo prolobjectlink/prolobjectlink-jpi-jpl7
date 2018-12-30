@@ -40,6 +40,10 @@ public final class JplParser {
 		return Util.textToTerm(term);
 	}
 
+	public Term[] parseTerms(Term term) {
+		return parseTerms("" + term + "");
+	}
+
 	public Term[] parseTerms(String stringTerms) {
 		Term[] a = new Term[0];
 		Term ptr = Util.textToTerm(stringTerms);
@@ -68,7 +72,7 @@ public final class JplParser {
 			String line = buffer.readLine();
 			StringBuilder b = new StringBuilder();
 			while (line != null) {
-				if (line.lastIndexOf('.') == line.length() - 1) {
+				if (!line.isEmpty() && line.lastIndexOf('.') == line.length() - 1) {
 					b.append(line.substring(0, line.length() - 1));
 					Term clauseTerm = Util.textToTerm("" + b + "");
 					program.add(clauseTerm);

@@ -28,10 +28,14 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jpl7.Term;
+import org.logicware.ArrayIterator;
 import org.logicware.RuntimeError;
 import org.logicware.prolog.PrologClauses;
 
 public final class JplProgram extends AbstractSet<List<Term>> {
+
+	//
+	private final JplParser parser = new JplParser();
 
 	// program initializations goals
 	private final List<Term> goals = new LinkedList<Term>();
@@ -179,6 +183,7 @@ public final class JplProgram extends AbstractSet<List<Term>> {
 
 	@Override
 	public String toString() {
+
 		StringBuilder families = new StringBuilder();
 
 		if (!directives.isEmpty()) {
@@ -193,8 +198,39 @@ public final class JplProgram extends AbstractSet<List<Term>> {
 		if (!clauses.isEmpty()) {
 			Iterator<List<Term>> i = iterator();
 			while (i.hasNext()) {
-				families.append(i.next());
-				families.append("\n");
+				List<Term> l = i.next();
+				Iterator<Term> j = l.iterator();
+				while (j.hasNext()) {
+					Term term = j.next();
+					String key = term.name();
+					key += "/" + term.arity();
+					if (term.arity() == 2 && key.equals(":-/2")) {
+						Term h = term.arg(1);
+						Term b = term.arg(2);
+						families.append(h);
+						families.append(" :- ");
+						families.append('\n');
+						families.append('\t');
+						Term[] array = parser.parseTerms(b);
+						Iterator<Term> k = new ArrayIterator<Term>(array);
+						while (k.hasNext()) {
+							Term item = k.next();
+							families.append(item);
+							if (k.hasNext()) {
+								families.append(',');
+								families.append('\n');
+								families.append('\t');
+							}
+						}
+					} else {
+						families.append(term);
+					}
+					families.append('.');
+					families.append('\n');
+				}
+				if (i.hasNext()) {
+					families.append('\n');
+				}
 			}
 		}
 
@@ -211,8 +247,12 @@ public final class JplProgram extends AbstractSet<List<Term>> {
 		int size = 0;
 		Iterator<List<Term>> i = iterator();
 		while (i.hasNext()) {
-			List<Term> n = i.next();
-			size += n.size();
+			List<Term> l = i.next();
+			Iterator<Term> j = l.iterator();
+			while (j.hasNext()) {
+				j.next();
+				size++;
+			}
 		}
 		return size;
 	}

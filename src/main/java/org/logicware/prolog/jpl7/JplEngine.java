@@ -123,7 +123,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		consult(path);
 	}
 
-	public Iterator<PrologClause> iterator() {
+	public final Iterator<PrologClause> iterator() {
 		List<PrologClause> cls = new ArrayList<PrologClause>();
 		for (List<Term> family : program.getClauses().values()) {
 			for (Term clause : family) {
@@ -141,15 +141,15 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		return new PrologProgramIterator(cls);
 	}
 
-	public void include(String path) {
+	public final void include(String path) {
 		program.add(parser.parseProgram(path));
 	}
 
-	public void consult(String path) {
+	public final void consult(String path) {
 		program = parser.parseProgram(path);
 	}
 
-	public void persist(String path) {
+	public final void persist(String path) {
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter(new FileOutputStream(path, false));
@@ -163,7 +163,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		}
 	}
 
-	public void abolish(String functor, int arity) {
+	public final void abolish(String functor, int arity) {
 		program.removeAll(functor, arity);
 	}
 
