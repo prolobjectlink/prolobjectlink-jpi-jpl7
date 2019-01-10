@@ -28,9 +28,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jpl7.Term;
-import org.logicware.ArrayIterator;
-import org.logicware.RuntimeError;
 import org.logicware.prolog.PrologClauses;
+import org.worklogic.ArrayIterator;
+import org.worklogic.RuntimeError;
 
 public final class JplProgram extends AbstractSet<List<Term>> {
 

@@ -37,6 +37,7 @@ import org.logicware.prolog.PrologStructure;
 import org.logicware.prolog.PrologTerm;
 import org.logicware.prolog.PrologVariable;
 
+/** @author Jose Zalacain @since 1.0 */
 public abstract class JplProvider extends AbstractProvider implements PrologProvider {
 
 	public JplProvider(PrologConverter<Term> adapter) {

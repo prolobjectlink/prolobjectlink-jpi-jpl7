@@ -53,6 +53,7 @@ import org.logicware.prolog.PrologTerm;
 import org.logicware.prolog.PrologVariable;
 import org.logicware.prolog.UnknownTermError;
 
+/** @author Jose Zalacain @since 1.0 */
 public abstract class JplConverter extends AbstractConverter<Term> implements PrologConverter<Term> {
 
 	public final PrologTerm toTerm(Term prologTerm) {

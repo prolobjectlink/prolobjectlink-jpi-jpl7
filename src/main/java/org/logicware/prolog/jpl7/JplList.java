@@ -27,10 +27,10 @@ import java.util.NoSuchElementException;
 import org.jpl7.Compound;
 import org.jpl7.Query;
 import org.jpl7.Term;
-import org.logicware.AbstractIterator;
 import org.logicware.prolog.PrologList;
 import org.logicware.prolog.PrologProvider;
 import org.logicware.prolog.PrologTerm;
+import org.worklogic.AbstractIterator;
 
 public class JplList extends JplTerm implements PrologList {
 

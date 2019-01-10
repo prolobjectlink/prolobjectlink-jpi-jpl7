@@ -19,8 +19,8 @@
  */
 package org.logicware.prolog.jpl7;
 
-import static org.logicware.logging.LoggerConstants.FILE_NOT_FOUND;
-import static org.logicware.logging.LoggerConstants.IO;
+import static org.worklogic.logging.LoggerConstants.FILE_NOT_FOUND;
+import static org.worklogic.logging.LoggerConstants.IO;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -32,7 +32,7 @@ import java.util.List;
 
 import org.jpl7.Term;
 import org.jpl7.Util;
-import org.logicware.logging.LoggerUtils;
+import org.worklogic.logging.LoggerUtils;
 
 public final class JplParser {
 
