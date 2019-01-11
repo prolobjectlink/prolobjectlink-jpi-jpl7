@@ -192,8 +192,10 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		Iterator<PrologTerm> i = new ArrayIterator<PrologTerm>(terms);
 		StringBuilder buffer = new StringBuilder();
 		while (i.hasNext()) {
-			buffer.append(',');
 			buffer.append(i.next());
+			if (i.hasNext()) {
+				buffer.append(',');
+			}
 		}
 		buffer.append(".");
 		return query("" + buffer + "");

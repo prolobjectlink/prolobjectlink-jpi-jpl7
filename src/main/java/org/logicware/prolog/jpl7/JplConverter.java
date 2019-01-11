@@ -38,6 +38,7 @@ import org.jpl7.Atom;
 import org.jpl7.Compound;
 import org.jpl7.Float;
 import org.jpl7.Integer;
+import org.jpl7.JPLException;
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.jpl7.Variable;
@@ -53,7 +54,10 @@ import org.logicware.prolog.PrologTerm;
 import org.logicware.prolog.PrologVariable;
 import org.logicware.prolog.UnknownTermError;
 
-/** @author Jose Zalacain @since 1.0 */
+/** 
+ * @author Jose Zalacain 
+ * @since 1.0 
+ */
 public abstract class JplConverter extends AbstractConverter<Term> implements PrologConverter<Term> {
 
 	public final PrologTerm toTerm(Term prologTerm) {
@@ -80,7 +84,11 @@ public abstract class JplConverter extends AbstractConverter<Term> implements Pr
 		} else if (prologTerm.isBigInteger()) {
 			return new JplLong(provider, ((Integer) prologTerm).longValue());
 		} else if (prologTerm.isInteger()) {
-			return new JplInteger(provider, ((Integer) prologTerm).intValue());
+			try {
+				return new JplInteger(provider, ((Integer) prologTerm).intValue());
+			} catch (JPLException e) {
+				return new JplLong(provider, ((Integer) prologTerm).longValue());
+			}
 		} else if (prologTerm.isVariable()) {
 			String name = ((Variable) prologTerm).name();
 			PrologVariable variable = sharedVariables.get(name);

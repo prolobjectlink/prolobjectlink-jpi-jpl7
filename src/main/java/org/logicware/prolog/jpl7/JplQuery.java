@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import org.jpl7.PrologException;
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.jpl7.Util;
@@ -42,6 +43,8 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 
 	private Query query;
 	private Query consult;
+
+	private boolean succes;
 
 	private final List<String> variables = new ArrayList<String>();
 
@@ -77,21 +80,27 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 			// saving variable order
 			enumerateVariables(variables, Util.textToTerm(stringQuery));
 
-			this.consult = new Query("consult('" + file + "')");
-			this.query = new Query(stringQuery);
+			try {
 
-			this.consult.hasSolution();
-			this.query.hasSolution();
+				consult = new Query("consult('" + file + "')");
+				query = new Query(stringQuery);
+
+				consult.hasSolution();
+				succes = query.hasSolution();
+
+			} catch (PrologException e) {
+				succes = false;
+			}
 		}
 
 	}
 
 	public synchronized boolean hasSolution() {
-		return query != null && query.hasSolution();
+		return succes && query != null && query.hasSolution();
 	}
 
 	public synchronized boolean hasMoreSolutions() {
-		return query != null && query.hasMoreSolutions();
+		return succes && query != null && query.hasMoreSolutions();
 	}
 
 	public synchronized PrologTerm[] oneSolution() {
