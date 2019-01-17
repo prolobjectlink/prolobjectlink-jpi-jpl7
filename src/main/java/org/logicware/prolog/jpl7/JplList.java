@@ -27,6 +27,7 @@ import java.util.NoSuchElementException;
 import org.jpl7.Compound;
 import org.jpl7.Query;
 import org.jpl7.Term;
+import org.jpl7.Util;
 import org.logicware.prolog.PrologList;
 import org.logicware.prolog.PrologProvider;
 import org.logicware.prolog.PrologTerm;
@@ -82,7 +83,7 @@ public class JplList extends JplTerm implements PrologList {
 	}
 
 	public int size() {
-		return ((Compound) value).listLength();
+		return Util.listToLength(value);
 	}
 
 	public void clear() {
@@ -149,7 +150,7 @@ public class JplList extends JplTerm implements PrologList {
 		private SwiPrologListIter(Term l) {
 			ptr = l;
 			if (l.isListPair()) {
-				length = l.listLength();
+				length = Util.listToLength(l);
 			}
 		}
 
@@ -167,10 +168,6 @@ public class JplList extends JplTerm implements PrologList {
 			ptr = ptr.arg(2);
 			index++;
 			return term;
-		}
-
-		public void remove() {
-			throw new UnsupportedOperationException();
 		}
 
 	}
