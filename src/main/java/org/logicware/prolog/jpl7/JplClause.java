@@ -24,7 +24,7 @@ import org.logicware.prolog.PrologClause;
 import org.logicware.prolog.PrologProvider;
 import org.logicware.prolog.PrologTerm;
 
-public class JplClause extends AbstractClause implements PrologClause {
+public final class JplClause extends AbstractClause implements PrologClause {
 
 	protected JplClause(PrologProvider provider, PrologTerm head) {
 		super(provider, head, false, false, false);
