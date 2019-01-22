@@ -39,10 +39,10 @@ public class JplList extends JplTerm implements PrologList {
 
 	static {
 
-		Query query4 = new Query("X=[]");
-		query4.open();
-		EMPTY = query4.getSolution().get("X");
-		query4.close();
+		Query query = new Query("X=[]");
+		query.open();
+		EMPTY = query.getSolution().get("X");
+		query.close();
 
 	}
 

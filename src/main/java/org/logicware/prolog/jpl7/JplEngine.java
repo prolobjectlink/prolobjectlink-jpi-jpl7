@@ -246,6 +246,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 				operators.add(o);
 			}
 		}
+		query.close();
 		return operators;
 	}
 

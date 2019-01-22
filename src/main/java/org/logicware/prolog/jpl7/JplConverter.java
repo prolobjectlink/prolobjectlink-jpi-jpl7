@@ -54,9 +54,9 @@ import org.logicware.prolog.PrologTerm;
 import org.logicware.prolog.PrologVariable;
 import org.logicware.prolog.UnknownTermError;
 
-/** 
- * @author Jose Zalacain 
- * @since 1.0 
+/**
+ * @author Jose Zalacain
+ * @since 1.0
  */
 public abstract class JplConverter extends AbstractConverter<Term> implements PrologConverter<Term> {
 
@@ -122,6 +122,7 @@ public abstract class JplConverter extends AbstractConverter<Term> implements Pr
 					}
 
 				}
+				query.close();
 			}
 
 			for (int i = 0; i < arity; i++) {
