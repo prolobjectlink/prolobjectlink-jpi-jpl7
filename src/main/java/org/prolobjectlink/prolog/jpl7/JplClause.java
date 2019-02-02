@@ -17,12 +17,12 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.prolog.jpl7;
+package org.prolobjectlink.prolog.jpl7;
 
-import org.logicware.prolog.AbstractClause;
-import org.logicware.prolog.PrologClause;
-import org.logicware.prolog.PrologProvider;
-import org.logicware.prolog.PrologTerm;
+import org.prolobjectlink.prolog.AbstractClause;
+import org.prolobjectlink.prolog.PrologClause;
+import org.prolobjectlink.prolog.PrologProvider;
+import org.prolobjectlink.prolog.PrologTerm;
 
 public final class JplClause extends AbstractClause implements PrologClause {
 

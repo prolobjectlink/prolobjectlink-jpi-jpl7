@@ -17,13 +17,13 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.prolog.jpl7;
+package org.prolobjectlink.prolog.jpl7;
 
-import static org.logicware.prolog.PrologTermType.LONG_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.LONG_TYPE;
 
 import org.jpl7.Integer;
-import org.logicware.prolog.PrologLong;
-import org.logicware.prolog.PrologProvider;
+import org.prolobjectlink.prolog.PrologLong;
+import org.prolobjectlink.prolog.PrologProvider;
 
 public final class JplLong extends JplInteger implements PrologLong {
 

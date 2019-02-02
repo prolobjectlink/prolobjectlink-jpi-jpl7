@@ -17,18 +17,18 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.prolog.jpl7;
+package org.prolobjectlink.prolog.jpl7;
 
 import org.jpl7.Term;
-import org.logicware.prolog.ArityError;
-import org.logicware.prolog.FunctorError;
-import org.logicware.prolog.IndicatorError;
-import org.logicware.prolog.PrologDouble;
-import org.logicware.prolog.PrologFloat;
-import org.logicware.prolog.PrologInteger;
-import org.logicware.prolog.PrologLong;
-import org.logicware.prolog.PrologNumber;
-import org.logicware.prolog.PrologProvider;
+import org.prolobjectlink.prolog.ArityError;
+import org.prolobjectlink.prolog.FunctorError;
+import org.prolobjectlink.prolog.IndicatorError;
+import org.prolobjectlink.prolog.PrologDouble;
+import org.prolobjectlink.prolog.PrologFloat;
+import org.prolobjectlink.prolog.PrologInteger;
+import org.prolobjectlink.prolog.PrologLong;
+import org.prolobjectlink.prolog.PrologNumber;
+import org.prolobjectlink.prolog.PrologProvider;
 
 /** @author Jose Zalacain @since 1.0 */
 public abstract class JplNumber extends JplTerm implements PrologNumber {

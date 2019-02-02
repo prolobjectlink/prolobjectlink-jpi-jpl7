@@ -17,13 +17,13 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.prolog.jpl7;
+package org.prolobjectlink.prolog.jpl7;
 
-import static org.logicware.prolog.PrologTermType.CUT_TYPE;
-import static org.logicware.prolog.PrologTermType.DOUBLE_TYPE;
-import static org.logicware.prolog.PrologTermType.FLOAT_TYPE;
-import static org.logicware.prolog.PrologTermType.INTEGER_TYPE;
-import static org.logicware.prolog.PrologTermType.LONG_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.CUT_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.DOUBLE_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.FLOAT_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.INTEGER_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.LONG_TYPE;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,10 +32,10 @@ import java.util.Map.Entry;
 import org.jpl7.Atom;
 import org.jpl7.Query;
 import org.jpl7.Term;
-import org.logicware.prolog.AbstractTerm;
-import org.logicware.prolog.PrologProvider;
-import org.logicware.prolog.PrologTerm;
-import org.logicware.prolog.UnknownTermError;
+import org.prolobjectlink.prolog.AbstractTerm;
+import org.prolobjectlink.prolog.PrologProvider;
+import org.prolobjectlink.prolog.PrologTerm;
+import org.prolobjectlink.prolog.UnknownTermError;
 
 /** @author Jose Zalacain @since 1.0 */
 public abstract class JplTerm extends AbstractTerm implements PrologTerm {

@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.prolog.jpl7;
+package org.prolobjectlink.prolog.jpl7;
 
 import java.util.AbstractSet;
 import java.util.Iterator;
@@ -28,9 +28,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jpl7.Term;
-import org.logicware.prolog.PrologClauses;
-import org.worklogic.ArrayIterator;
-import org.worklogic.RuntimeError;
+import org.prolobjectlink.ArrayIterator;
+import org.prolobjectlink.RuntimeError;
+import org.prolobjectlink.prolog.PrologClauses;
 
 public final class JplProgram extends AbstractSet<List<Term>> {
 

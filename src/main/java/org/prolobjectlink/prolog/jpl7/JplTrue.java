@@ -17,12 +17,12 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.prolog.jpl7;
+package org.prolobjectlink.prolog.jpl7;
 
-import static org.logicware.prolog.PrologTermType.TRUE_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.TRUE_TYPE;
 
-import org.logicware.prolog.PrologProvider;
-import org.logicware.prolog.PrologTerm;
+import org.prolobjectlink.prolog.PrologProvider;
+import org.prolobjectlink.prolog.PrologTerm;
 
 public final class JplTrue extends JplTerm implements PrologTerm {
 

@@ -17,18 +17,18 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.prolog.jpl7;
+package org.prolobjectlink.prolog.jpl7;
 
-import static org.logicware.prolog.PrologTermType.NIL_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.FAIL_TYPE;
 
 import org.jpl7.Atom;
-import org.logicware.prolog.PrologProvider;
-import org.logicware.prolog.PrologTerm;
+import org.prolobjectlink.prolog.PrologProvider;
+import org.prolobjectlink.prolog.PrologTerm;
 
-public final class JplNil extends JplTerm implements PrologTerm {
+public final class JplFail extends JplTerm implements PrologTerm {
 
-	JplNil(PrologProvider provider) {
-		super(NIL_TYPE, provider, new Atom("nil"));
+	protected JplFail(PrologProvider provider) {
+		super(FAIL_TYPE, provider, new Atom("fail"));
 	}
 
 	public PrologTerm[] getArguments() {

@@ -17,22 +17,22 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.prolog.jpl7;
+package org.prolobjectlink.prolog.jpl7;
 
-import static org.logicware.prolog.PrologTermType.ATOM_TYPE;
-import static org.logicware.prolog.PrologTermType.CUT_TYPE;
-import static org.logicware.prolog.PrologTermType.DOUBLE_TYPE;
-import static org.logicware.prolog.PrologTermType.EMPTY_TYPE;
-import static org.logicware.prolog.PrologTermType.FAIL_TYPE;
-import static org.logicware.prolog.PrologTermType.FALSE_TYPE;
-import static org.logicware.prolog.PrologTermType.FLOAT_TYPE;
-import static org.logicware.prolog.PrologTermType.INTEGER_TYPE;
-import static org.logicware.prolog.PrologTermType.LIST_TYPE;
-import static org.logicware.prolog.PrologTermType.LONG_TYPE;
-import static org.logicware.prolog.PrologTermType.NIL_TYPE;
-import static org.logicware.prolog.PrologTermType.STRUCTURE_TYPE;
-import static org.logicware.prolog.PrologTermType.TRUE_TYPE;
-import static org.logicware.prolog.PrologTermType.VARIABLE_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.ATOM_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.CUT_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.DOUBLE_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.EMPTY_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.FAIL_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.FALSE_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.FLOAT_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.INTEGER_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.LIST_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.LONG_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.NIL_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.STRUCTURE_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.TRUE_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.VARIABLE_TYPE;
 
 import org.jpl7.Atom;
 import org.jpl7.Compound;
@@ -42,17 +42,17 @@ import org.jpl7.JPLException;
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.jpl7.Variable;
-import org.logicware.prolog.AbstractConverter;
-import org.logicware.prolog.PrologAtom;
-import org.logicware.prolog.PrologConverter;
-import org.logicware.prolog.PrologDouble;
-import org.logicware.prolog.PrologFloat;
-import org.logicware.prolog.PrologInteger;
-import org.logicware.prolog.PrologLong;
-import org.logicware.prolog.PrologStructure;
-import org.logicware.prolog.PrologTerm;
-import org.logicware.prolog.PrologVariable;
-import org.logicware.prolog.UnknownTermError;
+import org.prolobjectlink.prolog.AbstractConverter;
+import org.prolobjectlink.prolog.PrologAtom;
+import org.prolobjectlink.prolog.PrologConverter;
+import org.prolobjectlink.prolog.PrologDouble;
+import org.prolobjectlink.prolog.PrologFloat;
+import org.prolobjectlink.prolog.PrologInteger;
+import org.prolobjectlink.prolog.PrologLong;
+import org.prolobjectlink.prolog.PrologStructure;
+import org.prolobjectlink.prolog.PrologTerm;
+import org.prolobjectlink.prolog.PrologVariable;
+import org.prolobjectlink.prolog.UnknownTermError;
 
 /**
  * @author Jose Zalacain

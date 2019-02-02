@@ -17,31 +17,22 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.prolog.jpl7;
+package org.prolobjectlink.prolog.jpl7;
 
-import static org.logicware.prolog.PrologTermType.ATOM_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.CUT_TYPE;
 
 import org.jpl7.Atom;
-import org.logicware.prolog.PrologAtom;
-import org.logicware.prolog.PrologProvider;
-import org.logicware.prolog.PrologTerm;
+import org.prolobjectlink.prolog.PrologProvider;
+import org.prolobjectlink.prolog.PrologTerm;
 
-public final class JplAtom extends JplTerm implements PrologAtom {
+public final class JplCut extends JplTerm implements PrologTerm {
 
-	public JplAtom(PrologProvider provider, String value) {
-		super(ATOM_TYPE, provider, new Atom(value));
-	}
-
-	public String getStringValue() {
-		return getFunctor();
-	}
-
-	public void setStringValue(String value) {
-		this.value = new Atom(value);
+	protected JplCut(PrologProvider provider) {
+		super(CUT_TYPE, provider, new Atom("!"));
 	}
 
 	public PrologTerm[] getArguments() {
-		return new JplAtom[0];
+		return new PrologTerm[0];
 	}
 
 	public int getArity() {
@@ -49,7 +40,10 @@ public final class JplAtom extends JplTerm implements PrologAtom {
 	}
 
 	public String getFunctor() {
-		return "" + value + "";
+		String v = "" + value + "";
+		int end = v.length() - 1;
+		v = v.substring(1, end);
+		return v;
 	}
 
 	public String getIndicator() {

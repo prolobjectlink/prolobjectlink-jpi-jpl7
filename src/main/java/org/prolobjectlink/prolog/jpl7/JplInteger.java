@@ -17,48 +17,48 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.prolog.jpl7;
+package org.prolobjectlink.prolog.jpl7;
 
-import static org.logicware.prolog.PrologTermType.FLOAT_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.INTEGER_TYPE;
 
-import org.jpl7.Float;
+import org.jpl7.Integer;
 import org.jpl7.Term;
-import org.logicware.prolog.PrologFloat;
-import org.logicware.prolog.PrologProvider;
-import org.logicware.prolog.PrologTerm;
+import org.prolobjectlink.prolog.PrologInteger;
+import org.prolobjectlink.prolog.PrologProvider;
+import org.prolobjectlink.prolog.PrologTerm;
 
-public class JplFloat extends JplNumber implements PrologFloat {
+public class JplInteger extends JplNumber implements PrologInteger {
 
-	public JplFloat(PrologProvider provider) {
-		super(FLOAT_TYPE, provider, new Float(0));
+	public JplInteger(PrologProvider provider) {
+		super(INTEGER_TYPE, provider, new Integer(0));
 	}
 
-	public JplFloat(PrologProvider provider, Number value) {
-		super(FLOAT_TYPE, provider, new Float(value.floatValue()));
+	public JplInteger(PrologProvider provider, Number value) {
+		super(INTEGER_TYPE, provider, new Integer(value.intValue()));
 	}
 
-	public JplFloat(int type, PrologProvider provider, Term value) {
+	public JplInteger(int type, PrologProvider provider, Term value) {
 		super(type, provider, value);
 	}
 
 	public final long getLongValue() {
-		return ((Float) value).longValue();
+		return ((Integer) value).longValue();
 	}
 
 	public final double getDoubleValue() {
-		return ((Float) value).doubleValue();
+		return ((Integer) value).doubleValue();
 	}
 
 	public final int getIntValue() {
-		return ((Float) value).intValue();
+		return ((Integer) value).intValue();
 	}
 
 	public final float getFloatValue() {
-		return ((Float) value).floatValue();
+		return ((Integer) value).floatValue();
 	}
 
 	public final PrologTerm[] getArguments() {
-		return new JplFloat[0];
+		return new JplInteger[0];
 	}
 
 }

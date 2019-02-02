@@ -17,18 +17,18 @@
  * limitations under the License.
  * #L%
  */
-package org.logicware.prolog.jpl7;
+package org.prolobjectlink.prolog.jpl7;
 
-import static org.logicware.prolog.PrologTermType.CUT_TYPE;
+import static org.prolobjectlink.prolog.PrologTermType.NIL_TYPE;
 
 import org.jpl7.Atom;
-import org.logicware.prolog.PrologProvider;
-import org.logicware.prolog.PrologTerm;
+import org.prolobjectlink.prolog.PrologProvider;
+import org.prolobjectlink.prolog.PrologTerm;
 
-public final class JplCut extends JplTerm implements PrologTerm {
+public final class JplNil extends JplTerm implements PrologTerm {
 
-	protected JplCut(PrologProvider provider) {
-		super(CUT_TYPE, provider, new Atom("!"));
+	JplNil(PrologProvider provider) {
+		super(NIL_TYPE, provider, new Atom("nil"));
 	}
 
 	public PrologTerm[] getArguments() {
@@ -40,10 +40,7 @@ public final class JplCut extends JplTerm implements PrologTerm {
 	}
 
 	public String getFunctor() {
-		String v = "" + value + "";
-		int end = v.length() - 1;
-		v = v.substring(1, end);
-		return v;
+		return "" + value + "";
 	}
 
 	public String getIndicator() {
