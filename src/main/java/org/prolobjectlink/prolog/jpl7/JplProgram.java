@@ -209,8 +209,7 @@ public final class JplProgram extends AbstractSet<List<Term>> {
 				Iterator<Term> j = l.iterator();
 				while (j.hasNext()) {
 					Term term = j.next();
-					String key = term.name();
-					key += "/" + term.arity();
+					String key = getKey(term);
 					if (term.arity() == 2 && key.equals(":-/2")) {
 						Term h = term.arg(1);
 						Term b = term.arg(2);

@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.jpl7.Atom;
@@ -227,7 +226,11 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	}
 
 	public final boolean currentPredicate(String functor, int arity) {
-		return new Query(consultCacheComma + "current_predicate(" + functor + "/" + arity + ")").hasSolution();
+		String x = functor;
+		if (x.startsWith("'") && x.endsWith("'")) {
+			x = x.substring(1, x.length() - 1);
+		}
+		return getPredicates().contains(new PredicateIndicator(x, arity));
 	}
 
 	public final boolean currentOperator(int priority, String specifier, String operator) {
@@ -264,43 +267,55 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	}
 
 	public final Set<PrologIndicator> getPredicates() {
-		Set<PrologIndicator> pis = predicates();
-		Set<PrologIndicator> builtins = getBuiltIns();
-		for (PrologIndicator prologIndicator : pis) {
-			if (!builtins.contains(prologIndicator)) {
-				pis.remove(prologIndicator);
+		Set<PrologIndicator> indicators = new HashSet<PrologIndicator>();
+		String opQuery = consultCacheComma + "findall(X/Y,current_predicate(X/Y)," + KEY + ")";
+		Query query = new Query(opQuery);
+		if (query.hasSolution()) {
+			Term term = query.oneSolution().get(KEY);
+			Term[] termArray = term.toTermArray();
+			for (Term t : termArray) {
+				Term f = t.arg(1);
+				Term a = t.arg(2);
+
+				int arity = a.intValue();
+				String functor = f.name();
+
+				PredicateIndicator pi = new PredicateIndicator(functor, arity);
+				indicators.add(pi);
 			}
 		}
-		return pis;
+//		Set<PrologIndicator> builtins = getBuiltIns();
+//		for (PrologIndicator prologIndicator : indicators) {
+//			if (!builtins.contains(prologIndicator)) {
+//				indicators.remove(prologIndicator);
+//			}
+//		}
+		return indicators;
 	}
 
 	public final Set<PrologIndicator> getBuiltIns() {
-		Set<PrologIndicator> pis = predicates();
+		Set<PrologIndicator> indicators = new HashSet<PrologIndicator>();
+		String opQuery = consultCacheComma + "findall(X/Y,current_predicate(X/Y)," + KEY + ")";
+		Query query = new Query(opQuery);
+		if (query.hasSolution()) {
+			Term term = query.oneSolution().get(KEY);
+			Term[] termArray = term.toTermArray();
+			for (Term t : termArray) {
+				Term f = t.arg(1);
+				Term a = t.arg(2);
+
+				int arity = a.intValue();
+				String functor = f.name();
+
+				PredicateIndicator pi = new PredicateIndicator(functor, arity);
+				indicators.add(pi);
+			}
+		}
 		Set<PrologClause> clauses = getProgramClauses();
 		for (PrologClause prologClause : clauses) {
 			PrologIndicator pi = prologClause.getPrologIndicator();
-			if (pis.contains(pi)) {
-				pis.remove(pi);
-			}
-		}
-		return pis;
-	}
-
-	private Set<PrologIndicator> predicates() {
-		Set<PrologIndicator> indicators = new HashSet<PrologIndicator>();
-		String stringQuery = "consult('" + cache + "')," + "findall(X/Y,current_predicate(X/Y)," + KEY + ")";
-		PrologQuery query = new JplQuery(this, cache, stringQuery);
-		if (query.hasSolution()) {
-			Map<String, PrologTerm>[] s = query.allVariablesSolutions();
-			for (Map<String, PrologTerm> map : s) {
-				for (PrologTerm term : map.values()) {
-					if (term.isCompound()) {
-						int arity = term.getArity();
-						String functor = term.getFunctor();
-						PredicateIndicator pi = new PredicateIndicator(functor, arity);
-						indicators.add(pi);
-					}
-				}
+			if (indicators.contains(pi)) {
+				indicators.remove(pi);
 			}
 		}
 		return indicators;
@@ -328,6 +343,17 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	public final void dispose() {
 		File c = new File(cache);
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter(new FileOutputStream(cache, false));
+			writer.print("");
+		} catch (FileNotFoundException e) {
+			LoggerUtils.error(getClass(), IO + cache, e);
+		} finally {
+			if (writer != null) {
+				writer.close();
+			}
+		}
 		c.deleteOnExit();
 		program.clear();
 	}

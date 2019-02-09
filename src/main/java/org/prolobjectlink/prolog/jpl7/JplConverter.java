@@ -43,6 +43,9 @@ import static org.prolobjectlink.prolog.PrologTermType.STRUCTURE_TYPE;
 import static org.prolobjectlink.prolog.PrologTermType.TRUE_TYPE;
 import static org.prolobjectlink.prolog.PrologTermType.VARIABLE_TYPE;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.jpl7.Atom;
 import org.jpl7.Compound;
 import org.jpl7.Float;
@@ -107,7 +110,14 @@ public abstract class JplConverter extends AbstractConverter<Term> implements Pr
 			}
 			return variable;
 		} else if (prologTerm.isListPair()) {
-			return new JplList(provider, prologTerm.toTermArray());
+			Term[] a = new Term[0];
+			List<Term> l = new ArrayList<Term>();
+			Term ptr = prologTerm;
+			while (ptr.isListPair()) {
+				l.add(ptr.arg(1));
+				ptr = ptr.arg(2);
+			}
+			return new JplList(provider, l.toArray(a));
 		} else if (prologTerm.isCompound()) {
 			Compound compound = (Compound) prologTerm;
 			int arity = compound.arity();
