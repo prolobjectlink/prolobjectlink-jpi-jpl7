@@ -37,9 +37,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.jpl7.Term;
-import org.prolobjectlink.ArrayIterator;
-import org.prolobjectlink.RuntimeError;
+import org.prolobjectlink.prolog.ArrayIterator;
 import org.prolobjectlink.prolog.PrologClauses;
+import org.prolobjectlink.prolog.RuntimeError;
 
 public final class JplProgram extends AbstractSet<List<Term>> {
 
