@@ -42,7 +42,7 @@ public class JplStructure extends JplTerm implements PrologStructure {
 		super(STRUCTURE_TYPE, provider);
 		Term[] terms = new Term[arguments.length];
 		for (int i = 0; i < arguments.length; i++) {
-			terms[i] = unwrap(arguments[i], JplTerm.class).value;
+			terms[i] = ((JplTerm) arguments[i]).value;
 		}
 		value = new Compound(removeQuoted(functor), terms);
 	}
@@ -54,8 +54,8 @@ public class JplStructure extends JplTerm implements PrologStructure {
 
 	JplStructure(PrologProvider provider, PrologTerm left, String operator, PrologTerm right) {
 		super(STRUCTURE_TYPE, provider);
-		Term leftOperand = left.unwrap(JplTerm.class).value;
-		Term rightOperand = right.unwrap(JplTerm.class).value;
+		Term leftOperand = ((JplTerm) left).value;
+		Term rightOperand = ((JplTerm) right).value;
 		value = new Compound(operator, new Term[] { leftOperand, rightOperand });
 	}
 

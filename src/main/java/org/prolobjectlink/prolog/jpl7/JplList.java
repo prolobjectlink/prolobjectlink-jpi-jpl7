@@ -37,7 +37,7 @@ import org.jpl7.Compound;
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.jpl7.Util;
-import org.prolobjectlink.AbstractIterator;
+import org.prolobjectlink.prolog.AbstractIterator;
 import org.prolobjectlink.prolog.PrologList;
 import org.prolobjectlink.prolog.PrologProvider;
 import org.prolobjectlink.prolog.PrologTerm;
@@ -71,14 +71,14 @@ public class JplList extends JplTerm implements PrologList {
 		super(LIST_TYPE, provider);
 		value = EMPTY;
 		for (int i = arguments.length - 1; i >= 0; --i) {
-			value = new Compound("[|]", new Term[] { unwrap(arguments[i], JplTerm.class).value, value });
+			value = new Compound("[|]", new Term[] { ((JplTerm) arguments[i]).value, value });
 		}
 	}
 
 	protected JplList(PrologProvider provider, PrologTerm head, PrologTerm tail) {
 		super(LIST_TYPE, provider);
-		Term h = unwrap(head, JplTerm.class).value;
-		Term t = unwrap(tail, JplTerm.class).value;
+		Term h = ((JplTerm) head).value;
+		Term t = ((JplTerm) tail).value;
 		value = new Compound("[|]", new Term[] { h, t });
 	}
 
