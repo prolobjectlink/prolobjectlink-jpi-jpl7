@@ -40,56 +40,59 @@ import org.prolobjectlink.prolog.PrologDouble;
 import org.prolobjectlink.prolog.PrologFloat;
 import org.prolobjectlink.prolog.PrologInteger;
 import org.prolobjectlink.prolog.PrologList;
+import org.prolobjectlink.prolog.PrologLogger;
 import org.prolobjectlink.prolog.PrologLong;
 import org.prolobjectlink.prolog.PrologProvider;
 import org.prolobjectlink.prolog.PrologStructure;
 import org.prolobjectlink.prolog.PrologTerm;
 import org.prolobjectlink.prolog.PrologVariable;
 
-/** 
+/**
  * 
- * @author Jose Zalacain 
- * @since 1.0 
+ * @author Jose Zalacain
+ * @since 1.0
  */
 public abstract class JplProvider extends AbstractProvider implements PrologProvider {
+
+	private static final PrologLogger logger = new JplLogger();
 
 	public JplProvider(PrologConverter<Term> adapter) {
 		super(adapter);
 	}
 
-	public boolean isCompliant() {
+	public final boolean isCompliant() {
 		return true;
 	}
 
-	public PrologTerm prologNil() {
+	public final PrologTerm prologNil() {
 		return new JplNil(this);
 	}
 
-	public PrologTerm prologCut() {
+	public final PrologTerm prologCut() {
 		return new JplCut(this);
 	}
 
-	public PrologTerm prologFail() {
+	public final PrologTerm prologFail() {
 		return new JplFail(this);
 	}
 
-	public PrologTerm prologTrue() {
+	public final PrologTerm prologTrue() {
 		return new JplTrue(this);
 	}
 
-	public PrologTerm prologFalse() {
+	public final PrologTerm prologFalse() {
 		return new JplFalse(this);
 	}
 
-	public PrologTerm prologEmpty() {
+	public final PrologTerm prologEmpty() {
 		return new JplEmpty(this);
 	}
 
-	public PrologTerm parseTerm(String term) {
+	public final PrologTerm parseTerm(String term) {
 		return toTerm(Util.textToTerm(term), PrologTerm.class);
 	}
 
-	public PrologTerm[] parseTerms(String stringTerms) {
+	public final PrologTerm[] parseTerms(String stringTerms) {
 		PrologTerm[] a = new PrologTerm[0];
 		Term ptr = Util.textToTerm(stringTerms);
 		List<PrologTerm> terms = new ArrayList<PrologTerm>();
@@ -101,56 +104,60 @@ public abstract class JplProvider extends AbstractProvider implements PrologProv
 		return terms.toArray(a);
 	}
 
-	public PrologAtom newAtom(String functor) {
+	public final PrologAtom newAtom(String functor) {
 		return new JplAtom(this, functor);
 	}
 
-	public PrologFloat newFloat(Number value) {
+	public final PrologFloat newFloat(Number value) {
 		return new JplFloat(this, value);
 	}
 
-	public PrologDouble newDouble(Number value) {
+	public final PrologDouble newDouble(Number value) {
 		return new JplDouble(this, value);
 	}
 
-	public PrologInteger newInteger(Number value) {
+	public final PrologInteger newInteger(Number value) {
 		return new JplInteger(this, value);
 	}
 
-	public PrologLong newLong(Number value) {
+	public final PrologLong newLong(Number value) {
 		return new JplLong(this, value);
 	}
 
-	public PrologVariable newVariable(int position) {
+	public final PrologVariable newVariable(int position) {
 		return new JplVariable(this);
 	}
 
-	public PrologVariable newVariable(String name, int position) {
+	public final PrologVariable newVariable(String name, int position) {
 		return new JplVariable(this, name);
 	}
 
-	public PrologList newList() {
+	public final PrologList newList() {
 		return new JplList(this);
 	}
 
-	public PrologList newList(PrologTerm[] arguments) {
+	public final PrologList newList(PrologTerm[] arguments) {
 		return new JplList(this, arguments);
 	}
 
-	public PrologList newList(PrologTerm head, PrologTerm tail) {
+	public final PrologList newList(PrologTerm head, PrologTerm tail) {
 		return new JplList(this, head, tail);
 	}
 
-	public PrologList newList(PrologTerm[] arguments, PrologTerm tail) {
+	public final PrologList newList(PrologTerm[] arguments, PrologTerm tail) {
 		return new JplList(this, arguments, tail);
 	}
 
-	public PrologStructure newStructure(String functor, PrologTerm... arguments) {
+	public final PrologStructure newStructure(String functor, PrologTerm... arguments) {
 		return new JplStructure(this, functor, arguments);
 	}
 
-	public PrologTerm newStructure(PrologTerm left, String operator, PrologTerm right) {
+	public final PrologTerm newStructure(PrologTerm left, String operator, PrologTerm right) {
 		return new JplStructure(this, left, operator, right);
+	}
+
+	public final PrologLogger getLogger() {
+		return logger;
 	}
 
 }
