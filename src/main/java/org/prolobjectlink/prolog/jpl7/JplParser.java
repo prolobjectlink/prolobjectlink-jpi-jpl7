@@ -28,8 +28,8 @@
  */
 package org.prolobjectlink.prolog.jpl7;
 
-import static org.prolobjectlink.logging.LoggerConstants.FILE_NOT_FOUND;
-import static org.prolobjectlink.logging.LoggerConstants.IO;
+import static org.prolobjectlink.prolog.LoggerConstants.FILE_NOT_FOUND;
+import static org.prolobjectlink.prolog.LoggerConstants.IO;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -41,7 +41,6 @@ import java.util.List;
 
 import org.jpl7.Term;
 import org.jpl7.Util;
-import org.prolobjectlink.logging.LoggerUtils;
 
 public final class JplParser {
 
@@ -92,22 +91,22 @@ public final class JplParser {
 				line = buffer.readLine();
 			}
 		} catch (FileNotFoundException e) {
-			LoggerUtils.error(getClass(), FILE_NOT_FOUND, e);
+			JplProvider.logger.error(getClass(), FILE_NOT_FOUND, e);
 		} catch (IOException e) {
-			LoggerUtils.error(getClass(), IO, e);
+			JplProvider.logger.error(getClass(), IO, e);
 		} finally {
 			if (reader != null) {
 				try {
 					reader.close();
 				} catch (IOException e) {
-					LoggerUtils.error(getClass(), IO, e);
+					JplProvider.logger.error(getClass(), IO, e);
 				}
 			}
 			if (buffer != null) {
 				try {
 					buffer.close();
 				} catch (IOException e) {
-					LoggerUtils.error(getClass(), IO, e);
+					JplProvider.logger.error(getClass(), IO, e);
 				}
 			}
 		}

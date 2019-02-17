@@ -54,7 +54,7 @@ import org.prolobjectlink.prolog.PrologVariable;
  */
 public abstract class JplProvider extends AbstractProvider implements PrologProvider {
 
-	private static final PrologLogger logger = new JplLogger();
+	static final PrologLogger logger = new JplLogger();
 
 	public JplProvider(PrologConverter<Term> adapter) {
 		super(adapter);

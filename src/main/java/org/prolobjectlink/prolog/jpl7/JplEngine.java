@@ -28,7 +28,7 @@
  */
 package org.prolobjectlink.prolog.jpl7;
 
-import static org.prolobjectlink.logging.LoggerConstants.IO;
+import static org.prolobjectlink.prolog.LoggerConstants.IO;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -45,7 +45,6 @@ import org.jpl7.Atom;
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.jpl7.Util;
-import org.prolobjectlink.logging.LoggerUtils;
 import org.prolobjectlink.prolog.AbstractEngine;
 import org.prolobjectlink.prolog.ArrayIterator;
 import org.prolobjectlink.prolog.PredicateIndicator;
@@ -89,7 +88,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 			cache = f.getCanonicalPath().replace(File.separatorChar, '/');
 			consultCacheComma = "consult('" + cache + "'),";
 		} catch (IOException e) {
-			LoggerUtils.error(JplEngine.class, IO, e);
+			JplProvider.logger.error(JplEngine.class, IO, e);
 		}
 	}
 
@@ -113,7 +112,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 			writer = new PrintWriter(new FileOutputStream(path, false));
 			writer.print(program);
 		} catch (FileNotFoundException e) {
-			LoggerUtils.error(getClass(), IO + cache, e);
+			getLogger().error(getClass(), IO + cache, e);
 		} finally {
 			if (writer != null) {
 				writer.close();
@@ -343,7 +342,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 			writer = new PrintWriter(new FileOutputStream(cache, false));
 			writer.print("");
 		} catch (FileNotFoundException e) {
-			LoggerUtils.error(getClass(), IO + cache, e);
+			getLogger().error(getClass(), IO + cache, e);
 		} finally {
 			if (writer != null) {
 				writer.close();
