@@ -28,7 +28,7 @@
  */
 package org.prolobjectlink.prolog.jpl7;
 
-import static org.prolobjectlink.prolog.LoggerConstants.IO;
+import static org.prolobjectlink.prolog.PrologLogger.IO;
 
 import java.io.File;
 import java.io.FileNotFoundException;
