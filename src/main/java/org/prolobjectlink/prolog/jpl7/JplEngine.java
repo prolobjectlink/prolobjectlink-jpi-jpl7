@@ -62,7 +62,6 @@ import org.prolobjectlink.prolog.PrologTermType;
  * @author Jose Zalacain
  * @since 1.0
  */
-/** @author Jose Zalacain @since 1.0 */
 public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	// used only for findall list result
