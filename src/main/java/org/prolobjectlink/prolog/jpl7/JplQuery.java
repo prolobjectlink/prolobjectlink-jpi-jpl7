@@ -46,7 +46,7 @@ import org.prolobjectlink.prolog.AbstractIterator;
 import org.prolobjectlink.prolog.AbstractQuery;
 import org.prolobjectlink.prolog.PrologQuery;
 import org.prolobjectlink.prolog.PrologTerm;
-import org.prolobjectlink.prolog.RuntimeError;
+import org.prolobjectlink.prolog.PrologError;
 
 public final class JplQuery extends AbstractQuery implements PrologQuery {
 
@@ -149,7 +149,7 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 			}
 			return allSolutions;
 		}
-		throw new RuntimeError("Impossible find " + n + " solutions");
+		throw new PrologError("Impossible find " + n + " solutions");
 	}
 
 	public Map<String, PrologTerm>[] nVariablesSolutions(int n) {
