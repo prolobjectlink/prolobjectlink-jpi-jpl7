@@ -34,7 +34,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 import org.jpl7.PrologException;
 import org.jpl7.Query;
@@ -44,9 +43,9 @@ import org.jpl7.Variable;
 import org.prolobjectlink.prolog.AbstractEngine;
 import org.prolobjectlink.prolog.AbstractIterator;
 import org.prolobjectlink.prolog.AbstractQuery;
+import org.prolobjectlink.prolog.PrologError;
 import org.prolobjectlink.prolog.PrologQuery;
 import org.prolobjectlink.prolog.PrologTerm;
-import org.prolobjectlink.prolog.PrologError;
 
 public final class JplQuery extends AbstractQuery implements PrologQuery {
 
@@ -205,8 +204,8 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 	public synchronized int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
-		result = prime * result + Objects.hashCode(stringQuery);
-		result = prime * result + Objects.hashCode(variables);
+		result = prime * result + stringQuery.hashCode();
+		result = prime * result + variables.hashCode();
 		return result;
 	}
 
@@ -222,7 +221,7 @@ public final class JplQuery extends AbstractQuery implements PrologQuery {
 			return false;
 		}
 		JplQuery other = (JplQuery) obj;
-		return Objects.equals(variables, other.variables);
+		return variables.equals(other.variables);
 	}
 
 	@Override
