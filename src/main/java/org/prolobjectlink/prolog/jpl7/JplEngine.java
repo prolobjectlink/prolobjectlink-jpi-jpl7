@@ -47,7 +47,6 @@ import org.jpl7.Term;
 import org.jpl7.Util;
 import org.prolobjectlink.prolog.AbstractEngine;
 import org.prolobjectlink.prolog.ArrayIterator;
-import org.prolobjectlink.prolog.PredicateIndicator;
 import org.prolobjectlink.prolog.PrologClause;
 import org.prolobjectlink.prolog.PrologEngine;
 import org.prolobjectlink.prolog.PrologIndicator;
@@ -223,7 +222,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		if (x.startsWith("'") && x.endsWith("'")) {
 			x = x.substring(1, x.length() - 1);
 		}
-		return getPredicates().contains(new PredicateIndicator(x, arity));
+		return getPredicates().contains(new JplIndicator(x, arity));
 	}
 
 	public final boolean currentOperator(int priority, String specifier, String operator) {
@@ -273,7 +272,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 				int arity = a.intValue();
 				String functor = f.name();
 
-				PredicateIndicator pi = new PredicateIndicator(functor, arity);
+				JplIndicator pi = new JplIndicator(functor, arity);
 				indicators.add(pi);
 			}
 		}
@@ -294,7 +293,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 				int arity = a.intValue();
 				String functor = f.name();
 
-				PredicateIndicator pi = new PredicateIndicator(functor, arity);
+				JplIndicator pi = new JplIndicator(functor, arity);
 				indicators.add(pi);
 			}
 		}
