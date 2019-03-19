@@ -88,6 +88,10 @@ public abstract class JplProvider extends AbstractProvider implements PrologProv
 		return new JplEmpty(this);
 	}
 
+	public PrologTerm prologInclude(String file) {
+		return newStructure("consult", newAtom(file));
+	}
+
 	public final PrologTerm parseTerm(String term) {
 		return toTerm(Util.textToTerm(term), PrologTerm.class);
 	}
