@@ -34,6 +34,11 @@ import org.jpl7.Atom;
 import org.prolobjectlink.prolog.PrologProvider;
 import org.prolobjectlink.prolog.PrologTerm;
 
+/**
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
 public final class JplFalse extends JplTerm implements PrologTerm {
 
 	protected JplFalse(PrologProvider provider) {

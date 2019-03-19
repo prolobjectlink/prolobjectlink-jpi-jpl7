@@ -34,6 +34,11 @@ import org.prolobjectlink.prolog.PrologIndicator;
 import org.prolobjectlink.prolog.PrologProvider;
 import org.prolobjectlink.prolog.PrologTerm;
 
+/**
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
 public final class JplClause extends AbstractClause implements PrologClause {
 
 	private final PrologIndicator indicator;

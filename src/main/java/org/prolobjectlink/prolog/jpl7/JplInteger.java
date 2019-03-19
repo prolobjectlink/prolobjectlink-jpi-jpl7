@@ -36,6 +36,11 @@ import org.prolobjectlink.prolog.PrologInteger;
 import org.prolobjectlink.prolog.PrologProvider;
 import org.prolobjectlink.prolog.PrologTerm;
 
+/**
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
 public class JplInteger extends JplNumber implements PrologInteger {
 
 	public JplInteger(PrologProvider provider) {

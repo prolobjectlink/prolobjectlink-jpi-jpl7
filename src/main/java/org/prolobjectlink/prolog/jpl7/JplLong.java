@@ -34,6 +34,11 @@ import org.jpl7.Integer;
 import org.prolobjectlink.prolog.PrologLong;
 import org.prolobjectlink.prolog.PrologProvider;
 
+/**
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
 public final class JplLong extends JplInteger implements PrologLong {
 
 	public JplLong(PrologProvider provider) {

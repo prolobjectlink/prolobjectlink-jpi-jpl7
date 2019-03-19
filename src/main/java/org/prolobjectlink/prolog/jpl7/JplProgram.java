@@ -41,6 +41,11 @@ import org.prolobjectlink.prolog.ArrayIterator;
 import org.prolobjectlink.prolog.PrologClauses;
 import org.prolobjectlink.prolog.PrologError;
 
+/**
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
 public final class JplProgram extends AbstractSet<List<Term>> {
 
 	//

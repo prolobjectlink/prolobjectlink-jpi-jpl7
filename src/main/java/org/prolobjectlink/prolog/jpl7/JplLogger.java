@@ -40,6 +40,11 @@ import java.util.logging.Logger;
 import org.prolobjectlink.prolog.AbstractLogger;
 import org.prolobjectlink.prolog.PrologLogger;
 
+/**
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
 public final class JplLogger extends AbstractLogger implements PrologLogger {
 
 	private static final String MESSAGE = "Logger File Handler can't be created";

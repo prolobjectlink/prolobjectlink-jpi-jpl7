@@ -35,6 +35,11 @@ import org.prolobjectlink.prolog.PrologAtom;
 import org.prolobjectlink.prolog.PrologProvider;
 import org.prolobjectlink.prolog.PrologTerm;
 
+/**
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
 public final class JplAtom extends JplTerm implements PrologAtom {
 
 	public JplAtom(PrologProvider provider, String value) {

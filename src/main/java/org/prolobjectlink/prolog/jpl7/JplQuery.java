@@ -47,6 +47,11 @@ import org.prolobjectlink.prolog.PrologError;
 import org.prolobjectlink.prolog.PrologQuery;
 import org.prolobjectlink.prolog.PrologTerm;
 
+/**
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
 public final class JplQuery extends AbstractQuery implements PrologQuery {
 
 	private String stringQuery;

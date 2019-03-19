@@ -42,6 +42,11 @@ import org.prolobjectlink.prolog.PrologList;
 import org.prolobjectlink.prolog.PrologProvider;
 import org.prolobjectlink.prolog.PrologTerm;
 
+/**
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
 public class JplList extends JplTerm implements PrologList {
 
 	public static final Term EMPTY;

@@ -34,6 +34,11 @@ import org.jpl7.Float;
 import org.prolobjectlink.prolog.PrologDouble;
 import org.prolobjectlink.prolog.PrologProvider;
 
+/**
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
 public final class JplDouble extends JplFloat implements PrologDouble {
 
 	public JplDouble(PrologProvider provider) {

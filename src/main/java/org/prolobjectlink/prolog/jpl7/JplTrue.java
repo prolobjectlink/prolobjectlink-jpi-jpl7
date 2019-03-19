@@ -33,6 +33,11 @@ import static org.prolobjectlink.prolog.PrologTermType.TRUE_TYPE;
 import org.prolobjectlink.prolog.PrologProvider;
 import org.prolobjectlink.prolog.PrologTerm;
 
+/**
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
 public final class JplTrue extends JplTerm implements PrologTerm {
 
 	protected JplTrue(PrologProvider provider) {

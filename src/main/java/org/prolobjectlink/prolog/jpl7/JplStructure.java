@@ -36,6 +36,11 @@ import org.prolobjectlink.prolog.PrologProvider;
 import org.prolobjectlink.prolog.PrologStructure;
 import org.prolobjectlink.prolog.PrologTerm;
 
+/**
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
 public class JplStructure extends JplTerm implements PrologStructure {
 
 	JplStructure(PrologProvider provider, String functor, PrologTerm... arguments) {
