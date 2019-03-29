@@ -41,6 +41,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.script.ScriptEngine;
+
 import org.jpl7.Atom;
 import org.jpl7.Query;
 import org.jpl7.Term;
@@ -53,6 +55,7 @@ import org.prolobjectlink.prolog.PrologIndicator;
 import org.prolobjectlink.prolog.PrologOperator;
 import org.prolobjectlink.prolog.PrologProvider;
 import org.prolobjectlink.prolog.PrologQuery;
+import org.prolobjectlink.prolog.PrologScript;
 import org.prolobjectlink.prolog.PrologTerm;
 import org.prolobjectlink.prolog.PrologTermType;
 
@@ -252,6 +255,10 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 		}
 		query.close();
 		return operators;
+	}
+
+	public final ScriptEngine getPrologScript() {
+		return new PrologScript(new JplScriptFactory(this));
 	}
 
 	public final int getProgramSize() {
