@@ -31,8 +31,6 @@ package org.prolobjectlink.prolog.jpl7;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.script.ScriptEngineFactory;
-
 import org.jpl7.Term;
 import org.jpl7.Util;
 import org.prolobjectlink.prolog.AbstractProvider;
@@ -160,10 +158,6 @@ public abstract class JplProvider extends AbstractProvider implements PrologProv
 
 	public final PrologTerm newStructure(PrologTerm left, String operator, PrologTerm right) {
 		return new JplStructure(this, left, operator, right);
-	}
-
-	public ScriptEngineFactory getScriptFactory() {
-		return new JplScriptFactory(newEngine());
 	}
 
 	public final PrologLogger getLogger() {

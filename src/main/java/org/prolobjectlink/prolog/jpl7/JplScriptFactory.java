@@ -35,13 +35,13 @@ import javax.script.ScriptEngineFactory;
 import org.prolobjectlink.prolog.PrologEngine;
 import org.prolobjectlink.prolog.PrologScriptEngineFactory;
 
-public final class JplScriptFactory extends PrologScriptEngineFactory implements ScriptEngineFactory {
+public abstract class JplScriptFactory extends PrologScriptEngineFactory implements ScriptEngineFactory {
 
 	public JplScriptFactory(PrologEngine engine) {
 		super(engine);
 	}
 
-	public String getMethodCallSyntax(String obj, String m, String... args) {
+	public final String getMethodCallSyntax(String obj, String m, String... args) {
 		return "jpl_call(" + obj + ", " + m + ", " + Arrays.toString(args) + ", Result).";
 	}
 
