@@ -34,10 +34,6 @@ import static org.prolobjectlink.prolog.PrologTermType.FLOAT_TYPE;
 import static org.prolobjectlink.prolog.PrologTermType.INTEGER_TYPE;
 import static org.prolobjectlink.prolog.PrologTermType.LONG_TYPE;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import org.jpl7.Atom;
 import org.jpl7.Query;
 import org.jpl7.Term;
@@ -158,22 +154,6 @@ public abstract class JplTerm extends AbstractTerm implements PrologTerm {
 		boolean result = query.hasSolution();
 		query.close();
 		return result;
-	}
-
-	public final Map<String, PrologTerm> match(PrologTerm term) {
-		Map<String, PrologTerm> map = new HashMap<String, PrologTerm>();
-		String q = "unify_with_occurs_check(" + value + "," + term + ")";
-		Query query = new Query(q);
-		if (query.hasSolution()) {
-			Map<String, Term> m = query.oneSolution();
-			for (Entry<String, Term> e : m.entrySet()) {
-				PrologTerm v = toTerm(e.getValue(), PrologTerm.class);
-				String key = e.getKey();
-				map.put(key, v);
-			}
-		}
-		query.close();
-		return map;
 	}
 
 	public final int compareTo(PrologTerm o) {
