@@ -63,7 +63,7 @@ public class JplFloat extends JplNumber implements PrologFloat {
 		return ((Float) value).doubleValue();
 	}
 
-	public final int getIntValue() {
+	public final int getIntegerValue() {
 		return ((Float) value).intValue();
 	}
 

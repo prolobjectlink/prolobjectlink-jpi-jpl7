@@ -173,7 +173,7 @@ public abstract class JplConverter extends AbstractConverter<Term> implements Pr
 		case FLOAT_TYPE:
 			return new Float(((PrologFloat) term).getFloatValue());
 		case INTEGER_TYPE:
-			return new Integer(((PrologInteger) term).getIntValue());
+			return new Integer(((PrologInteger) term).getIntegerValue());
 		case DOUBLE_TYPE:
 			return new Float(((PrologDouble) term).getDoubleValue());
 		case LONG_TYPE:

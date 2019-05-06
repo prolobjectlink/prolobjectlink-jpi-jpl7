@@ -35,6 +35,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -101,6 +102,11 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	public final void consult(String path) {
 		program = parser.parseProgram(path);
+		persist(cache);
+	}
+
+	public final void include(Reader reader) {
+		program.add(parser.parseProgram(reader));
 		persist(cache);
 	}
 

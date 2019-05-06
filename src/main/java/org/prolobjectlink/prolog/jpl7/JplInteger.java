@@ -63,7 +63,7 @@ public class JplInteger extends JplNumber implements PrologInteger {
 		return ((Integer) value).doubleValue();
 	}
 
-	public final int getIntValue() {
+	public final int getIntegerValue() {
 		return ((Integer) value).intValue();
 	}
 

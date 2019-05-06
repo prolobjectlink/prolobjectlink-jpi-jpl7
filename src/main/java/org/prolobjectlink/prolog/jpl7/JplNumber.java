@@ -51,7 +51,7 @@ public abstract class JplNumber extends JplTerm implements PrologNumber {
 	}
 
 	public final PrologInteger getPrologInteger() {
-		return new JplInteger(provider, getIntValue());
+		return new JplInteger(provider, getIntegerValue());
 	}
 
 	public final PrologFloat getPrologFloat() {

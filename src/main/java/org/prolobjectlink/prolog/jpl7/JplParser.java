@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,6 +108,41 @@ public final class JplParser {
 					JplProvider.logger.error(getClass(), IO, e);
 				}
 			}
+			if (buffer != null) {
+				try {
+					buffer.close();
+				} catch (IOException e) {
+					JplProvider.logger.error(getClass(), IO, e);
+				}
+			}
+		}
+
+		return program;
+	}
+
+	public JplProgram parseProgram(Reader in) {
+
+		BufferedReader buffer = null;
+		JplProgram program = new JplProgram();
+
+		try {
+			buffer = new BufferedReader(in);
+			String line = buffer.readLine();
+			StringBuilder b = new StringBuilder();
+			while (line != null) {
+				if (!line.isEmpty() && line.lastIndexOf('.') == line.length() - 1) {
+					b.append(line.substring(0, line.length() - 1));
+					Term clauseTerm = Util.textToTerm("" + b + "");
+					program.add(clauseTerm);
+					b = new StringBuilder();
+				} else {
+					b.append(line);
+				}
+				line = buffer.readLine();
+			}
+		} catch (IOException e) {
+			JplProvider.logger.error(getClass(), IO, e);
+		} finally {
 			if (buffer != null) {
 				try {
 					buffer.close();
