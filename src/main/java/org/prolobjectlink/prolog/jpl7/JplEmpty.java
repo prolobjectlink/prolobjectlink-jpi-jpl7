@@ -37,7 +37,7 @@ import org.prolobjectlink.prolog.PrologTerm;
  * @author Jose Zalacain
  * @since 1.0
  */
-public class JplEmpty extends JplList implements PrologList {
+final class JplEmpty extends JplList implements PrologList {
 
 	protected JplEmpty(PrologProvider provider) {
 		super(provider);

@@ -39,7 +39,7 @@ import org.prolobjectlink.prolog.PrologTerm;
  * @author Jose Zalacain
  * @since 1.0
  */
-public final class JplNil extends JplTerm implements PrologTerm {
+final class JplNil extends JplTerm implements PrologTerm {
 
 	JplNil(PrologProvider provider) {
 		super(NIL_TYPE, provider, new Atom("nil"));

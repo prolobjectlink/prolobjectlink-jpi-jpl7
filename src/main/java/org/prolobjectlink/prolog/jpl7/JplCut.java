@@ -39,9 +39,9 @@ import org.prolobjectlink.prolog.PrologTerm;
  * @author Jose Zalacain
  * @since 1.0
  */
-public final class JplCut extends JplTerm implements PrologTerm {
+final class JplCut extends JplTerm implements PrologTerm {
 
-	protected JplCut(PrologProvider provider) {
+	JplCut(PrologProvider provider) {
 		super(CUT_TYPE, provider, new Atom("!"));
 	}
 

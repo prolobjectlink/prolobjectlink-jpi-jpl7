@@ -56,7 +56,7 @@ public abstract class JplProvider extends AbstractProvider implements PrologProv
 
 	static final PrologLogger logger = new JplLogger();
 
-	public JplProvider(PrologConverter<Term> adapter) {
+	protected JplProvider(PrologConverter<Term> adapter) {
 		super(adapter);
 	}
 

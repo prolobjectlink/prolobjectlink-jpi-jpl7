@@ -46,7 +46,7 @@ import org.prolobjectlink.prolog.PrologError;
  * @author Jose Zalacain
  * @since 1.0
  */
-public final class JplProgram extends AbstractSet<List<Term>> {
+final class JplProgram extends AbstractSet<List<Term>> {
 
 	//
 	private final JplParser parser = new JplParser();

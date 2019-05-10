@@ -40,9 +40,9 @@ import org.prolobjectlink.prolog.PrologTerm;
  * @author Jose Zalacain
  * @since 1.0
  */
-public final class JplAtom extends JplTerm implements PrologAtom {
+final class JplAtom extends JplTerm implements PrologAtom {
 
-	public JplAtom(PrologProvider provider, String value) {
+	JplAtom(PrologProvider provider, String value) {
 		super(ATOM_TYPE, provider, new Atom(value));
 	}
 

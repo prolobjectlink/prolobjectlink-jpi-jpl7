@@ -39,17 +39,16 @@ import org.prolobjectlink.prolog.PrologTerm;
  * @author Jose Zalacain
  * @since 1.0
  */
-public final class JplClause extends AbstractClause implements PrologClause {
+final class JplClause extends AbstractClause implements PrologClause {
 
 	private final PrologIndicator indicator;
 
-	protected JplClause(PrologProvider provider, PrologTerm head, boolean dynamic, boolean multifile,
-			boolean discontiguous) {
+	JplClause(PrologProvider provider, PrologTerm head, boolean dynamic, boolean multifile, boolean discontiguous) {
 		super(provider, head, dynamic, multifile, discontiguous);
 		this.indicator = new JplIndicator(head.getFunctor(), head.getArity());
 	}
 
-	protected JplClause(PrologProvider provider, PrologTerm head, PrologTerm body, boolean dynamic, boolean multifile,
+	JplClause(PrologProvider provider, PrologTerm head, PrologTerm body, boolean dynamic, boolean multifile,
 			boolean discontiguous) {
 		super(provider, head, body, dynamic, multifile, discontiguous);
 		this.indicator = new JplIndicator(head.getFunctor(), head.getArity());

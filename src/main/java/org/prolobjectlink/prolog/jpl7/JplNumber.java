@@ -44,7 +44,7 @@ import org.prolobjectlink.prolog.PrologProvider;
  * @author Jose Zalacain
  * @since 1.0
  */
-public abstract class JplNumber extends JplTerm implements PrologNumber {
+abstract class JplNumber extends JplTerm implements PrologNumber {
 
 	protected JplNumber(int type, PrologProvider provider, Term value) {
 		super(type, provider, value);

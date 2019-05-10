@@ -41,17 +41,17 @@ import org.prolobjectlink.prolog.PrologTerm;
  * @author Jose Zalacain
  * @since 1.0
  */
-public class JplInteger extends JplNumber implements PrologInteger {
+class JplInteger extends JplNumber implements PrologInteger {
 
-	public JplInteger(PrologProvider provider) {
+	JplInteger(PrologProvider provider) {
 		super(INTEGER_TYPE, provider, new Integer(0));
 	}
 
-	public JplInteger(PrologProvider provider, Number value) {
+	JplInteger(PrologProvider provider, Number value) {
 		super(INTEGER_TYPE, provider, new Integer(value.intValue()));
 	}
 
-	public JplInteger(int type, PrologProvider provider, Term value) {
+	JplInteger(int type, PrologProvider provider, Term value) {
 		super(type, provider, value);
 	}
 

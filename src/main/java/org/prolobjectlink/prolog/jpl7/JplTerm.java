@@ -47,7 +47,7 @@ import org.prolobjectlink.prolog.UnknownTermError;
  * @author Jose Zalacain
  * @since 1.0
  */
-public abstract class JplTerm extends AbstractTerm implements PrologTerm {
+abstract class JplTerm extends AbstractTerm implements PrologTerm {
 
 	protected Term value;
 

@@ -38,9 +38,9 @@ import org.prolobjectlink.prolog.PrologTerm;
  * @author Jose Zalacain
  * @since 1.0
  */
-public final class JplTrue extends JplTerm implements PrologTerm {
+final class JplTrue extends JplTerm implements PrologTerm {
 
-	protected JplTrue(PrologProvider provider) {
+	JplTrue(PrologProvider provider) {
 		super(TRUE_TYPE, provider, JPL_TRUE);
 	}
 

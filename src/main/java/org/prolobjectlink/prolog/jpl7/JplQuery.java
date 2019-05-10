@@ -52,7 +52,7 @@ import org.prolobjectlink.prolog.PrologTerm;
  * @author Jose Zalacain
  * @since 1.0
  */
-public final class JplQuery extends AbstractQuery implements PrologQuery {
+final class JplQuery extends AbstractQuery implements PrologQuery {
 
 	private String stringQuery;
 	private Map<String, PrologTerm>[] solutions;

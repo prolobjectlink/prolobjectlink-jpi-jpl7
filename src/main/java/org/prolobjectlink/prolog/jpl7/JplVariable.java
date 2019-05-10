@@ -43,7 +43,7 @@ import org.prolobjectlink.prolog.PrologVariable;
  * @author Jose Zalacain
  * @since 1.0
  */
-public class JplVariable extends JplTerm implements PrologVariable {
+final class JplVariable extends JplTerm implements PrologVariable {
 
 	JplVariable(PrologProvider provider) {
 		super(VARIABLE_TYPE, provider, new Variable("_"));
