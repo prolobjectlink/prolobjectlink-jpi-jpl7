@@ -43,10 +43,6 @@ import org.prolobjectlink.prolog.PrologTerm;
  */
 class JplInteger extends JplNumber implements PrologInteger {
 
-	JplInteger(PrologProvider provider) {
-		super(INTEGER_TYPE, provider, new Integer(0));
-	}
-
 	JplInteger(PrologProvider provider, Number value) {
 		super(INTEGER_TYPE, provider, new Integer(value.intValue()));
 	}

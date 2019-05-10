@@ -65,10 +65,10 @@ import org.prolobjectlink.prolog.PrologTermType;
 public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 
 	// used only for findall list result
-	protected static final String KEY = "X";
+	private static final String KEY = "X";
 
 	// JPL use for fact clauses true prolog term
-	protected static final Term BODY = new Atom("true");
+	private static final Term BODY = new Atom("true");
 
 	// cache file in OS temporal directory
 	private static String cache = null;
@@ -77,7 +77,7 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	private final JplParser parser = new JplParser();
 
 	// main memory prolog program
-	protected JplProgram program = new JplProgram();
+	private JplProgram program = new JplProgram();
 
 	// formulated string for < consult(cache), >
 	private static String consultCacheComma;

@@ -41,10 +41,6 @@ import org.prolobjectlink.prolog.PrologProvider;
  */
 final class JplDouble extends JplFloat implements PrologDouble {
 
-	JplDouble(PrologProvider provider) {
-		super(DOUBLE_TYPE, provider, new Float(0));
-	}
-
 	JplDouble(PrologProvider provider, Number value) {
 		super(DOUBLE_TYPE, provider, new Float(value.doubleValue()));
 	}

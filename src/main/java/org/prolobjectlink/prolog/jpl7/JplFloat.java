@@ -43,10 +43,6 @@ import org.prolobjectlink.prolog.PrologTerm;
  */
 class JplFloat extends JplNumber implements PrologFloat {
 
-	JplFloat(PrologProvider provider) {
-		super(FLOAT_TYPE, provider, new Float(0));
-	}
-
 	JplFloat(PrologProvider provider, Number value) {
 		super(FLOAT_TYPE, provider, new Float(value.floatValue()));
 	}

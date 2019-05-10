@@ -52,7 +52,6 @@ abstract class JplTerm extends AbstractTerm implements PrologTerm {
 	protected Term value;
 
 	public static final Term JPL_TRUE = new Atom("true");
-	protected static final String SIMPLE_ATOM_REGEX = ".|[a-z][A-Za-z0-9_]*";
 
 	protected JplTerm(int type, PrologProvider provider) {
 		super(type, provider);
@@ -148,7 +147,7 @@ abstract class JplTerm extends AbstractTerm implements PrologTerm {
 		return unify(((JplTerm) o).value);
 	}
 
-	protected final boolean unify(Term o) {
+	private final boolean unify(Term o) {
 		String q = "unify_with_occurs_check(" + value + "," + o + ")";
 		Query query = new Query(q);
 		boolean result = query.hasSolution();

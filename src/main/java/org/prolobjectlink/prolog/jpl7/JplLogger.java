@@ -54,7 +54,7 @@ final class JplLogger extends AbstractLogger implements PrologLogger {
 		this(Level.INFO);
 	}
 
-	JplLogger(Level level) {
+	private JplLogger(Level level) {
 		LOGGER.setLevel(level);
 		Logger rootlogger = LOGGER.getParent();
 		SimpleDateFormat f = new SimpleDateFormat("yyyy.MM.dd");

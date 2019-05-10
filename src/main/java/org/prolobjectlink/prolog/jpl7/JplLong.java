@@ -41,10 +41,6 @@ import org.prolobjectlink.prolog.PrologProvider;
  */
 final class JplLong extends JplInteger implements PrologLong {
 
-	JplLong(PrologProvider provider) {
-		super(LONG_TYPE, provider, new Integer(0));
-	}
-
 	JplLong(PrologProvider provider, Number value) {
 		super(LONG_TYPE, provider, new Integer(value.longValue()));
 	}
