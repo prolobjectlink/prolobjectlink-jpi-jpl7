@@ -160,7 +160,7 @@
 					<failOnMissingHeader>true</failOnMissingHeader>
 					<acceptPomPackaging>true</acceptPomPackaging>
 					<licenseName>bsd_2</licenseName>
-					<!-- <dryRun>true</dryRun> -->
+					<!-- <dryRun>true</dryRun> --><licenseFile>LICENSE.md</licenseFile>
 					<addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
 					<roots>
 						<root>src/main</root>
