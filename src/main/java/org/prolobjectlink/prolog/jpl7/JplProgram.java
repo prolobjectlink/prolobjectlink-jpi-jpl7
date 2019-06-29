@@ -138,6 +138,19 @@ final class JplProgram extends AbstractSet<List<Term>> {
 		return false;
 	}
 
+	public boolean remove(Term o) {
+
+		if (o instanceof Term) {
+			String key = getKey(o);
+			List<Term> family = get(key);
+			if (family != null) {
+				return family.remove(o);
+			}
+		}
+
+		return false;
+	}
+
 	public void push(Term clause) {
 		String key = getKey(clause);
 		List<Term> family = clauses.remove(key);
