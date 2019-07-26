@@ -56,17 +56,28 @@
 		<url>https://github.com/prolobjectlink/${project.name}/issues</url>
 	</issueManagement>
 
+	<repositories>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/repositories/central_bundles-18411/content/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+	
 	<distributionManagement>
 		<snapshotRepository>
-			<id>snapshots</id>
-			<name>Internal Snapshot Repository</name>
-			<url>http://maven.delnet.cu/repository/snapshots/</url>
-		</snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
 		<repository>
-			<id>internal</id>
-			<name>Internal Release Repository</name>
-			<url>http://maven.delnet.cu/repository/internal/</url>
-		</repository>
+                    <id>ossrh</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
 		<site>
 			<id>website</id>
 			<url>dav:http://deploy.delnet.cu/webdav/sites/${project.name}</url>
@@ -114,6 +125,18 @@
 		</pluginManagement>
 
 		<plugins>
+			<plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.8</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+				<skipStaging>true</skipStaging>
+                        </configuration>
+                    </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
