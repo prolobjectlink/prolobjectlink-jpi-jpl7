@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- #%L
-  prolobjectlink-jpi
+  prolobjectlink-jpi-jpl7
   %%
   Copyright (C) 2019 Prolobjectlink Project
   %%
@@ -51,7 +51,7 @@
 			<item name="Development Tools" href="tools.html" />
 			<item name="Contribution" href="contribution.html" />
 			<item name="Related Works" href="related.html" />
-			<item name="User Guide" href="prolobjectlink-jpi.pdf" />
+			<item name="User Guide" href="${project.url}/doc/${project.name}.pdf" />
 			<item name="Download" href="download.html" />
 			<item name="FAQ" href="faq.html" />
 		</menu>
@@ -60,4 +60,23 @@
 		<menu ref="reports" />
 
 	</body>
+	<skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-fluido-skin</artifactId>
+        <version>1.5</version>
+    </skin>
+    <custom>
+        <fluidoSkin>
+            <topBarEnabled>true</topBarEnabled>
+            <sideBarEnabled>true</sideBarEnabled>
+            <googleSearch>
+                <sitesearch>${project.url}</sitesearch>
+            </googleSearch>
+            <gitHub>
+                <projectId>${project.name}</projectId>
+                <ribbonOrientation>right</ribbonOrientation>
+                <ribbonColor>gray</ribbonColor>
+            </gitHub>
+        </fluidoSkin>
+    </custom>
 </project>
