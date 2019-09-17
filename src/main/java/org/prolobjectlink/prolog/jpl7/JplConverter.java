@@ -123,7 +123,13 @@ public abstract class JplConverter extends AbstractConverter<Term> implements Pr
 			String functor = compound.name();
 			Term[] arguments = new Term[arity];
 
-			if (arity == 2) {
+			// object reference
+			if (functor.equals("@") && arity == 1) {
+				return new JplReference(provider, compound.jrefToObject());
+			}
+
+			// expressions
+			else if (arity == 2) {
 				String key = "LIST";
 				String opQuery = "findall(OP,current_op(_,_,OP)," + key + ")";
 				Query query = new Query(opQuery);
