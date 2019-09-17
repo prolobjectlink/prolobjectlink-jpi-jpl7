@@ -35,8 +35,10 @@ import static org.prolobjectlink.prolog.PrologTermType.INTEGER_TYPE;
 import static org.prolobjectlink.prolog.PrologTermType.LONG_TYPE;
 
 import org.jpl7.Atom;
+import org.jpl7.JRef;
 import org.jpl7.Query;
 import org.jpl7.Term;
+import org.jpl7.fli.Prolog;
 import org.prolobjectlink.prolog.AbstractTerm;
 import org.prolobjectlink.prolog.PrologProvider;
 import org.prolobjectlink.prolog.PrologTerm;
@@ -134,6 +136,34 @@ abstract class JplTerm extends AbstractTerm implements PrologTerm {
 
 	public final boolean isCompound() {
 		return value.isCompound();
+	}
+
+	public final boolean isTrueType() {
+		return value.isJTrue();
+	}
+
+	public final boolean isFalseType() {
+		return value.isJFalse();
+	}
+
+	public final boolean isNullType() {
+		return value.isJNull();
+	}
+
+	public final boolean isVoidType() {
+		return value.isJVoid();
+	}
+
+	public final boolean isObjectType() {
+		return value.type() == Prolog.JREF;
+	}
+
+	public final boolean isReference() {
+		return value.isJRef();
+	}
+
+	public final Object getReference() {
+		return ((JRef) value).object();
 	}
 
 	public final PrologTerm getTerm() {

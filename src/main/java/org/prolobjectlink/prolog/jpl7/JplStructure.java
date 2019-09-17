@@ -41,7 +41,7 @@ import org.prolobjectlink.prolog.PrologTerm;
  * @author Jose Zalacain
  * @since 1.0
  */
-final class JplStructure extends JplTerm implements PrologStructure {
+class JplStructure extends JplTerm implements PrologStructure {
 
 	JplStructure(PrologProvider provider, String functor, PrologTerm... arguments) {
 		super(STRUCTURE_TYPE, provider);
@@ -66,6 +66,10 @@ final class JplStructure extends JplTerm implements PrologStructure {
 
 	JplStructure(PrologProvider provider, Term left, String functor, Term right) {
 		super(STRUCTURE_TYPE, provider, new Compound(functor, new Term[] { left, right }));
+	}
+
+	JplStructure(int objectType, PrologProvider provider, Term newJRef) {
+		super(objectType, provider, newJRef);
 	}
 
 	public PrologTerm getArgument(int index) {

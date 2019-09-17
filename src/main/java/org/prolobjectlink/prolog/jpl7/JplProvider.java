@@ -160,6 +160,10 @@ public abstract class JplProvider extends AbstractProvider implements PrologProv
 		return new JplStructure(this, left, operator, right);
 	}
 
+	public PrologTerm newReference(Object reference) {
+		return new JplReference(this, reference);
+	}
+
 	public final PrologLogger getLogger() {
 		return logger;
 	}
