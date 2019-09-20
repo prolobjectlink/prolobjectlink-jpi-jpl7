@@ -31,10 +31,15 @@ package org.prolobjectlink.prolog.jpl7;
 import static org.prolobjectlink.prolog.PrologTermType.OBJECT_TYPE;
 
 import org.jpl7.JPL;
+import org.jpl7.JRef;
 import org.prolobjectlink.prolog.PrologProvider;
 import org.prolobjectlink.prolog.PrologReference;
 
 public final class JplReference extends JplStructure implements PrologReference {
+
+	JplReference(PrologProvider provider, JRef reference) {
+		super(OBJECT_TYPE, provider, reference);
+	}
 
 	JplReference(PrologProvider provider, Object reference) {
 		super(OBJECT_TYPE, provider, JPL.newJRef(reference));

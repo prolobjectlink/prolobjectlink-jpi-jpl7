@@ -50,6 +50,7 @@ import org.jpl7.Compound;
 import org.jpl7.Float;
 import org.jpl7.Integer;
 import org.jpl7.JPLException;
+import org.jpl7.JRef;
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.jpl7.Variable;
@@ -117,19 +118,17 @@ public abstract class JplConverter extends AbstractConverter<Term> implements Pr
 				ptr = ptr.arg(2);
 			}
 			return new JplList(provider, l.toArray(a));
+		} else if (prologTerm.isJRef()) {
+			JRef jRef = (JRef) prologTerm;
+			return new JplReference(provider, jRef);
 		} else if (prologTerm.isCompound()) {
 			Compound compound = (Compound) prologTerm;
 			int arity = compound.arity();
 			String functor = compound.name();
 			Term[] arguments = new Term[arity];
 
-			// object reference
-			if (functor.equals("@") && arity == 1) {
-				return new JplReference(provider, compound.jrefToObject());
-			}
-
 			// expressions
-			else if (arity == 2) {
+			if (arity == 2) {
 				String key = "LIST";
 				String opQuery = "findall(OP,current_op(_,_,OP)," + key + ")";
 				Query query = new Query(opQuery);

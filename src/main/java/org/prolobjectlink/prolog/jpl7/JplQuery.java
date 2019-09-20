@@ -44,6 +44,7 @@ import org.prolobjectlink.prolog.AbstractEngine;
 import org.prolobjectlink.prolog.AbstractIterator;
 import org.prolobjectlink.prolog.AbstractQuery;
 import org.prolobjectlink.prolog.PrologError;
+import org.prolobjectlink.prolog.PrologLogger;
 import org.prolobjectlink.prolog.PrologQuery;
 import org.prolobjectlink.prolog.PrologTerm;
 
@@ -89,7 +90,14 @@ final class JplQuery extends AbstractQuery implements PrologQuery {
 				iter = new JplQueryIter(solutions);
 
 			} catch (PrologException e) {
-				// do nothing
+				getLogger().error(getClass(), PrologLogger.RUNTIME_ERROR, e);
+				Term error = e.term();
+				Term exception = error.arg(1);
+				Term ref = exception.arg(1);
+				if (ref.isJRef()) {
+					Exception k = (Exception) ref.object();
+					getLogger().error(getClass(), PrologLogger.RUNTIME_ERROR, k);
+				}
 			}
 		}
 

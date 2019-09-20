@@ -57,17 +57,18 @@
 	</issueManagement>
 
 	<repositories>
-		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/repositories/central_bundles-18442/content/</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
+        <repository>
+            <id>ossrh</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
 	<distributionManagement>
 		<snapshotRepository>
@@ -327,7 +328,7 @@
 
 	<reporting>
 		<excludeDefaults>true</excludeDefaults>
-		<outputDirectory>${project.build.directory}/site</outputDirectory>
+		<outputDirectory>${project.basedir}/doc</outputDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
