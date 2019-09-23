@@ -194,7 +194,7 @@
 				<executions>
 					<execution>
 						<id>create-archive</id>
-						<phase>package</phase>
+						<phase>site</phase>
 						<goals>
 							<goal>single</goal>
 						</goals>
