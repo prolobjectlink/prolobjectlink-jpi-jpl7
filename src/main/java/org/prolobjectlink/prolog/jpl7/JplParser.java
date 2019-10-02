@@ -108,10 +108,9 @@ final class JplParser {
 								File abs = new File(ptr + File.separator + ok);
 								absoluteString = abs.getCanonicalPath();
 							}
-							Atom absolute = new Atom("'" + absoluteString + "'");
+							Atom absolute = new Atom(absoluteString.toLowerCase().replace(File.separatorChar, '/'));
 							Compound c = new Compound("consult", new Term[] { absolute });
-							Compound dir = new Compound(":-", new Term[] { c });
-							program.addDirective(dir);
+							program.addDirective(c);
 						} else {
 							program.addDirective(clauseTerm);
 						}
