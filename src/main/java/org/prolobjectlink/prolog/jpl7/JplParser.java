@@ -40,6 +40,8 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jpl7.Atom;
+import org.jpl7.Compound;
 import org.jpl7.Term;
 import org.jpl7.Util;
 
@@ -89,7 +91,34 @@ final class JplParser {
 				if (!line.isEmpty() && line.lastIndexOf('.') == line.length() - 1) {
 					b.append(line.substring(0, line.length() - 1));
 					Term clauseTerm = Util.textToTerm("" + b + "");
-					program.add(clauseTerm);
+					if (clauseTerm.hasFunctor(":-", 1)) {
+						String absoluteString = "";
+						Term arg = clauseTerm.arg(1);
+						if (arg.hasFunctor("consult", 1)) {
+							Term relative = arg.arg(1);
+							String path = relative.name();
+							String[] array = path.split("\\.\\./");
+							if (array.length > 1) {
+								String ok = array[array.length - 1];
+								File currentPtr = in.getCanonicalFile();
+								for (int i = 0; i < array.length; i++) {
+									currentPtr = currentPtr.getParentFile();
+								}
+								String ptr = currentPtr.getCanonicalPath();
+								File abs = new File(ptr + File.separator + ok);
+								absoluteString = abs.getCanonicalPath();
+							}
+							Atom absolute = new Atom("'" + absoluteString + "'");
+							Compound c = new Compound("consult", new Term[] { absolute });
+							Compound dir = new Compound(":-", new Term[] { c });
+							program.addDirective(dir);
+						} else {
+							program.addDirective(clauseTerm);
+						}
+
+					} else {
+						program.add(clauseTerm);
+					}
 					b = new StringBuilder();
 				} else {
 					b.append(line);
