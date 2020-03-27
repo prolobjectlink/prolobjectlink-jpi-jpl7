@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.2.5" timestamp="2019-10-02T17:39:58.322">
-<file name="D:\Programacion\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\org\prolobjectlink\prolog\jpl7\JplConverter.java">
+<pmd version="4.2.5" timestamp="2020-03-26T21:10:24.979">
+<file name="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\org\prolobjectlink\prolog\jpl7\JplConverter.java">
 <violation beginline="29" endline="227" begincolumn="1" endcolumn="3" rule="TooManyStaticImports" ruleset="Import Statement Rules" package="org.prolobjectlink.prolog.jpl7" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#TooManyStaticImports" priority="3">
 Too many static imports may lead to messy code
 </violation>
 </file>
-<file name="D:\Programacion\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\org\prolobjectlink\prolog\jpl7\JplTerm.java">
+<file name="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\org\prolobjectlink\prolog\jpl7\JplTerm.java">
 <violation beginline="29" endline="247" begincolumn="1" endcolumn="3" rule="TooManyStaticImports" ruleset="Import Statement Rules" package="org.prolobjectlink.prolog.jpl7" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#TooManyStaticImports" priority="3">
 Too many static imports may lead to messy code
 </violation>

@@ -1,4 +1,4 @@
-Copyright (c) 2012 - 2019, Prolobjectlink Project
+Copyright (c) 2012 - 2020, Prolobjectlink Project
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
