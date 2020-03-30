@@ -8,12 +8,12 @@
 	<name>prolobjectlink-jpi-jpl7</name>
 	<description>Java Prolog Interface Implementation over JPL 7.0.1</description>
 
-	<url>https://github.com/prolobjectlink/${project.name}</url>
+	<url>https://prolobjectlink.github.io/${project.name}</url>
 	<inceptionYear>2012</inceptionYear>
 
 	<organization>
 		<name>Prolobjectlink Project</name>
-		<url>https://github.com/prolobjectlink/${project.name}</url>
+		<url>https://prolobjectlink.github.io/${project.name}</url>
 	</organization>
 
 	<licenses>
@@ -29,7 +29,7 @@
 			<name>Jose Zalacain</name>
 			<email>jzalacainllanes@gmail.com</email>
 			<organization>Prolobjectlink Project</organization>
-			<organizationUrl>http://www.logicware.org</organizationUrl>
+			<organizationUrl>https://prolobjectlink.github.io/${project.name}</organizationUrl>
 			<roles>
 				<role>architect</role>
 				<role>developer</role>
@@ -42,7 +42,7 @@
 	<scm>
 		<developerConnection>scm:git:https://github.com/prolobjectlink/${project.name}.git</developerConnection>
 		<connection>scm:git:https://github.com/prolobjectlink/${project.name}.git</connection>
-		<url>https://github.com/prolobjectlink/${project.name}</url>
+		<url>https://prolobjectlink.github.io/${project.name}</url>
 
 	</scm>
 
@@ -81,7 +81,7 @@
 		</repository>
 		<site>
 			<id>website</id>
-			<url>dav:http://deploy.delnet.cu/webdav/sites/${project.name}</url>
+			<url>https://prolobjectlink.github.io/${project.name}</url>
 		</site>
 	</distributionManagement>
 
