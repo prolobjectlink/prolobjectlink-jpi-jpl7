@@ -7,11 +7,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="author" content="Jose Zalacain" />
-    <meta name="Date-Creation-yyyymmdd" content="20190331" />
     <meta name="Date-Revision-yyyymmdd" content="20200401" />
     <meta http-equiv="Content-Language" content="en" />
-    <title>prolobjectlink-jpi-jpl7 &#x2013; Title</title>
+    <title>prolobjectlink-jpi-jpl7 &#x2013; Surefire Report</title>
     <link rel="stylesheet" href="./css/apache-maven-fluido-1.5.min.css" />
     <link rel="stylesheet" href="./css/site.css" />
     <link rel="stylesheet" href="./css/print.css" media="print" />
@@ -231,10 +229,12 @@
         Contribution</a>
             </li>
                 
-      <li class="active">
+      <li>
   
-            <a href="#"><span class="none"></span>Related Works</a>
-          </li>
+                          <a href="related.html" title="Related Works">
+          <span class="none"></span>
+        Related Works</a>
+            </li>
                 
       <li>
   
@@ -264,13 +264,90 @@
           <span class="icon-chevron-right"></span>
         Project Information</a>
                   </li>
-                                                                                                                                                                                                                                                      
+                                                                                                                                                                                                                                                                
       <li>
   
                           <a href="project-reports.html" title="Project Reports">
-          <span class="icon-chevron-right"></span>
+          <span class="icon-chevron-down"></span>
         Project Reports</a>
-                  </li>
+                    <ul class="nav nav-list">
+                    
+      <li>
+  
+                          <a href="apidocs/index.html" title="Javadoc">
+          <span class="none"></span>
+        Javadoc</a>
+            </li>
+                    
+      <li>
+  
+                          <a href="checkstyle.html" title="Checkstyle">
+          <span class="none"></span>
+        Checkstyle</a>
+            </li>
+                    
+      <li>
+  
+                          <a href="xref/index.html" title="Source Xref">
+          <span class="none"></span>
+        Source Xref</a>
+            </li>
+                    
+      <li>
+  
+                          <a href="jdepend-report.html" title="JDepend">
+          <span class="none"></span>
+        JDepend</a>
+            </li>
+                    
+      <li>
+  
+                          <a href="pmd.html" title="PMD Report">
+          <span class="none"></span>
+        PMD Report</a>
+            </li>
+                    
+      <li>
+  
+                          <a href="cpd.html" title="CPD Report">
+          <span class="none"></span>
+        CPD Report</a>
+            </li>
+                    
+      <li>
+  
+                          <a href="changes-report.html" title="Changes">
+          <span class="none"></span>
+        Changes</a>
+            </li>
+                    
+      <li>
+  
+                          <a href="taglist.html" title="Tag List">
+          <span class="none"></span>
+        Tag List</a>
+            </li>
+                    
+      <li>
+  
+                          <a href="javancss.html" title="JavaNCSS Report">
+          <span class="none"></span>
+        JavaNCSS Report</a>
+            </li>
+                    
+      <li>
+  
+                          <a href="clirr-report.html" title="Clirr">
+          <span class="none"></span>
+        Clirr</a>
+            </li>
+                    
+      <li class="active">
+  
+            <a href="#"><span class="none"></span>Surefire Report</a>
+          </li>
+              </ul>
+        </li>
             </ul>
               
                             <form id="search-form" action="https://www.google.com/search" method="get" >
@@ -297,70 +374,43 @@
                 
         <div id="bodyColumn"  class="span10" >
                                   
-            <p>Paragraph 1, line 1. Paragraph 1, line 2.</p>
-<p>Paragraph 2, line 1. Paragraph 2, line 2.</p>
+            <script type="text/javascript">
+//<![CDATA[
+function toggleDisplay(elementId) {
+ var elm = document.getElementById(elementId + 'error');
+ if (elm && typeof elm.style != "undefined") {
+ if (elm.style.display == "none") {
+ elm.style.display = "";
+ document.getElementById(elementId + 'off').style.display = "none";
+ document.getElementById(elementId + 'on').style.display = "inline";
+ } else if (elm.style.display == "") { elm.style.display = "none";
+ document.getElementById(elementId + 'off').style.display = "inline";
+ document.getElementById(elementId + 'on').style.display = "none";
+ } 
+ } 
+ }
+//]]>
+</script>
 <div class="section">
-<h2><a name="Section_title"></a>Section title</h2>
+<h2><a name="Surefire_Report"></a>Surefire Report</h2></div>
 <div class="section">
-<h3><a name="Sub-section_title"></a>Sub-section title</h3>
-<div class="section">
-<h4><a name="Sub-sub-section_title"></a>Sub-sub-section title</h4>
-<div class="section">
-<h5><a name="Sub-sub-sub-section_title"></a>Sub-sub-sub-section title</h5>
-<div class="section">
-<h6><a name="Sub-sub-sub-sub-section_title"></a>Sub-sub-sub-sub-section title</h6>
-<ul>
-<li>List item 1.</li>
-<li>List item 2.
-<p>Paragraph contained in list item 2.</p>
-<ul>
-<li>Sub-list item 1.</li>
-<li>Sub-list item 2.</li></ul></li>
-<li>List item 3. Force end of list:</li></ul>
-<div class="source"><pre class="prettyprint">Verbatim text not contained in list item 3
-</pre></div>
-<ol style="list-style-type: decimal">
-<li>Numbered item 1.
-<ol style="list-style-type: upper-alpha">
-<li>Numbered item A.</li>
-<li>Numbered item B.</li></ol></li>
-<li>Numbered item 2.</li></ol>
-<p>List numbering schemes: [[1]], [[a]], [[A]], [[i]], [[I]].</p>
-<dl>
-<dt>Defined term 1</dt>
-<dd>of definition list.</dd>
-<dt>Defined term 2</dt>
-<dd>of definition list.
-<div class="source"><pre class="prettyprint">Verbatim text
-                        in a box
-</pre></div></dd></dl>
-<p>--- instead of +-- suppresses the box around verbatim text.</p><img src="Figure name" alt="Figure caption" />
-<table border="1" class="table table-striped"><caption>Table caption</caption>
+<h2><a name="Summary"></a>Summary</h2><a name="Summary"></a><br />
+<table border="1" class="table table-striped">
 <tr class="a">
-<td align="center">Centered cell 1,1</td>
-<td align="left">Left-aligned cell 1,2</td>
-<td align="right">Right-aligned cell 1,3</td></tr>
+<th>Tests</th>
+<th>Errors </th>
+<th>Failures</th>
+<th>Skipped</th>
+<th>Success Rate</th>
+<th>Time</th></tr>
 <tr class="b">
-<td align="center">cell 2,1</td>
-<td align="left">cell 2,2</td>
-<td align="right">cell 2,3</td></tr></table>
-<p>No grid, no caption:</p>
-<table border="0" class="table table-striped">
-<tr class="a">
-<td align="center">cell</td>
-<td align="center">cell</td></tr>
-<tr class="b">
-<td align="center">cell</td>
-<td align="center">cell</td></tr></table>
-<p>Horizontal line:</p><hr /></div></div></div></div></div>
-<div class="section">
-<h2><a name="aL_New_page."></a>^L New page.</h2>
-<p><i>Italic</i> font. <b>Bold</b> font. <tt>Monospaced</tt> font.</p>
-<p><a name="Anchor">Anchor</a>. Link to <a href="#anchor">anchor</a>. Link to <a class="externalLink" href="http://www.pixware.fr">http://www.pixware.fr</a>. Link to <a href="#anchor">showing alternate text</a>. Link to <a class="externalLink" href="http://www.pixware.fr">Pixware home page</a>.</p>
-<p>Force line<br />break.</p>
-<p>Non&#160;breaking&#160;space.</p>
-<p>Escaped special characters: ~, =, -, +, *, [, ], &lt;, &gt;, {, }, \.</p>
-<p>Copyright symbol: &#xa9;, &#xa9;, &#xa9;.</p></div>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0%</td>
+<td>0</td></tr></table><br />
+<p>Note: failures are anticipated and checked for with assertions while errors are unanticipated.</p><br /></div>
                   </div>
             </div>
           </div>

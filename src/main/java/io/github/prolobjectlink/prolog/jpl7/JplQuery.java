@@ -30,6 +30,8 @@ package io.github.prolobjectlink.prolog.jpl7;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -126,7 +128,7 @@ final class JplQuery extends AbstractQuery implements PrologQuery {
 	}
 
 	public Map<String, PrologTerm> oneVariablesSolution() {
-		return solutions[0];
+		return solutions.length > 0 ? solutions[0] : new HashMap<String, PrologTerm>();
 	}
 
 	public PrologTerm[] nextSolution() {
