@@ -30,7 +30,6 @@ package io.github.prolobjectlink.prolog.jpl7;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +46,6 @@ import io.github.prolobjectlink.prolog.AbstractEngine;
 import io.github.prolobjectlink.prolog.AbstractIterator;
 import io.github.prolobjectlink.prolog.AbstractQuery;
 import io.github.prolobjectlink.prolog.PrologError;
-import io.github.prolobjectlink.prolog.PrologLogger;
 import io.github.prolobjectlink.prolog.PrologQuery;
 import io.github.prolobjectlink.prolog.PrologTerm;
 
@@ -93,7 +91,9 @@ final class JplQuery extends AbstractQuery implements PrologQuery {
 				iter = new JplQueryIter(solutions);
 
 			} catch (PrologException e) {
-				getLogger().error(getClass(), PrologLogger.RUNTIME_ERROR, e);
+				// getLogger().error(getClass(), PrologLogger.RUNTIME_ERROR, e)
+				Map<String, PrologTerm> m = new HashMap<String, PrologTerm>();
+				JplReference prologexception = new JplReference(getProvider(), e);
 				Term error = e.term();
 				Term exception = error.arg(1);
 				Term ref = exception.arg(1);
@@ -101,7 +101,11 @@ final class JplQuery extends AbstractQuery implements PrologQuery {
 					Object object = ref.object();
 					if (object instanceof Throwable) {
 						Throwable k = (Throwable) object;
-						getLogger().error(getClass(), PrologLogger.RUNTIME_ERROR, k);
+						// getLogger().error(getClass(), PrologLogger.RUNTIME_ERROR, k)
+						JplReference javaexception = new JplReference(getProvider(), k);
+						m.put("PrologException", prologexception);
+						m.put("JavaException", javaexception);
+						solutions = new Map[] { m };
 					}
 				}
 			}

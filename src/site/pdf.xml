@@ -50,9 +50,9 @@
 		<coverSubTitle>v. ${project.version}</coverSubTitle>
 		<coverType>User Guide</coverType>
 		<projectName>${project.name}</projectName>
-		<!-- <projectLogo>images/logo_myorg.png</projectLogo> -->
+		<projectLogo>${project.basedir}/src/main/resources/prolobjectlink.png</projectLogo>
 		<companyName>${project.organization.name}</companyName>
-		<!-- <companyLogo>images/logo_myorg.png</companyLogo> -->
+		<companyLogo>${project.basedir}/src/main/resources/java-prolog.png</companyLogo>
 	</cover>
 
 </document>

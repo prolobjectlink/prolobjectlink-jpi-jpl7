@@ -20,7 +20,7 @@
 	<licenses>
 		<license>
 			<name>Simplified BSD License</name>
-			<url>https://github.com/SWI-Prolog/swipl-devel/blob/master/LICENSE</url>
+			<url>http://www.opensource.org/licenses/bsd-license.php</url>
 		</license>
 	</licenses>
 
@@ -44,7 +44,7 @@
 		<developerConnection>scm:git:https://github.com/prolobjectlink/${project.name}.git</developerConnection>
 		<connection>scm:git:https://github.com/prolobjectlink/${project.name}.git</connection>
 		<url>https://prolobjectlink.github.io/${project.name}</url>
-
+		<tag>v@{project.version}</tag>
 	</scm>
 
 	<ciManagement>
@@ -56,6 +56,23 @@
 		<system>GitHub</system>
 		<url>https://github.com/prolobjectlink/${project.name}/issues</url>
 	</issueManagement>
+
+	<mailingLists>
+		<mailingList>
+			<name>Developer List</name>
+			<subscribe>prolobjectlink+subscribe@googlegroups.com</subscribe>
+			<unsubscribe>prolobjectlink+unsubscribe@googlegroups.com</unsubscribe>
+			<post>prolobjectlink@googlegroups.com</post>
+			<archive>http://groups.google.com/group/prolobjectlink</archive>
+		</mailingList>
+		<mailingList>
+			<name>Users List</name>
+			<subscribe>prolobjectlink+subscribe@googlegroups.com</subscribe>
+			<unsubscribe>prolobjectlink+unsubscribe@googlegroups.com</unsubscribe>
+			<post>prolobjectlink@googlegroups.com</post>
+			<archive>http://groups.google.com/group/prolobjectlink</archive>
+		</mailingList>
+	</mailingLists>
 
 	<repositories>
 		<repository>
@@ -78,7 +95,7 @@
 		</snapshotRepository>
 		<repository>
 			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/release/</url>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 		<site>
 			<id>website</id>
@@ -241,7 +258,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>2.3.1</version>
+				<version>3.0.3</version>
 				<configuration>
 					<threshold>Normal</threshold>
 					<effort>Default</effort>
@@ -346,7 +363,6 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.18.1</version>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-bundle-plugin</artifactId>
@@ -354,17 +370,24 @@
 				<version>2.3.7</version>
 				<configuration>
 					<instructions>
+						<Implementation-Title>${project.name}</Implementation-Title>
+						<Implementation-Version>${project.version}</Implementation-Version>
+						<Bundle-DocURL>${project.url}</Bundle-DocURL>
 						<Bundle-Name>JPL7 Java Prolog Interface Implementation</Bundle-Name>
 						<Export-Package>${project.groupId}.prolog.jpl7</Export-Package>
-						<Import-Package>javax.script;org.jpl7;org.jpl7.fli;${project.groupId}.*;provide:=true</Import-Package>
+						<Import-Package>javax.script;org.jpl7;org.jpl7.fli;javax.swing;
+							javax.swing.border;${project.groupId}.*;provide:=true</Import-Package>
 						<Bundle-SymbolicName>${project.groupId}.prolog.jpl7.plugin;singleton:=true</Bundle-SymbolicName>
 						<Bundle-RequiredExecutionEnvironment>JavaSE-1.6</Bundle-RequiredExecutionEnvironment>
+						<Embed-Dependency>*;scope=compile|runtime;inline=false</Embed-Dependency>
+						<Embed-Directory>target/dependency</Embed-Directory>
+						<Embed-StripGroup>true</Embed-StripGroup>
+						<Embed-Transitive>true</Embed-Transitive>
 					</instructions>
 				</configuration>
 				<executions>
 					<execution>
 						<id>bundle-manifest</id>
-						<!-- <phase>process-classes</phase> -->
 						<phase>install</phase>
 						<goals>
 							<goal>manifest</goal>
@@ -372,7 +395,95 @@
 					</execution>
 				</executions>
 			</plugin>
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.1</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>2.7.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.rat</groupId>
+				<artifactId>apache-rat-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<excludeSubProjects>false</excludeSubProjects>
+					<numUnapprovedLicenses>0</numUnapprovedLicenses>
+					<licenses>
+						<license
+							implementation="org.apache.rat.analysis.license.SimplePatternBasedLicense">
+							<licenseFamilyCategory>BSD</licenseFamilyCategory>
+							<licenseFamilyName>Berkeley Software Distribution</licenseFamilyName>
+							<notes></notes>
+							<patterns>
+								<pattern>Redistribution and use in source and binary forms,</pattern>
+							</patterns>
+						</license>
+					</licenses>
+					<licenseFamilies>
+						<licenseFamily
+							implementation="org.apache.rat.license.SimpleLicenseFamily">
+							<familyName>Berkeley Software Distribution</familyName>
+						</licenseFamily>
+					</licenseFamilies>
+					<excludes>
+						generated content
+						<exclude>**/.*/**</exclude>
+						<exclude>**/target/**/*</exclude>
+					</excludes>
+					<includes>
+						only check common source files
+						<include>**/src/**/*.apt</include>
+						<include>**/src/**/*.bat</include>
+						<include>**/src/**/*.css</include>
+						<include>**/src/**/*.html</include>
+						<include>**/src/**/*.java</include>
+						<include>**/src/**/*.js</include>
+						<include>**/src/**/*.jsp</include>
+						<include>**/src/**/*.properties</include>
+						<include>**/src/**/*.sh</include>
+						<include>**/src/**/*.txt</include>
+						<include>**/src/**/*.vm</include>
+						<include>**/src/**/*.xml</include>
+					</includes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.6</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.ow2.asm</groupId>
+						<artifactId>asm</artifactId>
+						<version>5.0.3</version>
+					</dependency>
+				</dependencies>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -426,11 +537,11 @@
 					<outputEncoding>${project.reporting.outputEncoding}</outputEncoding>
 				</configuration>
 			</plugin>
-			<!-- <plugin> -->
-			<!-- <groupId>org.codehaus.mojo</groupId> -->
-			<!-- <artifactId>findbugs-maven-plugin</artifactId> -->
-			<!-- <version>2.3.1</version> -->
-			<!-- </plugin> -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>findbugs-maven-plugin</artifactId>
+				<version>3.0.3</version>
+			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jdepend-maven-plugin</artifactId>
@@ -499,6 +610,38 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-report-plugin</artifactId>
 				<version>2.18.1</version>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.2</version>
+				<reportSets>
+					<reportSet>
+						<reports>
+							<report>dependency-updates-report</report>
+							<report>plugin-updates-report</report>
+							<report>property-updates-report</report>
+						</reports>
+					</reportSet>
+				</reportSets>
+			</plugin>
+			<plugin>
+				<artifactId>maven-changelog-plugin</artifactId>
+				<version>2.2</version>
+				<reportSets>
+					<reportSet>
+						<id>dual-report</id>
+						<configuration>
+							<type>range</type>
+							<range>30</range>
+						</configuration>
+						<reports>
+							<report>changelog</report>
+							<report>file-activity</report>
+							<report>dev-activity</report>
+						</reports>
+					</reportSet>
+				</reportSets>
 			</plugin>
 		</plugins>
 	</reporting>
