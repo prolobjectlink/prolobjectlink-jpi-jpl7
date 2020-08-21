@@ -95,6 +95,20 @@ Contribution
 	Add your dependencies including Java Prolog Interface API
 
 +------------------------------------------------------------+
+<repositories>
+	<repository>
+		<id>ossrh</id>
+		<name>Sonatype Nexus Snapshots</name>
+		<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		<releases>
+			<enabled>false</enabled>
+		</releases>
+		<snapshots>
+			<enabled>true</enabled>
+		</snapshots>
+	</repository>
+</repositories>
+...
 <dependencies>
 	...
 	<dependency>
