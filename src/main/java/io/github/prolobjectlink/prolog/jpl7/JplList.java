@@ -131,14 +131,6 @@ public class JplList extends JplTerm implements PrologList {
 		return ".";
 	}
 
-	public String getIndicator() {
-		return getFunctor() + "/" + getArity();
-	}
-
-	public boolean hasIndicator(String functor, int arity) {
-		return getFunctor().equals(functor) && getArity() == arity;
-	}
-
 	public PrologTerm[] getArguments() {
 		return toTermArray(value.toTermArray(), PrologTerm[].class);
 	}

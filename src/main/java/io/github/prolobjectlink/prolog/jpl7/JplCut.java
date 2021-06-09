@@ -61,12 +61,4 @@ final class JplCut extends JplTerm implements PrologTerm {
 		return v;
 	}
 
-	public String getIndicator() {
-		return getFunctor() + "/" + getArity();
-	}
-
-	public boolean hasIndicator(String functor, int arity) {
-		return getFunctor().equals(functor) && getArity() == arity;
-	}
-
 }

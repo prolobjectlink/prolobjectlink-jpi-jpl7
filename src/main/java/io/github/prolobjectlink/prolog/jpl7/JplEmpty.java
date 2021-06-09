@@ -58,14 +58,4 @@ final class JplEmpty extends JplList implements PrologList {
 		return value.name();
 	}
 
-	@Override
-	public String getIndicator() {
-		return getFunctor() + "/" + getArity();
-	}
-
-	@Override
-	public boolean hasIndicator(String functor, int arity) {
-		return getFunctor().equals(functor) && getArity() == arity;
-	}
-
 }

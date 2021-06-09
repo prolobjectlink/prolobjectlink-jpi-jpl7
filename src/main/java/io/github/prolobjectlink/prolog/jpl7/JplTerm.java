@@ -43,7 +43,6 @@ import org.jpl7.fli.Prolog;
 import io.github.prolobjectlink.prolog.AbstractTerm;
 import io.github.prolobjectlink.prolog.PrologProvider;
 import io.github.prolobjectlink.prolog.PrologTerm;
-import io.github.prolobjectlink.prolog.UnknownTermError;
 
 /**
  * 
@@ -172,10 +171,7 @@ abstract class JplTerm extends AbstractTerm implements PrologTerm {
 	}
 
 	public final boolean unify(PrologTerm o) {
-		if (!(o instanceof JplTerm)) {
-			throw new UnknownTermError(o);
-		}
-		return unify(((JplTerm) o).value);
+		return unify(fromTerm(o, Term.class));
 	}
 
 	private final boolean unify(Term o) {
@@ -188,12 +184,8 @@ abstract class JplTerm extends AbstractTerm implements PrologTerm {
 
 	public final int compareTo(PrologTerm o) {
 
-		if (!(o instanceof JplTerm)) {
-			throw new UnknownTermError(o);
-		}
-
 		String key = "Order";
-		Term term = ((JplTerm) o).value;
+		Term term = fromTerm(o, Term.class);
 		String arguments = key + "," + value + "," + term;
 		Query query = new Query("compare(" + arguments + ")");
 
