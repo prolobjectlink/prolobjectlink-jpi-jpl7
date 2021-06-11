@@ -31,19 +31,35 @@ package io.github.prolobjectlink.prolog.jpl7;
 import static io.github.prolobjectlink.prolog.PrologTermType.OBJECT_TYPE;
 
 import org.jpl7.JPL;
-import org.jpl7.JRef;
+import org.jpl7.Term;
 
 import io.github.prolobjectlink.prolog.PrologProvider;
 import io.github.prolobjectlink.prolog.PrologReference;
+import io.github.prolobjectlink.prolog.PrologTerm;
 
-public final class JplReference extends JplStructure implements PrologReference {
+public final class JplReference extends JplTerm implements PrologReference {
 
-	JplReference(PrologProvider provider, JRef reference) {
+	JplReference(PrologProvider provider, Term reference) {
 		super(OBJECT_TYPE, provider, reference);
 	}
 
 	JplReference(PrologProvider provider, Object reference) {
 		super(OBJECT_TYPE, provider, JPL.newJRef(reference));
+	}
+
+	@Override
+	public int getArity() {
+		return value.arity();
+	}
+
+	@Override
+	public String getFunctor() {
+		return value.name();
+	}
+
+	@Override
+	public PrologTerm[] getArguments() {
+		return toTermArray(value.args(), PrologTerm[].class);
 	}
 
 }
