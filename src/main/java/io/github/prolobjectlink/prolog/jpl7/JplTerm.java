@@ -35,7 +35,6 @@ import static io.github.prolobjectlink.prolog.PrologTermType.INTEGER_TYPE;
 import static io.github.prolobjectlink.prolog.PrologTermType.LONG_TYPE;
 
 import org.jpl7.Atom;
-import org.jpl7.JRef;
 import org.jpl7.Query;
 import org.jpl7.Term;
 import org.jpl7.fli.Prolog;
@@ -163,14 +162,17 @@ abstract class JplTerm extends AbstractTerm implements PrologTerm {
 	}
 
 	public final Object getObject() {
-		return ((JRef) value).object();
+		if (value.isJRef()) {
+			return value.object();
+		}
+		return null;
 	}
 
 	public final PrologTerm getTerm() {
 		return this;
 	}
 
-	public final boolean unify(PrologTerm o) {
+	public boolean unify(PrologTerm o) {
 		return unify(fromTerm(o, Term.class));
 	}
 
@@ -182,7 +184,7 @@ abstract class JplTerm extends AbstractTerm implements PrologTerm {
 		return result;
 	}
 
-	public final int compareTo(PrologTerm o) {
+	public int compareTo(PrologTerm o) {
 
 		String key = "Order";
 		Term term = fromTerm(o, Term.class);
