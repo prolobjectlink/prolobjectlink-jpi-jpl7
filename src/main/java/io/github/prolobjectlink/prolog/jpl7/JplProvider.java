@@ -35,6 +35,7 @@ import static org.jpl7.JPL.JVOID;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.jpl7.Term;
 import org.jpl7.Util;
@@ -45,6 +46,7 @@ import io.github.prolobjectlink.prolog.PrologConverter;
 import io.github.prolobjectlink.prolog.PrologDouble;
 import io.github.prolobjectlink.prolog.PrologFloat;
 import io.github.prolobjectlink.prolog.PrologInteger;
+import io.github.prolobjectlink.prolog.PrologJavaConverter;
 import io.github.prolobjectlink.prolog.PrologList;
 import io.github.prolobjectlink.prolog.PrologLogger;
 import io.github.prolobjectlink.prolog.PrologLong;
@@ -164,6 +166,29 @@ public abstract class JplProvider extends AbstractProvider implements PrologProv
 
 	public final PrologTerm newStructure(PrologTerm left, String operator, PrologTerm right) {
 		return new JplStructure(this, left, operator, right);
+	}
+
+	public final PrologTerm newEntry(PrologTerm key, PrologTerm value) {
+		return new JplEntry(this, key, value);
+	}
+
+	public final PrologTerm newEntry(Object key, Object value) {
+		PrologJavaConverter transformer = getJavaConverter();
+		PrologTerm keyTerm = transformer.toTerm(key);
+		PrologTerm valueTerm = transformer.toTerm(value);
+		return new JplEntry(this, keyTerm, valueTerm);
+	}
+
+	public final PrologTerm newMap(Map<PrologTerm, PrologTerm> map) {
+		return new JplMap(this, map);
+	}
+
+	public final PrologTerm newMap(int initialCapacity) {
+		return new JplMap(this, initialCapacity);
+	}
+
+	public final PrologTerm newMap() {
+		return new JplMap(this);
 	}
 
 	public final PrologTerm newReference(Object reference) {
