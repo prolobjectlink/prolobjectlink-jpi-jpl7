@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd-cpd>
+<duplication lines="18" tokens="126">
+<file line="295" path="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplEngine.java"/>
+<file line="316" path="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplEngine.java"/>
+<codefragment>
+<![CDATA[
+	public final Set<PrologIndicator> getBuiltIns() {
+		Set<PrologIndicator> indicators = new HashSet<PrologIndicator>();
+		String opQuery = consultCacheComma + "findall(X/Y,current_predicate(X/Y)," + KEY + ")";
+		Query query = new Query(opQuery);
+		if (query.hasSolution()) {
+			Term term = query.oneSolution().get(KEY);
+			Term[] termArray = term.toTermArray();
+			for (Term t : termArray) {
+				Term f = t.arg(1);
+				Term a = t.arg(2);
+
+				int arity = a.intValue();
+				String functor = f.name();
+
+				JplIndicator pi = new JplIndicator(functor, arity);
+				indicators.add(pi);
+			}
+		}
+]]>
+</codefragment>
+</duplication>
+</pmd-cpd>
