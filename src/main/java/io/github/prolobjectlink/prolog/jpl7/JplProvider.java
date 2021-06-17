@@ -68,10 +68,6 @@ public abstract class JplProvider extends AbstractProvider implements PrologProv
 		super(adapter);
 	}
 
-	public final boolean isCompliant() {
-		return true;
-	}
-
 	public final PrologTerm prologNil() {
 		return new JplNil(this);
 	}
