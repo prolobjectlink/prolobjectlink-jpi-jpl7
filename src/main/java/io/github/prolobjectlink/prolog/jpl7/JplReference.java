@@ -48,6 +48,11 @@ public final class JplReference extends JplTerm implements PrologReference {
 	}
 
 	@Override
+	public Class<?> getReferenceType() {
+		return getObject().getClass();
+	}
+
+	@Override
 	public int getArity() {
 		return value.arity();
 	}

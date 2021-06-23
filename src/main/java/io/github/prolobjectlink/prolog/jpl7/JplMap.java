@@ -177,6 +177,25 @@ public final class JplMap extends AbstractCompounds implements PrologMap {
 		return m;
 	}
 
+	public void putAll(Collection<Entry<PrologTerm, PrologTerm>> entries) {
+		for (Entry<PrologTerm, PrologTerm> entry : entries) {
+			put(entry);
+		}
+	}
+
+	public boolean contains(Entry<PrologTerm, PrologTerm> entry) {
+		PrologTerm value = get(entry.getKey());
+		return value != null ? value.equals(entry.getValue()) : false;
+	}
+
+	public void remove(Entry<PrologTerm, PrologTerm> entry) {
+		remove(entry.getKey());
+	}
+
+	public void put(Entry<PrologTerm, PrologTerm> entry) {
+		put(entry.getKey(), entry.getValue());
+	}
+
 	private class PrologMapIterator extends AbstractIterator<PrologTerm> implements Iterator<PrologTerm> {
 
 		private final Set<PrologTerm> set;
