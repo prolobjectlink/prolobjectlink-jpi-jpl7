@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pmd-cpd>
-<duplication lines="45" tokens="164">
+<duplication lines="45" tokens="166">
 <file line="50" path="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplTypedParameter.java"/>
 <file line="50" path="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplTypedResult.java"/>
 <codefragment>
 <![CDATA[
 	JplTypedResult(PrologProvider provider, String name, String kind, int position) {
 		super(provider, provider.newVariable(name, position));
-		this.kind = provider.newAtom(kind);
+		this.kind = provider.newVariable(kind, position);
 	}
 
 	public final int getArity() {
@@ -53,14 +53,14 @@
 ]]>
 </codefragment>
 </duplication>
-<duplication lines="40" tokens="149">
+<duplication lines="40" tokens="151">
 <file line="49" path="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplTypedField.java"/>
 <file line="50" path="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplTypedParameter.java"/>
 <codefragment>
 <![CDATA[
 	JplTypedParameter(PrologProvider provider, String name, String kind, int position) {
 		super(provider, provider.newVariable(name, position));
-		this.kind = provider.newAtom(kind);
+		this.kind = provider.newVariable(kind, position);
 	}
 
 	public final int getArity() {

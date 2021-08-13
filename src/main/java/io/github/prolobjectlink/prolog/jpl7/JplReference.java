@@ -67,6 +67,19 @@ public final class JplReference extends JplTerm implements PrologReference {
 		return new PrologTerm[0];
 	}
 
+	public Object getObject() {
+		if (value.isJFalse()) {
+			return Boolean.FALSE;
+		} else if (value.isJTrue()) {
+			return Boolean.TRUE;
+		} else if (value.isJVoid()) {
+			return void.class;
+		} else if (value.isJRef()) {
+			return value.object();
+		}
+		return null;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
