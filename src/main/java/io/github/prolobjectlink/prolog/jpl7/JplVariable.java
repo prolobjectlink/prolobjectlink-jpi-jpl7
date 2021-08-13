@@ -30,6 +30,7 @@ package io.github.prolobjectlink.prolog.jpl7;
 
 import static io.github.prolobjectlink.prolog.PrologTermType.VARIABLE_TYPE;
 
+import org.jpl7.Term;
 import org.jpl7.Variable;
 
 import io.github.prolobjectlink.prolog.ArityError;
@@ -43,7 +44,7 @@ import io.github.prolobjectlink.prolog.PrologVariable;
  * @author Jose Zalacain
  * @since 1.0
  */
-final class JplVariable extends JplTerm implements PrologVariable {
+class JplVariable extends JplTerm implements PrologVariable {
 
 	JplVariable(PrologProvider provider) {
 		super(VARIABLE_TYPE, provider, new Variable("_"));
@@ -51,6 +52,18 @@ final class JplVariable extends JplTerm implements PrologVariable {
 
 	JplVariable(PrologProvider provider, String name) {
 		super(VARIABLE_TYPE, provider, new Variable(name));
+	}
+
+	JplVariable(int type, PrologProvider provider) {
+		super(type, provider);
+	}
+
+	JplVariable(int type, PrologProvider provider, String name) {
+		super(type, provider, new Variable(name));
+	}
+
+	JplVariable(int type, PrologProvider provider, Term var) {
+		super(type, provider, var);
 	}
 
 	public boolean isAnonymous() {
