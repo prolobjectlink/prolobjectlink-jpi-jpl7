@@ -1,5 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pmd-cpd>
+<duplication lines="45" tokens="164">
+<file line="50" path="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplTypedParameter.java"/>
+<file line="50" path="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplTypedResult.java"/>
+<codefragment>
+<![CDATA[
+	JplTypedResult(PrologProvider provider, String name, String kind, int position) {
+		super(provider, provider.newVariable(name, position));
+		this.kind = provider.newAtom(kind);
+	}
+
+	public final int getArity() {
+		return 2;
+	}
+
+	public final String getFunctor() {
+		return "-";
+	}
+
+	@Override
+	public PrologTerm[] getArguments() {
+		return new PrologTerm[] { getKey(), getValue() };
+	}
+
+	@Override
+	public PrologTerm getKey() {
+		return getNameTerm();
+	}
+
+	@Override
+	public PrologTerm getValue() {
+		return kind;
+	}
+
+	@Override
+	public PrologTerm setValue(PrologTerm value) {
+		// this.type = value.getFunctor()
+		getLogger().debug(getClass(), "No value setting allow");
+		return kind;
+	}
+
+	public PrologTerm getKindTerm() {
+		return getValue();
+	}
+
+	public String getKind() {
+		PrologVariable v = (PrologVariable) kind;
+		return v.getName();
+	}
+
+}
+]]>
+</codefragment>
+</duplication>
+<duplication lines="40" tokens="149">
+<file line="49" path="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplTypedField.java"/>
+<file line="50" path="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplTypedParameter.java"/>
+<codefragment>
+<![CDATA[
+	JplTypedParameter(PrologProvider provider, String name, String kind, int position) {
+		super(provider, provider.newVariable(name, position));
+		this.kind = provider.newAtom(kind);
+	}
+
+	public final int getArity() {
+		return 2;
+	}
+
+	public final String getFunctor() {
+		return "-";
+	}
+
+	@Override
+	public PrologTerm[] getArguments() {
+		return new PrologTerm[] { getKey(), getValue() };
+	}
+
+	@Override
+	public PrologTerm getKey() {
+		return getNameTerm();
+	}
+
+	@Override
+	public PrologTerm getValue() {
+		return kind;
+	}
+
+	@Override
+	public PrologTerm setValue(PrologTerm value) {
+		// this.type = value.getFunctor()
+		getLogger().debug(getClass(), "No value setting allow");
+		return kind;
+	}
+
+	public PrologTerm getKindTerm() {
+		return getValue();
+	}
+
+	public String getKind() {
+]]>
+</codefragment>
+</duplication>
 <duplication lines="18" tokens="126">
 <file line="300" path="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplEngine.java"/>
 <file line="321" path="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplEngine.java"/>
