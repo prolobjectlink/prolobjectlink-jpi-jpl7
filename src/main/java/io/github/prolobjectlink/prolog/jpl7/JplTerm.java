@@ -162,7 +162,13 @@ abstract class JplTerm extends AbstractTerm implements PrologTerm {
 	}
 
 	public final Object getObject() {
-		if (value.isJRef()) {
+		if (value.isJFalse()) {
+			return Boolean.FALSE;
+		} else if (value.isJTrue()) {
+			return Boolean.TRUE;
+		} else if (value.isJVoid()) {
+			return void.class;
+		} else if (value.isJRef()) {
 			return value.object();
 		}
 		return null;
