@@ -44,12 +44,12 @@ public class JplTypedParameter extends JplParameter implements PrologTypedParame
 
 	JplTypedParameter(PrologProvider provider, String kind, int position) {
 		super(provider, provider.newVariable(position));
-		this.kind = provider.newAtom(kind);
+		this.kind = provider.newVariable(kind, position);
 	}
 
 	JplTypedParameter(PrologProvider provider, String name, String kind, int position) {
 		super(provider, provider.newVariable(name, position));
-		this.kind = provider.newAtom(kind);
+		this.kind = provider.newVariable(kind, position);
 	}
 
 	public final int getArity() {
