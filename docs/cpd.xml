@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pmd-cpd>
 <duplication lines="45" tokens="166">
-<file line="50" path="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplTypedParameter.java"/>
-<file line="50" path="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplTypedResult.java"/>
+<file line="50" path="C:\Users\Jose Zalacain\Documents\eclipse-jee-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplTypedParameter.java"/>
+<file line="50" path="C:\Users\Jose Zalacain\Documents\eclipse-jee-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplTypedResult.java"/>
 <codefragment>
 <![CDATA[
 	JplTypedResult(PrologProvider provider, String name, String kind, int position) {
@@ -54,8 +54,8 @@
 </codefragment>
 </duplication>
 <duplication lines="40" tokens="151">
-<file line="49" path="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplTypedField.java"/>
-<file line="50" path="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplTypedParameter.java"/>
+<file line="49" path="C:\Users\Jose Zalacain\Documents\eclipse-jee-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplTypedField.java"/>
+<file line="50" path="C:\Users\Jose Zalacain\Documents\eclipse-jee-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplTypedParameter.java"/>
 <codefragment>
 <![CDATA[
 	JplTypedParameter(PrologProvider provider, String name, String kind, int position) {
@@ -102,8 +102,8 @@
 </codefragment>
 </duplication>
 <duplication lines="18" tokens="126">
-<file line="300" path="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplEngine.java"/>
-<file line="321" path="C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplEngine.java"/>
+<file line="300" path="C:\Users\Jose Zalacain\Documents\eclipse-jee-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplEngine.java"/>
+<file line="321" path="C:\Users\Jose Zalacain\Documents\eclipse-jee-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplEngine.java"/>
 <codefragment>
 <![CDATA[
 	public final Set<PrologIndicator> getBuiltIns() {

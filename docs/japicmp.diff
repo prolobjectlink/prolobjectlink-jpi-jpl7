@@ -1,4 +1,4 @@
-Comparing source compatibility of C:\Users\Jose Zalacain\Documents\eclipse-java-photon-workspace\prolobjectlink-jpi-jpl7\target\prolobjectlink-jpi-jpl7-1.1-SNAPSHOT.jar against C:\Users\Jose Zalacain\.m2\repository\io\github\prolobjectlink\prolobjectlink-jpi-jpl7\1.0\prolobjectlink-jpi-jpl7-1.0.jar
+Comparing source compatibility of C:\Users\Jose Zalacain\Documents\eclipse-jee-photon-workspace\prolobjectlink-jpi-jpl7\target\prolobjectlink-jpi-jpl7-1.1-SNAPSHOT.jar against C:\Users\Jose Zalacain\.m2\repository\io\github\prolobjectlink\prolobjectlink-jpi-jpl7\1.0\prolobjectlink-jpi-jpl7-1.0.jar
 ===  UNCHANGED CLASS: PUBLIC ABSTRACT io.github.prolobjectlink.prolog.jpl7.JplConverter  (not serializable)
 	===  CLASS FILE FORMAT VERSION: 50.0 <- 50.0
 	===  UNCHANGED INTERFACE: io.github.prolobjectlink.prolog.PrologConverter
@@ -11,7 +11,6 @@ Comparing source compatibility of C:\Users\Jose Zalacain\Documents\eclipse-java-
 	===  UNCHANGED METHOD: PUBLIC FINAL io.github.prolobjectlink.prolog.PrologTerm toTerm(org.jpl7.Term)
 ***  MODIFIED CLASS: PUBLIC ABSTRACT io.github.prolobjectlink.prolog.jpl7.JplEngine  (not serializable)
 	===  CLASS FILE FORMAT VERSION: 50.0 <- 50.0
-	===  UNCHANGED INTERFACE: java.util.Map
 	===  UNCHANGED INTERFACE: io.github.prolobjectlink.prolog.PrologEngine
 	===  UNCHANGED INTERFACE: java.lang.Iterable
 	===  UNCHANGED SUPERCLASS: io.github.prolobjectlink.prolog.AbstractEngine (<- io.github.prolobjectlink.prolog.AbstractEngine)
@@ -168,7 +167,6 @@ Comparing source compatibility of C:\Users\Jose Zalacain\Documents\eclipse-java-
 ***! MODIFIED CLASS: PUBLIC ABSTRACT io.github.prolobjectlink.prolog.jpl7.JplProvider  (not serializable)
 	===  CLASS FILE FORMAT VERSION: 50.0 <- 50.0
 	===  UNCHANGED INTERFACE: io.github.prolobjectlink.prolog.PrologProvider
-	===  UNCHANGED INTERFACE: java.util.Map
 	===  UNCHANGED INTERFACE: io.github.prolobjectlink.prolog.PrologMapper
 	===  UNCHANGED INTERFACE: io.github.prolobjectlink.prolog.PrologParser
 	===  UNCHANGED SUPERCLASS: io.github.prolobjectlink.prolog.AbstractProvider (<- io.github.prolobjectlink.prolog.AbstractProvider)
