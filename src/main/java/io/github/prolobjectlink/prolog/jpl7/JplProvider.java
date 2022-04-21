@@ -207,60 +207,6 @@ public abstract class JplProvider extends AbstractProvider implements PrologProv
 		return new JplReference(this, JVOID);
 	}
 
-	public PrologTerm newField(PrologTerm name) {
-		return new JplField(this, name);
-	}
-
-	public PrologTerm newField(String name) {
-		return new JplField(this, name);
-	}
-
-	public PrologTerm newField(PrologTerm name, PrologTerm type) {
-		return new JplTypedField(this, name, type);
-	}
-
-	public PrologTerm newField(String name, String type) {
-		PrologTerm oname = newVariable(name, 0);
-		PrologTerm otype = newVariable(type, 1);
-		return new JplTypedField(this, oname, otype);
-	}
-
-	public PrologTerm newResult(PrologTerm name) {
-		return new JplResult(this, name);
-	}
-
-	public PrologTerm newResult(String name) {
-		return new JplResult(this, name);
-	}
-
-	public PrologTerm newResult(PrologTerm name, PrologTerm type) {
-		return new JplTypedResult(this, name, type);
-	}
-
-	public PrologTerm newResult(String name, String type) {
-		PrologTerm oname = newVariable(name, 0);
-		PrologTerm otype = newVariable(type, 1);
-		return new JplTypedResult(this, oname, otype);
-	}
-
-	public PrologTerm newParameter(PrologTerm name) {
-		return new JplParameter(this, name);
-	}
-
-	public PrologTerm newParameter(String name) {
-		return new JplParameter(this, name);
-	}
-
-	public PrologTerm newParameter(PrologTerm name, PrologTerm type) {
-		return new JplTypedParameter(this, name, type);
-	}
-
-	public PrologTerm newParameter(String name, String type) {
-		PrologTerm oname = newVariable(name, 0);
-		PrologTerm otype = newVariable(type, 1);
-		return new JplTypedParameter(this, oname, otype);
-	}
-
 	public final PrologLogger getLogger() {
 		return logger;
 	}

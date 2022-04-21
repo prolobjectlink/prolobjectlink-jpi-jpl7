@@ -44,25 +44,25 @@ import io.github.prolobjectlink.prolog.PrologVariable;
  * @author Jose Zalacain
  * @since 1.0
  */
-class JplVariable extends JplTerm implements PrologVariable {
+public class JplVariable extends JplTerm implements PrologVariable {
 
-	JplVariable(PrologProvider provider) {
+	protected JplVariable(PrologProvider provider) {
 		super(VARIABLE_TYPE, provider, new Variable("_"));
 	}
 
-	JplVariable(PrologProvider provider, String name) {
+	protected JplVariable(PrologProvider provider, String name) {
 		super(VARIABLE_TYPE, provider, new Variable(name));
 	}
 
-	JplVariable(int type, PrologProvider provider) {
+	protected JplVariable(int type, PrologProvider provider) {
 		super(type, provider);
 	}
 
-	JplVariable(int type, PrologProvider provider, String name) {
+	protected JplVariable(int type, PrologProvider provider, String name) {
 		super(type, provider, new Variable(name));
 	}
 
-	JplVariable(int type, PrologProvider provider, Term var) {
+	protected JplVariable(int type, PrologProvider provider, Term var) {
 		super(type, provider, var);
 	}
 
