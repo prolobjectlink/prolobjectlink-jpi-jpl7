@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pmd-cpd>
 <duplication lines="18" tokens="126">
-<file line="300" path="C:\eclipse-jee-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplEngine.java"/>
-<file line="321" path="C:\eclipse-jee-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplEngine.java"/>
+<file line="305" path="C:\eclipse-jee-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplEngine.java"/>
+<file line="326" path="C:\eclipse-jee-photon-workspace\prolobjectlink-jpi-jpl7\src\main\java\io\github\prolobjectlink\prolog\jpl7\JplEngine.java"/>
 <codefragment>
 <![CDATA[
 	public final Set<PrologIndicator> getBuiltIns() {

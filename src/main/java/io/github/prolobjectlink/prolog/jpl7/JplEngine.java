@@ -96,6 +96,11 @@ public abstract class JplEngine extends AbstractEngine implements PrologEngine {
 	protected JplEngine(PrologProvider provider) {
 		super(provider);
 	}
+	
+	protected JplEngine(PrologProvider provider, String path) {
+		super(provider);
+		consult(path);
+	}
 
 	public final void consult(String path) {
 		program = parser.parseProgram(path);
