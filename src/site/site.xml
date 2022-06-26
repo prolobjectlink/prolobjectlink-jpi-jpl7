@@ -39,7 +39,7 @@
 			<item name="Development Tools" href="tools.html" />
 			<item name="Contribution" href="contribution.html" />
 			<item name="Related Works" href="related.html" />
-			<item name="User Guide" href="${project.url}/blob/master/docs/${project.name}.pdf" />
+			<item name="User Guide" href="https://prolobjectlink.github.io/prolobjectlink-jpi-jpl7/prolobjectlink-jpi-jpl7.pdf" />
 			<item name="Download" href="download.html" />
 			<item name="FAQ" href="faq.html" />
 		</menu>
