@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>AbstractCompounds.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">prolobjectlink-jpi-jpl7</a> &gt; <a href="../index.html" class="el_bundle">prolobjectlink-jpi</a> &gt; <a href="index.source.html" class="el_package">io.github.prolobjectlink.prolog</a> &gt; <span class="el_source">AbstractCompounds.java</span></div><h1>AbstractCompounds.java</h1><pre class="source lang-java linenums">/*-
+ * #%L
+ * prolobjectlink-jpi
+ * %%
+ * Copyright (C) 2020 - 2021 Prolobjectlink Project
+ * %%
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * #L%
+ */
+package io.github.prolobjectlink.prolog;
+
+import static io.github.prolobjectlink.prolog.PrologTermType.OBJECT_TYPE;
+
+public abstract class AbstractCompounds extends AbstractTerm implements PrologTerm {
+
+	public AbstractCompounds(int type, PrologProvider provider) {
+<span class="nc" id="L33">		super(type, provider);</span>
+<span class="nc" id="L34">	}</span>
+
+	public final boolean isAtom() {
+<span class="nc" id="L37">		return false;</span>
+	}
+
+	public final boolean isNumber() {
+<span class="nc" id="L41">		return false;</span>
+	}
+
+	public final boolean isFloat() {
+<span class="nc" id="L45">		return false;</span>
+	}
+
+	public final boolean isInteger() {
+<span class="nc" id="L49">		return false;</span>
+	}
+
+	public final boolean isDouble() {
+<span class="nc" id="L53">		return false;</span>
+	}
+
+	public final boolean isLong() {
+<span class="nc" id="L57">		return false;</span>
+	}
+
+	public boolean isVariable() {
+<span class="nc" id="L61">		return false;</span>
+	}
+
+	public final boolean isNil() {
+<span class="nc" id="L65">		return false;</span>
+	}
+
+	public final boolean isAtomic() {
+<span class="nc" id="L69">		return false;</span>
+	}
+
+	public final boolean isCompound() {
+<span class="nc" id="L73">		return true;</span>
+	}
+
+	public final boolean isEvaluable() {
+<span class="nc" id="L77">		return false;</span>
+	}
+
+	public final boolean isTrueType() {
+<span class="nc" id="L81">		Object object = getObject();</span>
+<span class="nc bnc" id="L82" title="All 4 branches missed.">		return object != null &amp;&amp; object.equals(true);</span>
+	}
+
+	public final boolean isFalseType() {
+<span class="nc" id="L86">		Object object = getObject();</span>
+<span class="nc bnc" id="L87" title="All 4 branches missed.">		return object != null &amp;&amp; object.equals(false);</span>
+	}
+
+	public final boolean isNullType() {
+<span class="nc bnc" id="L91" title="All 4 branches missed.">		return isObjectType() &amp;&amp; getObject() == null;</span>
+	}
+
+	public final boolean isVoidType() {
+<span class="nc bnc" id="L95" title="All 2 branches missed.">		return getObject() == void.class;</span>
+	}
+
+	public final boolean isObjectType() {
+<span class="nc bnc" id="L99" title="All 2 branches missed.">		return getType() == OBJECT_TYPE;</span>
+	}
+
+	public final boolean isReference() {
+<span class="nc" id="L103">		return isObjectType();</span>
+	}
+
+	public final int compareTo(PrologTerm term) {
+<span class="nc" id="L107">		PrologTerm thisCompound = this;</span>
+<span class="nc" id="L108">		PrologTerm otherCompound = term;</span>
+
+<span class="nc bnc" id="L110" title="All 2 branches missed.">		if (!otherCompound.isCompound()) {</span>
+<span class="nc bnc" id="L111" title="All 4 branches missed.">			if (otherCompound.isEmptyList() &amp;&amp; thisCompound.isEmptyList()) {</span>
+<span class="nc" id="L112">				return 0;</span>
+			}
+<span class="nc" id="L114">			return 1;</span>
+		}
+
+<span class="nc bnc" id="L117" title="All 4 branches missed.">		if (otherCompound.isEmptyList() &amp;&amp; thisCompound.isEmptyList()) {</span>
+<span class="nc" id="L118">			return 0;</span>
+		}
+
+		// comparison by arity
+<span class="nc bnc" id="L122" title="All 2 branches missed.">		if (thisCompound.getArity() &lt; otherCompound.getArity()) {</span>
+<span class="nc" id="L123">			return -1;</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">		} else if (thisCompound.getArity() &gt; otherCompound.getArity()) {</span>
+<span class="nc" id="L125">			return 1;</span>
+		}
+
+		// alphabetic functor comparison
+<span class="nc" id="L129">		int result = thisCompound.getFunctor().compareTo(otherCompound.getFunctor());</span>
+<span class="nc bnc" id="L130" title="All 2 branches missed.">		if (result &lt; 0) {</span>
+<span class="nc" id="L131">			return -1;</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		} else if (result &gt; 0) {</span>
+<span class="nc" id="L133">			return 1;</span>
+		}
+
+		// arguments comparison
+<span class="nc" id="L137">		PrologTerm[] thisArguments = thisCompound.getArguments();</span>
+<span class="nc" id="L138">		PrologTerm[] otherArguments = otherCompound.getArguments();</span>
+
+<span class="nc bnc" id="L140" title="All 2 branches missed.">		for (int i = 0; i &lt; thisArguments.length; i++) {</span>
+<span class="nc" id="L141">			PrologTerm thisArgument = thisArguments[i];</span>
+<span class="nc" id="L142">			PrologTerm otherArgument = otherArguments[i];</span>
+<span class="nc bnc" id="L143" title="All 4 branches missed.">			if (thisArgument != null &amp;&amp; otherArgument != null) {</span>
+<span class="nc" id="L144">				result = thisArgument.compareTo(otherArgument);</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">				if (result != 0) {</span>
+<span class="nc" id="L146">					return result;</span>
+				}
+			}
+		}
+
+<span class="nc" id="L151">		return 0;</span>
+	}
+
+	public final boolean unify(PrologTerm term) {
+<span class="nc" id="L155">		PrologTerm thisTerm = this;</span>
+<span class="nc" id="L156">		PrologTerm otherTerm = term;</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">		if (thisTerm == otherTerm) {</span>
+<span class="nc" id="L158">			return true;</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">		} else if (thisTerm.isVariable()) {</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">			if (thisTerm == thisTerm.getTerm()) {</span>
+<span class="nc" id="L161">				return true;</span>
+			}
+<span class="nc" id="L163">			return thisTerm.getTerm().unify(otherTerm);</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		} else if (otherTerm.isVariable()) {</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">			if (otherTerm == otherTerm.getTerm()) {</span>
+<span class="nc" id="L166">				return true;</span>
+			}
+<span class="nc" id="L168">			return otherTerm.getTerm().unify(thisTerm);</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">		} else if (otherTerm.isCompound()) {</span>
+<span class="nc" id="L170">			int thisArity = thisTerm.getArity();</span>
+<span class="nc" id="L171">			int otherArity = otherTerm.getArity();</span>
+<span class="nc" id="L172">			String thisFunctor = thisTerm.getFunctor();</span>
+<span class="nc" id="L173">			String otherFunctor = otherTerm.getFunctor();</span>
+<span class="nc bnc" id="L174" title="All 4 branches missed.">			if (thisFunctor.equals(otherFunctor) &amp;&amp; thisArity == otherArity) {</span>
+<span class="nc" id="L175">				PrologTerm[] thisArguments = thisTerm.getArguments();</span>
+<span class="nc" id="L176">				PrologTerm[] otherArguments = otherTerm.getArguments();</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">				if (thisArguments.length == otherArguments.length) {</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">					for (int i = 0; i &lt; thisArguments.length; i++) {</span>
+<span class="nc bnc" id="L179" title="All 4 branches missed.">						if (thisArguments[i] != null &amp;&amp; otherArguments[i] != null) {</span>
+<span class="nc" id="L180">							PrologTerm thisArgument = thisArguments[i];</span>
+<span class="nc" id="L181">							PrologTerm otherArgument = otherArguments[i];</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">							if (!thisArgument.unify(otherArgument)) {</span>
+<span class="nc" id="L183">								return false;</span>
+							}
+						}
+					}
+<span class="nc" id="L187">					return true;</span>
+				}
+<span class="nc" id="L189">				return false;</span>
+			}
+<span class="nc" id="L191">			return false;</span>
+		}
+<span class="nc" id="L193">		return false;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

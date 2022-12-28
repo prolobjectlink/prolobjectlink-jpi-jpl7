@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>AbstractProvider.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">prolobjectlink-jpi-jpl7</a> &gt; <a href="../index.html" class="el_bundle">prolobjectlink-jpi</a> &gt; <a href="index.source.html" class="el_package">io.github.prolobjectlink.prolog</a> &gt; <span class="el_source">AbstractProvider.java</span></div><h1>AbstractProvider.java</h1><pre class="source lang-java linenums">/*
+ * #%L
+ * prolobjectlink-jpi
+ * %%
+ * Copyright (C) 2019 Prolobjectlink Project
+ * %%
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * #L%
+ */
+package io.github.prolobjectlink.prolog;
+
+import java.io.File;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+/**
+ * Partial implementation of {@link PrologProvider}
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
+public abstract class AbstractProvider implements PrologProvider {
+
+	protected final PrologConverter&lt;?&gt; converter;
+	private static final Set&lt;PrologIndicator&gt; ISO_IEC_BUILT_INS;
+
+	static {
+
+<span class="nc" id="L46">		ISO_IEC_BUILT_INS = new HashSet&lt;PrologIndicator&gt;();</span>
+
+		// 7.4 directives
+<span class="nc" id="L49">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;dynamic&quot;, 1));</span>
+<span class="nc" id="L50">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;include&quot;, 1));</span>
+<span class="nc" id="L51">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;multifile&quot;, 1));</span>
+<span class="nc" id="L52">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;set_prolog_flag&quot;, 2));</span>
+<span class="nc" id="L53">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;ensure_loaded&quot;, 1));</span>
+<span class="nc" id="L54">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;discontiguous&quot;, 1));</span>
+<span class="nc" id="L55">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;current_prolog_flag&quot;, 2));</span>
+<span class="nc" id="L56">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;initialization&quot;, 1));</span>
+
+		// 7.8 control constructs
+<span class="nc" id="L59">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;nil&quot;, 0));</span>
+<span class="nc" id="L60">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;fail&quot;, 0));</span>
+<span class="nc" id="L61">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;true&quot;, 0));</span>
+<span class="nc" id="L62">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;false&quot;, 0));</span>
+<span class="nc" id="L63">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.THROW, 1));</span>
+<span class="nc" id="L64">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.CATCH, 3));</span>
+
+		// 8.2 term unification
+<span class="nc" id="L67">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;=&quot;, 2));</span>
+<span class="nc" id="L68">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;\\=&quot;, 2));</span>
+<span class="nc" id="L69">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;subsume&quot;, 2));</span>
+<span class="nc" id="L70">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.UNIFY_WITH_OCCURS_CHECK, 2));</span>
+
+		// 8.3 type testing
+<span class="nc" id="L73">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.VAR, 1));</span>
+<span class="nc" id="L74">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.ATOM, 1));</span>
+<span class="nc" id="L75">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.FLOAT, 1));</span>
+<span class="nc" id="L76">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.NUMBER, 1));</span>
+<span class="nc" id="L77">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.NONVAR, 1));</span>
+<span class="nc" id="L78">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.OBJECT, 1));</span>
+<span class="nc" id="L79">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.GROUND, 1));</span>
+<span class="nc" id="L80">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.ATOMIC, 1));</span>
+<span class="nc" id="L81">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.INTEGER, 1));</span>
+<span class="nc" id="L82">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.COMPOUND, 1));</span>
+<span class="nc" id="L83">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.CALLABLE, 1));</span>
+<span class="nc" id="L84">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.CYCLIC_TERM, 1));</span>
+<span class="nc" id="L85">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.ACYCLIC_TERM, 1));</span>
+
+		// 8.4 term comparison
+<span class="nc" id="L88">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;@&gt;&quot;, 2));</span>
+<span class="nc" id="L89">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;@&lt;&quot;, 2));</span>
+<span class="nc" id="L90">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;==&quot;, 2));</span>
+<span class="nc" id="L91">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;@&gt;=&quot;, 2));</span>
+<span class="nc" id="L92">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;@=&lt;&quot;, 2));</span>
+<span class="nc" id="L93">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;\\==&quot;, 2));</span>
+<span class="nc" id="L94">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.SORT, 2));</span>
+<span class="nc" id="L95">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.COMPARE, 3));</span>
+<span class="nc" id="L96">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.KEYSORT, 2));</span>
+
+		// 8.5 term creation and decomposition
+<span class="nc" id="L99">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.ARG, 3));</span>
+<span class="nc" id="L100">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.FUNCTOR, 3));</span>
+<span class="nc" id="L101">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.COPY_TERM, 2));</span>
+<span class="nc" id="L102">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.TERM_VARIABLES, 2));</span>
+
+		// 8.6 arithmetics evaluation (operator)
+<span class="nc" id="L105">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;is&quot;, 2));</span>
+
+		// 8.7 arithmetic comparison (operator)
+<span class="nc" id="L108">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;&gt;&quot;, 2));</span>
+<span class="nc" id="L109">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;&lt;&quot;, 2));</span>
+<span class="nc" id="L110">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;=&lt;&quot;, 2));</span>
+<span class="nc" id="L111">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;&gt;=&quot;, 2));</span>
+<span class="nc" id="L112">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;=:=&quot;, 2));</span>
+<span class="nc" id="L113">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;=\\=&quot;, 2));</span>
+
+		// 8.8 clause retrieval and information ( missing predicate_property/2)
+<span class="nc" id="L116">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;clause&quot;, 2));</span>
+<span class="nc" id="L117">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;current_predicate&quot;, 2));</span>
+
+		// 8.9 clause creation and destruction
+<span class="nc" id="L120">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;abolish&quot;, 1));</span>
+<span class="nc" id="L121">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;asserta&quot;, 1));</span>
+<span class="nc" id="L122">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;assertz&quot;, 1));</span>
+<span class="nc" id="L123">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;retract&quot;, 1));</span>
+
+		// 8.10 All solutions
+<span class="nc" id="L126">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;forall&quot;, 2));</span>
+<span class="nc" id="L127">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.BAGOF, 3));</span>
+<span class="nc" id="L128">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.SETOF, 3));</span>
+<span class="nc" id="L129">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.FINDALL, 3));</span>
+
+		// 8.11 Stream Selection and Control
+<span class="nc" id="L132">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.OPEN, 3));</span>
+<span class="nc" id="L133">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.CLOSE, 1));</span>
+<span class="nc" id="L134">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.OPEN, 4));</span>
+<span class="nc" id="L135">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.CLOSE, 2));</span>
+<span class="nc" id="L136">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.SET_INPUT, 1));</span>
+<span class="nc" id="L137">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.SET_OUTPUT, 1));</span>
+<span class="nc" id="L138">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.CURRENT_INPUT, 1));</span>
+<span class="nc" id="L139">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.CURRENT_OUTPUT, 1));</span>
+
+		// 8.12 character input/output
+		// 8.13 byte input/output
+
+		// 8.14 Term input/output
+<span class="nc" id="L145">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.NL, 0));</span>
+<span class="nc" id="L146">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.READ, 1));</span>
+<span class="nc" id="L147">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.WRITE, 1));</span>
+
+		// 8.15 logic and control
+<span class="nc" id="L150">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;call&quot;, 1));</span>
+<span class="nc" id="L151">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;once&quot;, 1));</span>
+<span class="nc" id="L152">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;repeat&quot;, 0));</span>
+
+		// 8.16 atomic term processing
+<span class="nc" id="L155">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.SUB_ATOM, 5));</span>
+<span class="nc" id="L156">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.CHAR_CODE, 2));</span>
+<span class="nc" id="L157">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.ATOM_CHARS, 2));</span>
+<span class="nc" id="L158">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.ATOM_CODES, 2));</span>
+<span class="nc" id="L159">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.ATOM_LENGTH, 2));</span>
+<span class="nc" id="L160">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.ATOM_CONCAT, 3));</span>
+<span class="nc" id="L161">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.NUMBER_CHARS, 2));</span>
+<span class="nc" id="L162">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.NUMBER_CODES, 2));</span>
+
+		// 8.17 Implementation defined hooks
+<span class="nc" id="L165">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.OP, 3));</span>
+<span class="nc" id="L166">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.HALT, 0));</span>
+<span class="nc" id="L167">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.HALT, 1));</span>
+<span class="nc" id="L168">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.CURRENT_OP, 3));</span>
+<span class="nc" id="L169">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.CHAR_CONVERSION, 2));</span>
+<span class="nc" id="L170">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.CURRENT_CHAR_CONVERSION, 2));</span>
+
+		// 9.1 simple arithmetic functors
+<span class="nc" id="L173">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.ABS, 1));</span>
+<span class="nc" id="L174">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.EXP, 1));</span>
+<span class="nc" id="L175">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.LOG, 1));</span>
+<span class="nc" id="L176">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.SQRT, 1));</span>
+<span class="nc" id="L177">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.CBRT, 1));</span>
+<span class="nc" id="L178">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.FLOOR, 1));</span>
+<span class="nc" id="L179">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.ROUND, 1));</span>
+<span class="nc" id="L180">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.CEILING, 1));</span>
+<span class="nc" id="L181">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.TRUNCATE, 1));</span>
+<span class="nc" id="L182">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.FLOAT_INTEGER_PART, 1));</span>
+<span class="nc" id="L183">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.FLOAT_FRACTIONAL_PART, 1));</span>
+
+		// 9.2 ???
+
+		// 9.3 other arithmetic functors
+<span class="nc" id="L188">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.MAX, 2));</span>
+<span class="nc" id="L189">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.MIN, 2));</span>
+<span class="nc" id="L190">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.GCD, 2));</span>
+<span class="nc" id="L191">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.LCM, 2));</span>
+
+		// 9.4 bitwise functors
+<span class="nc" id="L194">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;\\//&quot;, 2));</span>
+<span class="nc" id="L195">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;&gt;&lt;&quot;, 2));</span>
+<span class="nc" id="L196">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;/\\&quot;, 2));</span>
+<span class="nc" id="L197">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;&lt;&lt;&quot;, 2));</span>
+<span class="nc" id="L198">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;&gt;&gt;&quot;, 2));</span>
+<span class="nc" id="L199">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;\\/&quot;, 1));</span>
+<span class="nc" id="L200">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(&quot;//&quot;, 2));</span>
+
+		// 9.5 trigonometric functors
+<span class="nc" id="L203">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.SIN, 1));</span>
+<span class="nc" id="L204">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.COS, 1));</span>
+<span class="nc" id="L205">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.TAN, 1));</span>
+<span class="nc" id="L206">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.ASIN, 1));</span>
+<span class="nc" id="L207">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.ACOS, 1));</span>
+<span class="nc" id="L208">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.ATAN, 1));</span>
+<span class="nc" id="L209">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.SIGN, 1));</span>
+
+		// 9.6 mathematical constants
+<span class="nc" id="L212">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.E, 0));</span>
+<span class="nc" id="L213">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.PI, 0));</span>
+<span class="nc" id="L214">		ISO_IEC_BUILT_INS.add(new DefaultPrologIndicator(PrologBuiltin.EPSILON, 0));</span>
+
+<span class="nc" id="L216">	}</span>
+
+<span class="nc" id="L218">	public AbstractProvider(PrologConverter&lt;?&gt; converter) {</span>
+<span class="nc" id="L219">		this.converter = converter;</span>
+<span class="nc" id="L220">	}</span>
+
+	protected final String removeQuoted(String functor) {
+<span class="nc bnc" id="L223" title="All 6 branches missed.">		if (functor != null &amp;&amp; functor.startsWith(&quot;\'&quot;) &amp;&amp; functor.endsWith(&quot;\'&quot;)) {</span>
+<span class="nc" id="L224">			return functor.substring(1, functor.length() - 1);</span>
+		}
+<span class="nc" id="L226">		return functor;</span>
+	}
+
+	public final boolean isCompliant() {
+<span class="nc" id="L230">		PrologEngine engine = newEngine();</span>
+<span class="nc" id="L231">		Set&lt;PrologIndicator&gt; implemented = engine.getBuiltIns();</span>
+<span class="nc bnc" id="L232" title="All 2 branches missed.">		for (PrologIndicator prologIndicator : ISO_IEC_BUILT_INS) {</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">			if (implemented.contains(prologIndicator)) {</span>
+<span class="nc" id="L234">				return true;</span>
+			}
+<span class="nc" id="L236">		}</span>
+<span class="nc" id="L237">		return false;</span>
+	}
+
+	public final PrologList parseList(String stringList) {
+<span class="nc" id="L241">		PrologTerm term = parseTerm(stringList);</span>
+<span class="nc" id="L242">		checkListType(term);</span>
+<span class="nc" id="L243">		return (PrologList) term;</span>
+	}
+
+	public final PrologClause parseClause(String stringClause) {
+<span class="nc" id="L247">		PrologEngine engine = newEngine();</span>
+<span class="nc" id="L248">		engine.asserta(stringClause);</span>
+<span class="nc" id="L249">		return engine.iterator().next();</span>
+	}
+
+	public final PrologStructure parseStructure(String stringStructure) {
+<span class="nc" id="L253">		PrologTerm term = parseTerm(stringStructure);</span>
+<span class="nc" id="L254">		checkStructureType(term);</span>
+<span class="nc" id="L255">		return (PrologStructure) term;</span>
+	}
+
+	public final Set&lt;PrologClause&gt; parseProgram(String file) {
+<span class="nc" id="L259">		return newEngine(file).getProgramClauses();</span>
+	}
+
+	public final Set&lt;PrologClause&gt; parseProgram(File in) {
+<span class="nc" id="L263">		return parseProgram(in.getAbsolutePath());</span>
+	}
+
+	public final PrologFloat newFloat() {
+<span class="nc" id="L267">		return newFloat(0F);</span>
+	}
+
+	public final PrologDouble newDouble() {
+<span class="nc" id="L271">		return newDouble(0D);</span>
+	}
+
+	public final PrologInteger newInteger() {
+<span class="nc" id="L275">		return newInteger(0);</span>
+	}
+
+	public final PrologLong newLong() {
+<span class="nc" id="L279">		return newLong(0L);</span>
+	}
+
+	public final PrologList newList(PrologTerm head) {
+<span class="nc" id="L283">		return newList(new PrologTerm[] { head });</span>
+	}
+
+	public final PrologList newList(Object head) {
+<span class="nc" id="L287">		return newList(getJavaConverter().toTerm(head));</span>
+	}
+
+	public final PrologList newList(Object[] arguments) {
+<span class="nc" id="L291">		return newList(getJavaConverter().toTermsArray(arguments));</span>
+	}
+
+	public final PrologList newList(Object head, Object tail) {
+<span class="nc" id="L295">		PrologJavaConverter transformer = getJavaConverter();</span>
+<span class="nc" id="L296">		PrologTerm headTerm = transformer.toTerm(head);</span>
+<span class="nc" id="L297">		PrologTerm tailTerm = transformer.toTerm(tail);</span>
+<span class="nc" id="L298">		return newList(headTerm, tailTerm);</span>
+	}
+
+	public final PrologList newList(Object[] arguments, Object tail) {
+<span class="nc" id="L302">		PrologJavaConverter transformer = getJavaConverter();</span>
+<span class="nc" id="L303">		PrologTerm[] array = transformer.toTermsArray(arguments);</span>
+<span class="nc" id="L304">		PrologTerm tailTerm = transformer.toTerm(tail);</span>
+<span class="nc" id="L305">		return newList(array, tailTerm);</span>
+	}
+
+	public final PrologTerm newStructure(String functor, Object... arguments) {
+<span class="nc" id="L309">		PrologJavaConverter transformer = getJavaConverter();</span>
+<span class="nc" id="L310">		PrologTerm[] parameters = transformer.toTermsArray(arguments);</span>
+<span class="nc" id="L311">		return newStructure(functor, parameters);</span>
+	}
+
+	public final PrologTerm newStructure(Object left, String operator, Object right) {
+<span class="nc" id="L315">		PrologJavaConverter transformer = getJavaConverter();</span>
+<span class="nc" id="L316">		PrologTerm leftTerm = transformer.toTerm(left);</span>
+<span class="nc" id="L317">		PrologTerm rightTerm = transformer.toTerm(right);</span>
+<span class="nc" id="L318">		return newStructure(leftTerm, operator, rightTerm);</span>
+	}
+
+	/**
+	 * Casts a PrologTerm to the class or interface represented by this
+	 * {@code Class} object.
+	 *
+	 * @param term the object to be cast
+	 * @param type the class or interface to be casted
+	 * @return the PrologTerm after casting, or null if term is null
+	 *
+	 * @throws ClassCastException if the object is not null and is not assignable to
+	 *                            the type T.
+	 * @since 1.1
+	 */
+	protected final &lt;T extends PrologTerm&gt; T cast(PrologTerm term, Class&lt;T&gt; type) {
+<span class="nc" id="L334">		return type.cast(term);</span>
+	}
+
+	public final &lt;T extends PrologTerm&gt; T cast(PrologTerm term) {
+<span class="nc" id="L338">		return (T) term;</span>
+	}
+
+	public final &lt;K extends PrologTerm&gt; K toTerm(Object o, Class&lt;K&gt; from) {
+<span class="nc" id="L342">		return converter.toTerm(o, from);</span>
+	}
+
+	public final &lt;K extends PrologTerm&gt; K[] toTermArray(Object[] os, Class&lt;K[]&gt; from) {
+<span class="nc" id="L346">		return converter.toTermArray(os, from);</span>
+	}
+
+	public final &lt;K extends PrologTerm&gt; K[][] toTermMatrix(Object[][] oss, Class&lt;K[][]&gt; from) {
+<span class="nc" id="L350">		return converter.toTermMatrix(oss, from);</span>
+	}
+
+	public final &lt;K extends PrologTerm, V extends Object&gt; Map&lt;String, PrologTerm&gt; toTermMap(Map&lt;String, V&gt; map,
+			Class&lt;K&gt; from) {
+<span class="nc" id="L355">		return converter.toTermMap(map, from);</span>
+	}
+
+	public final &lt;K extends PrologTerm, V extends Object&gt; Map&lt;String, PrologTerm&gt;[] toTermMapArray(Map&lt;String, V&gt;[] map,
+			Class&lt;K&gt; from) {
+<span class="nc" id="L360">		return converter.toTermMapArray(map, from);</span>
+	}
+
+	public final PrologConverter&lt;?&gt; getConverter() {
+<span class="nc" id="L364">		return converter;</span>
+	}
+
+	public final &lt;K&gt; K fromTerm(PrologTerm term, Class&lt;K&gt; to) {
+<span class="nc" id="L368">		return converter.fromTerm(term, to);</span>
+	}
+
+	public final &lt;K&gt; K[] fromTermArray(PrologTerm[] terms, Class&lt;K[]&gt; to) {
+<span class="nc" id="L372">		return converter.fromTermArray(terms, to);</span>
+	}
+
+	public final &lt;K&gt; K fromTerm(PrologTerm head, PrologTerm[] body, Class&lt;K&gt; to) {
+<span class="nc" id="L376">		return converter.fromTerm(head, body, to);</span>
+	}
+
+	public final PrologParser getParser() {
+<span class="nc" id="L380">		return this;</span>
+	}
+
+	public final String getVersion() {
+<span class="nc" id="L384">		return newEngine().getVersion();</span>
+	}
+
+	public final String getName() {
+<span class="nc" id="L388">		return newEngine().getName();</span>
+	}
+
+	public int hashCode() {
+<span class="nc" id="L392">		final int prime = 31;</span>
+<span class="nc" id="L393">		int result = 1;</span>
+<span class="nc bnc" id="L394" title="All 2 branches missed.">		result = prime * result + ((converter == null) ? 0 : converter.hashCode());</span>
+<span class="nc" id="L395">		return result;</span>
+	}
+
+	public boolean equals(Object object) {
+<span class="nc bnc" id="L399" title="All 2 branches missed.">		if (this == object)</span>
+<span class="nc" id="L400">			return true;</span>
+<span class="nc bnc" id="L401" title="All 2 branches missed.">		if (object == null)</span>
+<span class="nc" id="L402">			return false;</span>
+<span class="nc bnc" id="L403" title="All 2 branches missed.">		if (getClass() != object.getClass())</span>
+<span class="nc" id="L404">			return false;</span>
+<span class="nc" id="L405">		AbstractProvider other = (AbstractProvider) object;</span>
+<span class="nc bnc" id="L406" title="All 2 branches missed.">		if (converter == null) {</span>
+<span class="nc bnc" id="L407" title="All 2 branches missed.">			if (other.converter != null)</span>
+<span class="nc" id="L408">				return false;</span>
+<span class="nc bnc" id="L409" title="All 2 branches missed.">		} else if (!converter.equals(other.converter)) {</span>
+<span class="nc" id="L410">			return false;</span>
+		}
+<span class="nc" id="L412">		return true;</span>
+	}
+
+	public abstract String toString();
+
+	private final void checkListType(PrologTerm term) {
+<span class="nc bnc" id="L418" title="All 2 branches missed.">		if (!term.isList()) {</span>
+<span class="nc" id="L419">			throw new ListExpectedError(term);</span>
+		}
+<span class="nc" id="L421">	}</span>
+
+	private final void checkStructureType(PrologTerm term) {
+<span class="nc bnc" id="L424" title="All 2 branches missed.">		if (!term.isStructure()) {</span>
+<span class="nc" id="L425">			throw new StructureExpectedError(term);</span>
+		}
+<span class="nc" id="L427">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

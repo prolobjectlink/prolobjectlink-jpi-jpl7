@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>PrologError.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">prolobjectlink-jpi-jpl7</a> &gt; <a href="../index.html" class="el_bundle">prolobjectlink-jpi</a> &gt; <a href="index.source.html" class="el_package">io.github.prolobjectlink.prolog</a> &gt; <span class="el_source">PrologError.java</span></div><h1>PrologError.java</h1><pre class="source lang-java linenums">/*
+ * #%L
+ * prolobjectlink-jpi
+ * %%
+ * Copyright (C) 2019 Prolobjectlink Project
+ * %%
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * #L%
+ */
+package io.github.prolobjectlink.prolog;
+
+public class PrologError extends Error {
+
+	private static final long serialVersionUID = 4344277636991967495L;
+
+	// parser errors
+	static final String UNRECOGNIZABLE_TOKEN = &quot;The current token is unrecognizable.&quot;;
+	static final String LPAR_EXPECTED_TOKEN = &quot;The current token is differents to expected prolog tokens left parenthesis '(' &quot;;
+	static final String RPAR_EXPECTED_TOKEN = &quot;The current token is differents to expected prolog tokens right parenthesis ')' &quot;;
+	static final String COMMA_EXPECTED_TOKEN = &quot;The current token is differents to expected prolog tokens comma ',' &quot;;
+	static final String NOT_DEFINED_OPERATOR = &quot;The current token is not defined operator&quot;;
+	static final String NOT_DEFINED_BUILT_IN = &quot;The current token is not defined built-in predicate&quot;;
+	static final String INVALID_IDICATOR_TERM = &quot;The current token is not a correct predicate indicator&quot;;
+	static final String DOT_EXPECTED_TOKEN = &quot;The current token is not expected end dot&quot;;
+	static final String NUMBER_EXPECTED = &quot;The current token is not a number&quot;;
+
+	// runtime errors
+	static final String NULL_ARGUMENTS = &quot;Arguments null.&quot;;
+	static final String STACK_OVERFLOW = &quot;Stack overflow.&quot;;
+	static final String ARGUMENTS_OVERFLOW = &quot;Arguments overflow.&quot;;
+	static final String NULL_FUNCTOR = &quot;The specified term's functor is null&quot;;
+	static final String EMPTY_ARGUMENTS = &quot;The Prolog term don't have argument.&quot;;
+	static final String NUMBERS_HAVE_NOT_FUNCTOR = &quot;Numbers don't have functor.&quot;;
+	static final String VAR_HAVE_NOT_FUNCTOR = &quot;Variables don't have functor.&quot;;
+	static final String VAR_HAVE_NOT_ARITY = &quot;Variables don't have arity value&quot;;
+	static final String VAR_HAVE_NOT_ARGUMENTS = &quot;Variables don't have arguments&quot;;
+	static final String RANGE_NOT_VALID = &quot;The specified range is not valid range&quot;;
+	static final String INDEX_OUT_OF_BOUND = &quot;The indexed position is out of bound.&quot;;
+	static final String CALLABLE_ERROR = &quot;The term don't correspond with a predication&quot;;
+	static final String ILLEGAL_FUNCTOR = &quot;The specified term's functor is empty string&quot;;
+	static final String INSTANTATION_ERROR = &quot;The term is not instance sufficiently&quot;;
+	static final String ILLEGAL_VAR_NAME = &quot;Illegal variable name. Variable name should match with [A-Z_][A-Za-z0-9_]* regular expression.&quot;;
+	static final String ILLEGAL_ATOM_VALUE = &quot;Illegal atom value. Prolog atom value should match with [a-z][A-Za-z0-9_]* regular expression.&quot;;
+	static final String ILLEGAL_FLOAT_VALUE = &quot;Illegal float value. Prolog float number should match with [0-9]+|[0-9]+\\.[0-9]+|[-][0-9]+\\.[0-9]+ regular expression&quot;;
+	static final String ILLEGAL_INTEGER_VALUE = &quot;Illegal integer value. Prolog integer number should match with [0-9]+|[-][0-9]+ regular expression&quot;;
+	static final String ILLEGAL_ARITY = &quot;The specified arity is negative or greater than maximum arguments allowed&quot;;
+	static final String NUMBERS_HAVE_NOT_KEY = &quot;Numbers don't have key value.&quot;;
+	static final String VAR_HAVE_NOT_KEY = &quot;Variables don't have key value&quot;;
+	static final String ATOMIC_HAVE_NOT_ARGUMENT_AT = &quot;Atomics terms have not any argument at specified position&quot;;
+	static final String NON_ARITMETHIC_OPERAND = &quot;The term is not an aritmethic operand&quot;;
+	static final String DOMAIN_ERROR = &quot;Not less than zero number is expected&quot;;
+
+	static final String ATOM_TYPE_EXPECTED = &quot;Atom type expected&quot;;
+	static final String INTEGER_TYPE_EXPECTED = &quot;Integer type expected&quot;;
+	static final String FLOAT_TYPE_EXPECTED = &quot;Float type expected&quot;;
+	static final String VARIABLE_TYPE_EXPECTED = &quot;Variable type expected&quot;;
+	static final String STRUCTURE_TYPE_EXPECTED = &quot;Structure type expected&quot;;
+	static final String LIST_TYPE_EXPECTED = &quot;List type expected&quot;;
+	static final String NUMBER_EXPECTED_TYPES = &quot;Number type expected&quot;;
+	static final String CALLABLE_EXPECTED_TYPES = &quot;Callable type expected&quot;;
+	static final String CHARACTER_TYPE_EXPECTED = &quot;Character type expected&quot;;
+	static final String EXPRESSION_TYPE_EXPECTED = &quot;Expression type expected&quot;;
+	static final String OBJECT_TYPE_EXPECTED = &quot;Java Object type expected&quot;;
+	static final String STREAM_TYPE_EXPECTED = &quot;Stream type expected&quot;;
+	static final String WRON_CHAR_REPRESENTATION = &quot;Wron character representation&quot;;
+	static final String WRON_INTEGER_REPRESENTATION = &quot;Wron integer representation&quot;;
+	static final String ARGUMENTS_INSTANTATION_ERROR = &quot;Arguments are not sufficiently instantiated&quot;;
+	static final String TYPE_ERROR = &quot;Type error&quot;;
+	static final String HEAD_NOT_ATOM = &quot;The head of the list is not an atom term&quot;;
+	static final String ILLEGAL_NUMBER_REPRESENTATION = &quot;Illegal number reresentation&quot;;
+	static final String NOT_PROLOG_TERM_INSTANCE = &quot;The object is not prolog term instance&quot;;
+	static final String LEFT_TERM_EXPECTED = &quot;The expression don't have defined most left term&quot;;
+	static final String IMPOSSIBLE_UPDATE = &quot;Impossible update for diferent clauses keys&quot;;
+	static final String ILLEGAL_OPERATOR_PRIORITY = &quot;Not valid operator prority&quot;;
+	static final String ILLEGAL_OPERATOR_SPECIFIER = &quot;Not valid operator specifier&quot;;
+
+	public PrologError(String message) {
+<span class="nc" id="L94">		super(message);</span>
+<span class="nc" id="L95">	}</span>
+
+	public PrologError(String message, Throwable t) {
+<span class="nc" id="L98">		super(message + &quot;\n Caused by: &quot; + t);</span>
+<span class="nc" id="L99">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

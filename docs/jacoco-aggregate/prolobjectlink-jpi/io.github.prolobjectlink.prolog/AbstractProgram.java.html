@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>AbstractProgram.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">prolobjectlink-jpi-jpl7</a> &gt; <a href="../index.html" class="el_bundle">prolobjectlink-jpi</a> &gt; <a href="index.source.html" class="el_package">io.github.prolobjectlink.prolog</a> &gt; <span class="el_source">AbstractProgram.java</span></div><h1>AbstractProgram.java</h1><pre class="source lang-java linenums">/*-
+ * #%L
+ * prolobjectlink-jpi
+ * %%
+ * Copyright (C) 2020 - 2021 Prolobjectlink Project
+ * %%
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * #L%
+ */
+package io.github.prolobjectlink.prolog;
+
+import java.util.AbstractMap;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public abstract class AbstractProgram extends AbstractMap&lt;String, PrologClauses&gt; implements PrologProgram {
+
+	protected final PrologEngine engine;
+
+<span class="nc" id="L40">	protected AbstractProgram(PrologEngine engine) {</span>
+<span class="nc" id="L41">		this.engine = engine;</span>
+<span class="nc" id="L42">	}</span>
+
+	public Iterator&lt;PrologClauses&gt; iterator() {
+<span class="nc" id="L45">		return getClauses().values().iterator();</span>
+	}
+
+	public PrologClauses get(String functor, int arity) {
+<span class="nc" id="L49">		String key = functor + &quot;/&quot; + arity;</span>
+<span class="nc" id="L50">		List&lt;PrologClause&gt; l = engine.getProgramMap().get(key);</span>
+<span class="nc" id="L51">		PrologClauses clauses = newClauses(functor, arity);</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">		for (PrologClause prologClause : l) {</span>
+<span class="nc" id="L53">			clauses.add(prologClause);</span>
+<span class="nc" id="L54">		}</span>
+<span class="nc" id="L55">		return clauses;</span>
+	}
+
+	public void add(PrologClause clause) {
+<span class="nc" id="L59">		engine.assertz(clause.getHead(), clause.getBody());</span>
+<span class="nc" id="L60">	}</span>
+
+	public void add(PrologProgram program) {
+<span class="nc bnc" id="L63" title="All 2 branches missed.">		for (PrologClauses prologClauses : program) {</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">			for (PrologClause clause : prologClauses) {</span>
+<span class="nc" id="L65">				engine.assertz(clause.getHead(), clause.getBody());</span>
+<span class="nc" id="L66">			}</span>
+<span class="nc" id="L67">		}</span>
+<span class="nc" id="L68">	}</span>
+
+	public void push(PrologClause clause) {
+<span class="nc" id="L71">		engine.asserta(clause.getHead(), clause.getBody());</span>
+<span class="nc" id="L72">	}</span>
+
+	public void removeAll(String key) {
+<span class="nc" id="L75">		String functor = key.substring(0, key.lastIndexOf('/'));</span>
+<span class="nc" id="L76">		String number = key.substring(key.lastIndexOf('/') + 1, key.length());</span>
+<span class="nc" id="L77">		int arity = Integer.parseInt(number);</span>
+<span class="nc" id="L78">		engine.abolish(functor, arity);</span>
+<span class="nc" id="L79">	}</span>
+
+	public void removeAll(String functor, int arity) {
+<span class="nc" id="L82">		engine.abolish(functor, arity);</span>
+<span class="nc" id="L83">	}</span>
+
+	public void markDynamic(String functor, int arity) {
+		// do nothing
+<span class="nc" id="L87">	}</span>
+
+	public void unmarkDynamic(String functor, int arity) {
+		// do nothing
+<span class="nc" id="L91">	}</span>
+
+	public boolean isDynamic(String functor, int arity) {
+<span class="nc" id="L94">		return getClauses().get(functor + &quot;/&quot; + arity).isDynamic();</span>
+	}
+
+	public void markMultifile(String functor, int arity) {
+		// do nothing
+<span class="nc" id="L99">	}</span>
+
+	public void unmarkMultifile(String functor, int arity) {
+		// do nothing
+<span class="nc" id="L103">	}</span>
+
+	public boolean isMultifile(String functor, int arity) {
+<span class="nc" id="L106">		return getClauses().get(functor + &quot;/&quot; + arity).isMultifile();</span>
+	}
+
+	public void markDiscontiguous(String functor, int arity) {
+		// do nothing
+<span class="nc" id="L111">	}</span>
+
+	public void unmarkDiscontiguous(String functor, int arity) {
+		// do nothing
+<span class="nc" id="L115">	}</span>
+
+	public boolean isDiscontiguous(String functor, int arity) {
+<span class="nc" id="L118">		return getClauses().get(functor + &quot;/&quot; + arity).isDiscontiguous();</span>
+	}
+
+	public boolean removeAll(PrologProgram program) {
+<span class="nc bnc" id="L122" title="All 2 branches missed.">		for (Entry&lt;String, PrologClauses&gt; entry : program.entrySet()) {</span>
+<span class="nc" id="L123">			getClauses().remove(entry.getKey());</span>
+<span class="nc" id="L124">		}</span>
+<span class="nc" id="L125">		return true;</span>
+	}
+
+	public boolean removeAll(PrologClauses clauses) {
+<span class="nc" id="L129">		getClauses().remove(clauses.getIndicator());</span>
+<span class="nc" id="L130">		return true;</span>
+	}
+
+	public Map&lt;String, PrologClauses&gt; getClauses() {
+<span class="nc" id="L134">		Map&lt;String, List&lt;PrologClause&gt;&gt; p = engine.getProgramMap();</span>
+<span class="nc" id="L135">		Map&lt;String, PrologClauses&gt; m = new HashMap&lt;String, PrologClauses&gt;(p.size());</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">		for (List&lt;PrologClause&gt; clauses : p.values()) {</span>
+<span class="nc bnc" id="L137" title="All 2 branches missed.">			for (PrologClause clause : clauses) {</span>
+<span class="nc" id="L138">				PrologClauses c = m.get(clause.getIndicator());</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">				if (c == null) {</span>
+<span class="nc" id="L140">					c = newClauses(clause.getFunctor(), clause.getArity());</span>
+				}
+<span class="nc" id="L142">				c.add(clause);</span>
+<span class="nc" id="L143">			}</span>
+<span class="nc" id="L144">		}</span>
+<span class="nc" id="L145">		return m;</span>
+	}
+
+	public Set&lt;String&gt; getIndicators() {
+<span class="nc" id="L149">		Set&lt;PrologIndicator&gt; is = engine.currentPredicates();</span>
+<span class="nc" id="L150">		Set&lt;String&gt; i = new HashSet&lt;String&gt;(is.size());</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">		for (PrologIndicator prologIndicator : is) {</span>
+<span class="nc" id="L152">			i.add(prologIndicator.toString());</span>
+<span class="nc" id="L153">		}</span>
+<span class="nc" id="L154">		return i;</span>
+	}
+
+	public void add(PrologClauses clauses) {
+<span class="nc bnc" id="L158" title="All 2 branches missed.">		for (PrologClause prologClause : clauses) {</span>
+<span class="nc" id="L159">			engine.assertz(prologClause.getHead(), prologClause.getBody());</span>
+<span class="nc" id="L160">		}</span>
+<span class="nc" id="L161">	}</span>
+
+	public void addAll(PrologProgram program) {
+<span class="nc bnc" id="L164" title="All 2 branches missed.">		for (PrologClauses clauses : program) {</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">			for (PrologClause prologClause : clauses) {</span>
+<span class="nc" id="L166">				engine.assertz(prologClause.getHead(), prologClause.getBody());</span>
+<span class="nc" id="L167">			}</span>
+<span class="nc" id="L168">		}</span>
+<span class="nc" id="L169">	}</span>
+
+	public boolean retainAll(PrologClauses parents) {
+<span class="nc" id="L172">		Map&lt;String, PrologClauses&gt; m = getClauses();</span>
+<span class="nc bnc" id="L173" title="All 2 branches missed.">		for (PrologClauses prologClauses : m.values()) {</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">			if (!parents.contains((Object) prologClauses)) {</span>
+<span class="nc" id="L175">				String functor = prologClauses.get(0).getFunctor();</span>
+<span class="nc" id="L176">				int arity = prologClauses.get(0).getArity();</span>
+<span class="nc" id="L177">				engine.abolish(functor, arity);</span>
+			}
+<span class="nc" id="L179">		}</span>
+<span class="nc" id="L180">		return true;</span>
+	}
+
+	public Object[] toArray(PrologClauses[] prologClauses) {
+<span class="nc" id="L184">		return getClauses().values().toArray(prologClauses);</span>
+	}
+
+	public Object[] toArray() {
+<span class="nc" id="L188">		return getClauses().values().toArray();</span>
+	}
+
+	public Set&lt;Entry&lt;String, PrologClauses&gt;&gt; entrySet() {
+<span class="nc" id="L192">		return getClauses().entrySet();</span>
+	}
+
+	@Override
+	public int hashCode() {
+<span class="nc" id="L197">		final int prime = 31;</span>
+<span class="nc" id="L198">		int result = super.hashCode();</span>
+<span class="nc bnc" id="L199" title="All 2 branches missed.">		result = prime * result + ((engine == null) ? 0 : engine.hashCode());</span>
+<span class="nc" id="L200">		return result;</span>
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+<span class="nc bnc" id="L205" title="All 2 branches missed.">		if (this == obj)</span>
+<span class="nc" id="L206">			return true;</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">		if (!super.equals(obj))</span>
+<span class="nc" id="L208">			return false;</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">		if (getClass() != obj.getClass())</span>
+<span class="nc" id="L210">			return false;</span>
+<span class="nc" id="L211">		AbstractProgram other = (AbstractProgram) obj;</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">		if (engine == null) {</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">			if (other.engine != null)</span>
+<span class="nc" id="L214">				return false;</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">		} else if (!engine.equals(other.engine)) {</span>
+<span class="nc" id="L216">			return false;</span>
+		}
+<span class="nc" id="L218">		return true;</span>
+	}
+
+	@Override
+	public String toString() {
+<span class="nc" id="L223">		return &quot;AbstractProgram [engine=&quot; + engine + &quot;]&quot;;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

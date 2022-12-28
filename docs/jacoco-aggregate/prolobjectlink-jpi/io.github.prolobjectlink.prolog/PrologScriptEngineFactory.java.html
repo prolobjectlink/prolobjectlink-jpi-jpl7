@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>PrologScriptEngineFactory.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">prolobjectlink-jpi-jpl7</a> &gt; <a href="../index.html" class="el_bundle">prolobjectlink-jpi</a> &gt; <a href="index.source.html" class="el_package">io.github.prolobjectlink.prolog</a> &gt; <span class="el_source">PrologScriptEngineFactory.java</span></div><h1>PrologScriptEngineFactory.java</h1><pre class="source lang-java linenums">/*-
+ * #%L
+ * prolobjectlink-jpi
+ * %%
+ * Copyright (C) 2012 - 2019 Prolobjectlink Project
+ * %%
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * #L%
+ */
+package io.github.prolobjectlink.prolog;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineFactory;
+
+/**
+ * Partial implementation of {@link ScriptEngineFactory}
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
+public abstract class PrologScriptEngineFactory implements ScriptEngineFactory {
+
+	private final PrologEngine engine;
+
+<span class="nc" id="L45">	public PrologScriptEngineFactory(PrologEngine engine) {</span>
+<span class="nc" id="L46">		this.engine = engine;</span>
+<span class="nc" id="L47">	}</span>
+
+	public final String getEngineName() {
+<span class="nc" id="L50">		return engine.getName();</span>
+	}
+
+	public final String getEngineVersion() {
+<span class="nc" id="L54">		return engine.getVersion();</span>
+	}
+
+	public final List&lt;String&gt; getExtensions() {
+<span class="nc" id="L58">		return Arrays.asList(&quot;pro&quot;, &quot;pl&quot;);</span>
+	}
+
+	public final List&lt;String&gt; getMimeTypes() {
+<span class="nc" id="L62">		return Arrays.asList(&quot;text/plain&quot;);</span>
+	}
+
+	public final List&lt;String&gt; getNames() {
+<span class="nc" id="L66">		return Arrays.asList(getEngineName(), &quot;Prolog&quot;, &quot;prolog&quot;);</span>
+	}
+
+	public final String getLanguageName() {
+<span class="nc" id="L70">		return &quot;Prolog&quot;;</span>
+	}
+
+	public final String getLanguageVersion() {
+<span class="nc" id="L74">		return engine.getVersion();</span>
+	}
+
+	public final Object getParameter(String key) {
+<span class="nc bnc" id="L78" title="All 2 branches missed.">		if (key.equals(ScriptEngine.ENGINE)) {</span>
+<span class="nc" id="L79">			return getEngineName();</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">		} else if (key.equals(ScriptEngine.ENGINE_VERSION)) {</span>
+<span class="nc" id="L81">			return getEngineVersion();</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">		} else if (key.equals(ScriptEngine.LANGUAGE)) {</span>
+<span class="nc" id="L83">			return getLanguageName();</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">		} else if (key.equals(ScriptEngine.LANGUAGE_VERSION)) {</span>
+<span class="nc" id="L85">			return getLanguageVersion();</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">		} else if (key.equals(ScriptEngine.NAME)) {</span>
+<span class="nc" id="L87">			return getEngineName();</span>
+		}
+<span class="nc" id="L89">		return null;</span>
+	}
+
+	public final String getOutputStatement(String toDisplay) {
+<span class="nc" id="L93">		return &quot;write('&quot; + toDisplay + &quot;')&quot;;</span>
+	}
+
+	public final String getProgram(String... statements) {
+<span class="nc" id="L97">		StringBuilder b = new StringBuilder();</span>
+<span class="nc" id="L98">		Iterator&lt;String&gt; i = new ArrayIterator&lt;String&gt;(statements);</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">		if (i.hasNext()) {</span>
+<span class="nc bnc" id="L100" title="All 2 branches missed.">			while (i.hasNext()) {</span>
+<span class="nc" id="L101">				b.append(i.next());</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">				if (i.hasNext()) {</span>
+<span class="nc" id="L103">					b.append(&quot;.\n&quot;);</span>
+				}
+			}
+<span class="nc" id="L106">			b.append('.');</span>
+		}
+<span class="nc" id="L108">		return &quot;&quot; + b + &quot;&quot;;</span>
+	}
+
+	public final ScriptEngine getScriptEngine() {
+<span class="nc" id="L112">		return new PrologScriptEngine(this, engine);</span>
+	}
+
+	@Override
+	public String toString() {
+<span class="nc" id="L117">		return &quot;PrologScriptEngineFactory [engine=&quot; + engine + &quot;]&quot;;</span>
+	}
+
+	@Override
+	public int hashCode() {
+<span class="nc" id="L122">		final int prime = 31;</span>
+<span class="nc" id="L123">		int result = 1;</span>
+<span class="nc bnc" id="L124" title="All 2 branches missed.">		result = prime * result + ((engine == null) ? 0 : engine.getName().hashCode());</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">		result = prime * result + ((engine == null) ? 0 : engine.getVersion().hashCode());</span>
+<span class="nc" id="L126">		return result;</span>
+	}
+
+	@Override
+	public boolean equals(Object object) {
+<span class="nc bnc" id="L131" title="All 2 branches missed.">		if (this == object)</span>
+<span class="nc" id="L132">			return true;</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">		if (object == null)</span>
+<span class="nc" id="L134">			return false;</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">		if (getClass() != object.getClass())</span>
+<span class="nc" id="L136">			return false;</span>
+<span class="nc" id="L137">		PrologScriptEngineFactory other = (PrologScriptEngineFactory) object;</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">		if (engine == null) {</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">			if (other.engine != null)</span>
+<span class="nc" id="L140">				return false;</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">		} else if (!engine.getName().equals(other.engine.getName())) {</span>
+<span class="nc" id="L142">			return false;</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">		} else if (!engine.getVersion().equals(other.engine.getVersion())) {</span>
+<span class="nc" id="L144">			return false;</span>
+		}
+<span class="nc" id="L146">		return true;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

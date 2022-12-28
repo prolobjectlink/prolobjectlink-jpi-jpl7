@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>AbstractJavaConverter.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">prolobjectlink-jpi-jpl7</a> &gt; <a href="../index.html" class="el_bundle">prolobjectlink-jpi</a> &gt; <a href="index.source.html" class="el_package">io.github.prolobjectlink.prolog</a> &gt; <span class="el_source">AbstractJavaConverter.java</span></div><h1>AbstractJavaConverter.java</h1><pre class="source lang-java linenums">/*-
+ * #%L
+ * prolobjectlink-jpi
+ * %%
+ * Copyright (C) 2012 - 2019 Prolobjectlink Project
+ * %%
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * #L%
+ */
+package io.github.prolobjectlink.prolog;
+
+import static io.github.prolobjectlink.prolog.PrologTermType.ATOM_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.DOUBLE_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.FALSE_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.FLOAT_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.INTEGER_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.LIST_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.LONG_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.NIL_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.OBJECT_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.STRUCTURE_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.TRUE_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.VARIABLE_TYPE;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+/**
+ * Partial implementation of {@link PrologJavaConverter} interface.
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
+public abstract class AbstractJavaConverter implements PrologJavaConverter {
+
+	private final PrologProvider provider;
+
+<span class="nc" id="L58">	protected AbstractJavaConverter(PrologProvider provider) {</span>
+<span class="nc" id="L59">		this.provider = provider;</span>
+<span class="nc" id="L60">	}</span>
+
+	public final boolean containQuotes(String functor) {
+<span class="nc bnc" id="L63" title="All 4 branches missed.">		if (functor != null &amp;&amp; !functor.isEmpty()) {</span>
+<span class="nc bnc" id="L64" title="All 4 branches missed.">			return functor.startsWith(&quot;\'&quot;) &amp;&amp; functor.endsWith(&quot;\'&quot;);</span>
+		}
+<span class="nc" id="L66">		return false;</span>
+	}
+
+	public final String removeQuotes(String functor) {
+<span class="nc bnc" id="L70" title="All 2 branches missed.">		if (containQuotes(functor)) {</span>
+<span class="nc" id="L71">			return functor.substring(1, functor.length() - 1);</span>
+		}
+<span class="nc" id="L73">		return functor;</span>
+	}
+
+	public final Object toObject(PrologTerm prologTerm) {
+<span class="nc bnc" id="L77" title="All 2 branches missed.">		if (prologTerm == null) {</span>
+<span class="nc" id="L78">			return null;</span>
+		}
+
+<span class="nc bnc" id="L81" title="All 13 branches missed.">		switch (prologTerm.getType()) {</span>
+		case NIL_TYPE:
+<span class="nc" id="L83">			return null;</span>
+		case TRUE_TYPE:
+<span class="nc" id="L85">			return true;</span>
+		case FALSE_TYPE:
+<span class="nc" id="L87">			return false;</span>
+		case ATOM_TYPE:
+<span class="nc" id="L89">			return removeQuotes(prologTerm.getFunctor());</span>
+		case INTEGER_TYPE:
+<span class="nc" id="L91">			return ((PrologInteger) prologTerm).getIntegerValue();</span>
+		case FLOAT_TYPE:
+<span class="nc" id="L93">			return ((PrologFloat) prologTerm).getFloatValue();</span>
+		case LONG_TYPE:
+<span class="nc" id="L95">			return ((PrologLong) prologTerm).getLongValue();</span>
+		case DOUBLE_TYPE:
+<span class="nc" id="L97">			return ((PrologDouble) prologTerm).getDoubleValue();</span>
+		case VARIABLE_TYPE:
+<span class="nc" id="L99">			return prologTerm;</span>
+		case LIST_TYPE:
+<span class="nc" id="L101">			return toObjectsArray(prologTerm.getArguments());</span>
+		case STRUCTURE_TYPE:
+<span class="nc" id="L103">			return prologTerm;</span>
+		case OBJECT_TYPE:
+<span class="nc" id="L105">			return prologTerm.getObject();</span>
+		default:
+<span class="nc" id="L107">			throw new UnknownTermError(prologTerm);</span>
+		}
+	}
+
+	public final Object[] toObjectsArray(PrologTerm[] terms) {
+<span class="nc" id="L112">		Object array = Array.newInstance(Object.class, terms.length);</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">		for (int i = 0; i &lt; terms.length; i++) {</span>
+<span class="nc" id="L114">			Array.set(array, i, toObject(terms[i]));</span>
+		}
+<span class="nc" id="L116">		return (Object[]) array;</span>
+	}
+
+	public final PrologTerm toTerm(Object object) {
+		// null pointer
+<span class="nc bnc" id="L121" title="All 2 branches missed.">		if (object == null) {</span>
+<span class="nc" id="L122">			return provider.prologNil();</span>
+		}
+
+		// string data type
+<span class="nc bnc" id="L126" title="All 2 branches missed.">		else if (object instanceof String) {</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">			if (((String) object).matches(&quot;[A-Z_]*&quot;)) {</span>
+<span class="nc" id="L128">				return provider.newVariable(&quot;&quot; + (String) object + &quot;&quot;, 0);</span>
+			}
+<span class="nc" id="L130">			return provider.newAtom(&quot;&quot; + (String) object + &quot;&quot;);</span>
+		}
+
+		// primitives and wrappers data types
+<span class="nc bnc" id="L134" title="All 4 branches missed.">		else if (object.getClass() == char.class || object instanceof Character) {</span>
+<span class="nc" id="L135">			return provider.newAtom(&quot;&quot; + (String) object + &quot;&quot;);</span>
+<span class="nc bnc" id="L136" title="All 4 branches missed.">		} else if (object.getClass() == byte.class || object instanceof Byte) {</span>
+<span class="nc" id="L137">			return provider.newInteger((Integer) object);</span>
+<span class="nc bnc" id="L138" title="All 4 branches missed.">		} else if (object.getClass() == short.class || object instanceof Short) {</span>
+<span class="nc" id="L139">			return provider.newInteger((Integer) object);</span>
+<span class="nc bnc" id="L140" title="All 4 branches missed.">		} else if (object.getClass() == boolean.class || object instanceof Boolean) {</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">			return (Boolean) object ? provider.prologTrue() : provider.prologFalse();</span>
+<span class="nc bnc" id="L142" title="All 4 branches missed.">		} else if (object.getClass() == int.class || object instanceof Integer) {</span>
+<span class="nc" id="L143">			return provider.newInteger((Integer) object);</span>
+<span class="nc bnc" id="L144" title="All 4 branches missed.">		} else if (object.getClass() == float.class || object instanceof Float) {</span>
+<span class="nc" id="L145">			return provider.newFloat((Float) object);</span>
+<span class="nc bnc" id="L146" title="All 4 branches missed.">		} else if (object.getClass() == long.class || object instanceof Long) {</span>
+<span class="nc" id="L147">			return provider.newLong((Long) object);</span>
+<span class="nc bnc" id="L148" title="All 4 branches missed.">		} else if (object.getClass() == double.class || object instanceof Double) {</span>
+<span class="nc" id="L149">			return provider.newDouble((Double) object);</span>
+		}
+
+		// object array
+<span class="nc bnc" id="L153" title="All 2 branches missed.">		else if (object instanceof Object[]) {</span>
+<span class="nc" id="L154">			return provider.newList(toTermsArray((Object[]) object));</span>
+		}
+
+<span class="nc" id="L157">		throw new UnknownTermError(object);</span>
+
+	}
+
+	public final PrologTerm[] toTermsArray(Object[] objects) {
+<span class="nc" id="L162">		PrologTerm[] terms = new PrologTerm[objects.length];</span>
+<span class="nc bnc" id="L163" title="All 2 branches missed.">		for (int i = 0; i &lt; objects.length; i++) {</span>
+<span class="nc" id="L164">			terms[i] = toTerm(objects[i]);</span>
+		}
+<span class="nc" id="L166">		return terms;</span>
+	}
+
+	public final List&lt;Map&lt;String, Object&gt;&gt; toObjectMaps(Map&lt;String, PrologTerm&gt;[] maps) {
+<span class="nc" id="L170">		List&lt;Map&lt;String, Object&gt;&gt; list = new ArrayList&lt;Map&lt;String, Object&gt;&gt;(maps.length);</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">		for (Map&lt;String, PrologTerm&gt; map : maps) {</span>
+<span class="nc" id="L172">			list.add(toObjectMap(map));</span>
+		}
+<span class="nc" id="L174">		return list;</span>
+	}
+
+	public final Map&lt;String, Object&gt; toObjectMap(Map&lt;String, PrologTerm&gt; map) {
+<span class="nc" id="L178">		Map&lt;String, Object&gt; objects = new HashMap&lt;String, Object&gt;(map.size());</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">		for (Entry&lt;String, PrologTerm&gt; entry : map.entrySet()) {</span>
+<span class="nc" id="L180">			objects.put(entry.getKey(), toObject(entry.getValue()));</span>
+<span class="nc" id="L181">		}</span>
+<span class="nc" id="L182">		return objects;</span>
+	}
+
+	public final List&lt;Object&gt; toObjectList(PrologTerm[] terms) {
+<span class="nc" id="L186">		List&lt;Object&gt; list = new ArrayList&lt;Object&gt;(terms.length);</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">		for (PrologTerm prologTerm : terms) {</span>
+<span class="nc" id="L188">			list.add(toObject(prologTerm));</span>
+		}
+<span class="nc" id="L190">		return list;</span>
+	}
+
+	public final List&lt;List&lt;Object&gt;&gt; toObjectLists(PrologTerm[][] terms) {
+<span class="nc" id="L194">		List&lt;List&lt;Object&gt;&gt; list = new ArrayList&lt;List&lt;Object&gt;&gt;(terms.length);</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">		for (PrologTerm[] prologTerms : terms) {</span>
+<span class="nc" id="L196">			list.add(toObjectList(prologTerms));</span>
+		}
+<span class="nc" id="L198">		return list;</span>
+	}
+
+	@Override
+	public int hashCode() {
+<span class="nc" id="L203">		final int prime = 31;</span>
+<span class="nc" id="L204">		int result = super.hashCode();</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">		result = prime * result + ((provider == null) ? 0 : provider.hashCode());</span>
+<span class="nc" id="L206">		return result;</span>
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+<span class="nc bnc" id="L211" title="All 2 branches missed.">		if (this == obj)</span>
+<span class="nc" id="L212">			return true;</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">		if (!super.equals(obj))</span>
+<span class="nc" id="L214">			return false;</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">		if (getClass() != obj.getClass())</span>
+<span class="nc" id="L216">			return false;</span>
+<span class="nc" id="L217">		AbstractJavaConverter other = (AbstractJavaConverter) obj;</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">		if (provider == null) {</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">			if (other.provider != null)</span>
+<span class="nc" id="L220">				return false;</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">		} else if (!provider.equals(other.provider)) {</span>
+<span class="nc" id="L222">			return false;</span>
+		}
+<span class="nc" id="L224">		return true;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

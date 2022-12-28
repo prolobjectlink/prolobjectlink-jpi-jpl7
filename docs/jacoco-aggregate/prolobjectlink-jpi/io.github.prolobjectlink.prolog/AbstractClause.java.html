@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>AbstractClause.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">prolobjectlink-jpi-jpl7</a> &gt; <a href="../index.html" class="el_bundle">prolobjectlink-jpi</a> &gt; <a href="index.source.html" class="el_package">io.github.prolobjectlink.prolog</a> &gt; <span class="el_source">AbstractClause.java</span></div><h1>AbstractClause.java</h1><pre class="source lang-java linenums">/*
+ * #%L
+ * prolobjectlink-jpi
+ * %%
+ * Copyright (C) 2019 Prolobjectlink Project
+ * %%
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * #L%
+ */
+package io.github.prolobjectlink.prolog;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+
+/**
+ * Partial implementation of {@link PrologClause} interface.
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
+public abstract class AbstractClause implements PrologClause {
+
+	private boolean dynamic;
+	private boolean multifile;
+	private boolean discontiguous;
+
+	private final PrologTerm head;
+	private final PrologTerm body;
+
+	protected final PrologProvider provider;
+
+	/**
+	 * Create a new fact clause. A fatc clause is only represented by clause head
+	 * and no have clause body. The body for this clause type is null. The other
+	 * parameters are boolean clause properties. If a clause have any of this
+	 * properties specify with true value.
+	 * 
+	 * @param provider      prolog provider
+	 * @param head          clause head
+	 * @param dynamic       true if clause is dynamic, false otherwise
+	 * @param multifile     true if clause is multifile, false otherwise
+	 * @param discontiguous true if clause is discontiguous, false otherwise
+	 * @since 1.0
+	 */
+	protected AbstractClause(PrologProvider provider, PrologTerm head, boolean dynamic, boolean multifile,
+			boolean discontiguous) {
+<span class="nc" id="L65">		this(provider, head, null, dynamic, multifile, discontiguous);</span>
+<span class="nc" id="L66">	}</span>
+
+	/**
+	 * Create a new rule clause. A rule clause is represented by clause head and
+	 * body. The other parameters are boolean clause properties. If a clause have
+	 * any of this properties specify with true value.
+	 * 
+	 * @param provider      prolog provider
+	 * @param head          clause head
+	 * @param body          clause body
+	 * @param dynamic       true if clause is dynamic, false otherwise
+	 * @param multifile     true if clause is multifile, false otherwise
+	 * @param discontiguous true if clause is discontiguous, false otherwise
+	 * @since 1.0
+	 */
+	protected AbstractClause(PrologProvider provider, PrologTerm head, PrologTerm body, boolean dynamic,
+<span class="nc" id="L82">			boolean multifile, boolean discontiguous) {</span>
+<span class="nc" id="L83">		this.head = head;</span>
+<span class="nc" id="L84">		this.body = body;</span>
+<span class="nc" id="L85">		this.provider = provider;</span>
+<span class="nc" id="L86">		this.dynamic = dynamic;</span>
+<span class="nc" id="L87">		this.multifile = multifile;</span>
+<span class="nc" id="L88">		this.discontiguous = discontiguous;</span>
+<span class="nc" id="L89">	}</span>
+
+	public PrologTerm getTerm() {
+<span class="nc" id="L92">		PrologTerm h = getHead();</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">		if (isRule()) {</span>
+<span class="nc" id="L94">			PrologTerm b = getBody();</span>
+<span class="nc" id="L95">			return provider.newStructure(&quot;:-&quot;, h, b);</span>
+		}
+<span class="nc" id="L97">		return h;</span>
+	}
+
+	public final PrologTerm getHead() {
+<span class="nc" id="L101">		return head;</span>
+	}
+
+	public final PrologTerm getBody() {
+<span class="nc" id="L105">		return body;</span>
+	}
+
+	public final PrologTerm[] getBodyArray() {
+<span class="nc" id="L109">		PrologTerm ptr = getBody();</span>
+<span class="nc" id="L110">		List&lt;PrologTerm&gt; terms = new ArrayList&lt;PrologTerm&gt;();</span>
+<span class="nc bnc" id="L111" title="All 6 branches missed.">		while (ptr != null &amp;&amp; ptr.isCompound() &amp;&amp; ptr.hasIndicator(&quot;,&quot;, 2)) {</span>
+<span class="nc" id="L112">			terms.add(ptr.getArgument(0));</span>
+<span class="nc" id="L113">			ptr = ptr.getArgument(1);</span>
+		}
+<span class="nc" id="L115">		terms.add(ptr);</span>
+<span class="nc" id="L116">		return terms.toArray(new PrologTerm[0]);</span>
+	}
+
+	public final Iterator&lt;PrologTerm&gt; getBodyIterator() {
+<span class="nc" id="L120">		return new BodyIterator(getBodyArray());</span>
+	}
+
+	public final String getFunctor() {
+<span class="nc" id="L124">		return head.getFunctor();</span>
+	}
+
+	public final int getArity() {
+<span class="nc" id="L128">		return head.getArity();</span>
+	}
+
+	public PrologTerm[] getArguments() {
+<span class="nc" id="L132">		return head.getArguments();</span>
+	}
+
+	public PrologTerm getArgument(int index) {
+<span class="nc" id="L136">		return head.getArgument(index);</span>
+	}
+
+	public final boolean hasIndicator(String functor, int arity) {
+<span class="nc" id="L140">		return getHead().hasIndicator(functor, arity);</span>
+	}
+
+	public final String getIndicator() {
+<span class="nc" id="L144">		return head.getIndicator();</span>
+	}
+
+	public final boolean isDirective() {
+<span class="nc bnc" id="L148" title="All 4 branches missed.">		return head == null &amp;&amp; body != null;</span>
+	}
+
+	public final boolean isFact() {
+<span class="nc bnc" id="L152" title="All 4 branches missed.">		return head != null &amp;&amp; body == null;</span>
+	}
+
+	public final boolean isRule() {
+<span class="nc bnc" id="L156" title="All 4 branches missed.">		return head != null &amp;&amp; body != null;</span>
+	}
+
+	public boolean isMethod() {
+<span class="nc" id="L160">		return false;</span>
+	}
+
+	public boolean isFunction() {
+<span class="nc" id="L164">		return false;</span>
+	}
+
+	public final boolean isClause() {
+<span class="nc" id="L168">		return true;</span>
+	}
+
+	public final boolean isTerm() {
+<span class="nc" id="L172">		return false;</span>
+	}
+
+	public final boolean unify(PrologClause clause) {
+<span class="nc bnc" id="L176" title="All 4 branches missed.">		return head.unify(clause.getHead()) &amp;&amp; body.unify(clause.getBody());</span>
+	}
+
+	public final boolean isDynamic() {
+<span class="nc" id="L180">		return dynamic;</span>
+	}
+
+	public final boolean isMultifile() {
+<span class="nc" id="L184">		return multifile;</span>
+	}
+
+	public final boolean isDiscontiguous() {
+<span class="nc" id="L188">		return discontiguous;</span>
+	}
+
+	public PrologIndicator getPrologIndicator() {
+<span class="nc" id="L192">		return new DefaultPrologIndicator(getFunctor(), getArity());</span>
+	}
+
+	public final &lt;T extends PrologClause&gt; T cast() {
+<span class="nc" id="L196">		return (T) this;</span>
+	}
+
+	@Override
+	public int hashCode() {
+<span class="nc" id="L201">		final int prime = 31;</span>
+<span class="nc" id="L202">		int result = 1;</span>
+<span class="nc bnc" id="L203" title="All 2 branches missed.">		result = prime * result + ((body == null) ? 0 : body.hashCode());</span>
+<span class="nc bnc" id="L204" title="All 2 branches missed.">		result = prime * result + (discontiguous ? 1231 : 1237);</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">		result = prime * result + (dynamic ? 1231 : 1237);</span>
+<span class="nc bnc" id="L206" title="All 2 branches missed.">		result = prime * result + ((head == null) ? 0 : head.hashCode());</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">		result = prime * result + (multifile ? 1231 : 1237);</span>
+<span class="nc" id="L208">		return result;</span>
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+<span class="nc bnc" id="L213" title="All 2 branches missed.">		if (this == obj)</span>
+<span class="nc" id="L214">			return true;</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">		if (obj == null)</span>
+<span class="nc" id="L216">			return false;</span>
+<span class="nc bnc" id="L217" title="All 2 branches missed.">		if (getClass() != obj.getClass())</span>
+<span class="nc" id="L218">			return false;</span>
+<span class="nc" id="L219">		AbstractClause other = (AbstractClause) obj;</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">		if (body == null) {</span>
+<span class="nc bnc" id="L221" title="All 2 branches missed.">			if (other.body != null)</span>
+<span class="nc" id="L222">				return false;</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">		} else if (!body.equals(other.body)) {</span>
+<span class="nc" id="L224">			return false;</span>
+		}
+<span class="nc bnc" id="L226" title="All 2 branches missed.">		if (discontiguous != other.discontiguous)</span>
+<span class="nc" id="L227">			return false;</span>
+<span class="nc bnc" id="L228" title="All 2 branches missed.">		if (dynamic != other.dynamic)</span>
+<span class="nc" id="L229">			return false;</span>
+<span class="nc bnc" id="L230" title="All 2 branches missed.">		if (head == null) {</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">			if (other.head != null)</span>
+<span class="nc" id="L232">				return false;</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">		} else if (!head.equals(other.head)) {</span>
+<span class="nc" id="L234">			return false;</span>
+		}
+<span class="nc bnc" id="L236" title="All 2 branches missed.">		return multifile == other.multifile;</span>
+	}
+
+	@Override
+	public String toString() {
+<span class="nc" id="L241">		StringBuilder b = new StringBuilder();</span>
+<span class="nc" id="L242">		b.append(getHead());</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">		if (isRule()) {</span>
+<span class="nc" id="L244">			b.append(&quot;:-\n\t&quot;);</span>
+<span class="nc" id="L245">			Iterator&lt;PrologTerm&gt; i = getBodyIterator();</span>
+<span class="nc bnc" id="L246" title="All 2 branches missed.">			while (i.hasNext()) {</span>
+<span class="nc" id="L247">				b.append(i.next());</span>
+<span class="nc bnc" id="L248" title="All 2 branches missed.">				if (i.hasNext()) {</span>
+<span class="nc" id="L249">					b.append(&quot;,\n\t&quot;);</span>
+				}
+			}
+		}
+<span class="nc" id="L253">		b.append('.');</span>
+<span class="nc" id="L254">		return &quot;&quot; + b + &quot;&quot;;</span>
+	}
+
+	private class BodyIterator extends AbstractIterator&lt;PrologTerm&gt; implements Iterator&lt;PrologTerm&gt; {
+
+		private int nextIndex;
+
+		private final PrologTerm[] elements;
+
+<span class="nc" id="L263">		protected BodyIterator(PrologTerm[] elements) {</span>
+<span class="nc" id="L264">			this.elements = elements;</span>
+<span class="nc" id="L265">		}</span>
+
+		public boolean hasNext() {
+<span class="nc bnc" id="L268" title="All 2 branches missed.">			return nextIndex &lt; elements.length;</span>
+		}
+
+		public PrologTerm next() {
+<span class="nc bnc" id="L272" title="All 2 branches missed.">			if (!hasNext()) {</span>
+<span class="nc" id="L273">				throw new NoSuchElementException();</span>
+			}
+<span class="nc" id="L275">			return elements[nextIndex++];</span>
+		}
+
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>AbstractTerm.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">prolobjectlink-jpi-jpl7</a> &gt; <a href="../index.html" class="el_bundle">prolobjectlink-jpi</a> &gt; <a href="index.source.html" class="el_package">io.github.prolobjectlink.prolog</a> &gt; <span class="el_source">AbstractTerm.java</span></div><h1>AbstractTerm.java</h1><pre class="source lang-java linenums">/*
+ * #%L
+ * prolobjectlink-jpi
+ * %%
+ * Copyright (C) 2019 Prolobjectlink Project
+ * %%
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * #L%
+ */
+package io.github.prolobjectlink.prolog;
+
+import static io.github.prolobjectlink.prolog.PrologTermType.ATOM_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.CLASS_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.CUT_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.DOUBLE_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.FAIL_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.FALSE_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.FIELD_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.FLOAT_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.INTEGER_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.LIST_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.LONG_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.MAP_ENTRY_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.MAP_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.MIXIN_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.NIL_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.OBJECT_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.PARAMETER_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.RESULT_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.STRUCTURE_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.TRUE_TYPE;
+import static io.github.prolobjectlink.prolog.PrologTermType.VARIABLE_TYPE;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Partial implementation of {@link PrologTerm} interface.
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
+public abstract class AbstractTerm implements PrologTerm {
+
+	protected int type;
+	protected final PrologProvider provider;
+
+<span class="nc" id="L66">	protected AbstractTerm(int type, PrologProvider provider) {</span>
+<span class="nc" id="L67">		this.type = type;</span>
+<span class="nc" id="L68">		this.provider = provider;</span>
+<span class="nc" id="L69">	}</span>
+
+	protected final void checkIndex(int index) {
+<span class="nc bnc" id="L72" title="All 2 branches missed.">		if (index &lt; 0) {</span>
+<span class="nc" id="L73">			throw new ArrayIndexOutOfBoundsException(index);</span>
+		}
+<span class="nc" id="L75">	}</span>
+
+	protected final void checkIndex(int index, int max) {
+<span class="nc bnc" id="L78" title="All 4 branches missed.">		if (index &lt; 0 || index &gt; max) {</span>
+<span class="nc" id="L79">			throw new ArrayIndexOutOfBoundsException(index);</span>
+		}
+<span class="nc" id="L81">	}</span>
+
+	protected final String removeQuoted(String functor) {
+<span class="nc bnc" id="L84" title="All 6 branches missed.">		if (functor != null &amp;&amp; functor.startsWith(&quot;\'&quot;) &amp;&amp; functor.endsWith(&quot;\'&quot;)) {</span>
+<span class="nc" id="L85">			return functor.substring(1, functor.length() - 1);</span>
+		}
+<span class="nc" id="L87">		return functor;</span>
+	}
+
+	protected final &lt;K extends PrologTerm&gt; K toTerm(Object o, Class&lt;K&gt; from) {
+<span class="nc" id="L91">		return provider.toTerm(o, from);</span>
+	}
+
+	protected final &lt;K extends PrologTerm&gt; K[] toTermArray(Object[] os, Class&lt;K[]&gt; from) {
+<span class="nc" id="L95">		return provider.toTermArray(os, from);</span>
+	}
+
+	protected final &lt;K&gt; K fromTerm(PrologTerm term, Class&lt;K&gt; to) {
+<span class="nc" id="L99">		return provider.fromTerm(term, to);</span>
+	}
+
+	protected final &lt;K&gt; K[] fromTermArray(PrologTerm[] terms, Class&lt;K[]&gt; to) {
+<span class="nc" id="L103">		return provider.fromTermArray(terms, to);</span>
+	}
+
+	protected final PrologLogger getLogger() {
+<span class="nc" id="L107">		return provider.getLogger();</span>
+	}
+
+	public PrologTerm getArgument(int index) {
+<span class="nc" id="L111">		PrologTerm[] array = getArguments();</span>
+<span class="nc" id="L112">		checkIndex(index, array.length);</span>
+<span class="nc" id="L113">		return array[index];</span>
+	}
+
+	public final String getIndicator() {
+<span class="nc" id="L117">		return getFunctor() + &quot;/&quot; + getArity();</span>
+	}
+
+	public final boolean hasIndicator(String functor, int arity) {
+<span class="nc bnc" id="L121" title="All 4 branches missed.">		return getFunctor().equals(functor) &amp;&amp; getArity() == arity;</span>
+	}
+
+	public PrologTerm getTerm() {
+<span class="nc" id="L125">		return this;</span>
+	}
+
+	public final int getType() {
+<span class="nc" id="L129">		return type;</span>
+	}
+
+	public final PrologProvider getProvider() {
+<span class="nc" id="L133">		return provider;</span>
+	}
+
+	/**
+	 * Casts a PrologTerm to the class or interface represented by this
+	 * {@code Class} object.
+	 *
+	 * @param term the object to be cast
+	 * @param type the class or interface to be casted
+	 * @return the PrologTerm after casting, or null if term is null
+	 *
+	 * @throws ClassCastException if the object is not null and is not assignable to
+	 *                            the type T.
+	 * @since 1.1
+	 */
+	protected final &lt;T extends PrologTerm&gt; T cast(PrologTerm term, Class&lt;T&gt; type) {
+<span class="nc" id="L149">		return type.cast(term);</span>
+	}
+
+	/**
+	 * Casts a PrologTerm to the class or interface represented by this
+	 * {@code Class} object.
+	 *
+	 * @param term the object to be cast
+	 * @return the PrologTerm after casting, or null if term is null
+	 *
+	 * @throws ClassCastException if the object is not null and is not assignable to
+	 *                            the type T.
+	 * @since 1.1
+	 */
+	protected final &lt;T extends PrologTerm&gt; T cast(PrologTerm term) {
+<span class="nc" id="L164">		return (T) term;</span>
+	}
+
+	public final &lt;T extends PrologTerm&gt; T cast() {
+<span class="nc" id="L168">		return cast(this);</span>
+	}
+
+	public Object getObject() {
+<span class="nc" id="L172">		PrologTerm term = this;</span>
+<span class="nc bnc" id="L173" title="All 19 branches missed.">		switch (term.getType()) {</span>
+		case NIL_TYPE:
+<span class="nc" id="L175">			return null;</span>
+		case CUT_TYPE:
+<span class="nc" id="L177">			return &quot;!&quot;;</span>
+		case FAIL_TYPE:
+<span class="nc" id="L179">			return &quot;fail&quot;;</span>
+		case TRUE_TYPE:
+<span class="nc" id="L181">			return true;</span>
+		case FALSE_TYPE:
+<span class="nc" id="L183">			return false;</span>
+		case ATOM_TYPE:
+<span class="nc" id="L185">			return term.getFunctor();</span>
+		case FLOAT_TYPE:
+<span class="nc" id="L187">			return ((PrologNumber) term).getFloatValue();</span>
+		case INTEGER_TYPE:
+<span class="nc" id="L189">			return ((PrologNumber) term).getIntegerValue();</span>
+		case DOUBLE_TYPE:
+<span class="nc" id="L191">			return ((PrologNumber) term).getDoubleValue();</span>
+		case LONG_TYPE:
+<span class="nc" id="L193">			return ((PrologNumber) term).getLongValue();</span>
+		case VARIABLE_TYPE:
+<span class="nc" id="L195">			return ((PrologVariable) term).getName();</span>
+		case LIST_TYPE:
+<span class="nc" id="L197">			return fromTermArray(term.getArguments(), Object[].class);</span>
+		case STRUCTURE_TYPE:
+<span class="nc" id="L199">			return term;</span>
+		case OBJECT_TYPE:
+<span class="nc" id="L201">			return term.getObject();</span>
+		case FIELD_TYPE:
+<span class="nc" id="L203">			PrologVariable field = term.cast();</span>
+<span class="nc" id="L204">			return &quot;field &quot; + field.getName();</span>
+		case RESULT_TYPE:
+<span class="nc" id="L206">			PrologVariable result = term.cast();</span>
+<span class="nc" id="L207">			return &quot;result &quot; + result.getName();</span>
+		case PARAMETER_TYPE:
+<span class="nc" id="L209">			PrologVariable parameter = term.cast();</span>
+<span class="nc" id="L210">			return &quot;parameter &quot; + parameter.getName();</span>
+		case CLASS_TYPE:
+		case MIXIN_TYPE:
+<span class="nc" id="L213">			return &quot;class &quot; + term.getFunctor();</span>
+		default:
+<span class="nc" id="L215">			return null;</span>
+		}
+	}
+
+	public final boolean isEntry() {
+<span class="nc bnc" id="L220" title="All 2 branches missed.">		return getType() == MAP_ENTRY_TYPE;</span>
+	}
+
+	public final boolean isMap() {
+<span class="nc bnc" id="L224" title="All 2 branches missed.">		return getType() == MAP_TYPE;</span>
+	}
+
+	public boolean isField() {
+<span class="nc bnc" id="L228" title="All 2 branches missed.">		return getType() == FIELD_TYPE;</span>
+	}
+
+	public boolean isResult() {
+<span class="nc bnc" id="L232" title="All 2 branches missed.">		return getType() == RESULT_TYPE;</span>
+	}
+
+	public boolean isParameter() {
+<span class="nc bnc" id="L236" title="All 2 branches missed.">		return getType() == PARAMETER_TYPE;</span>
+	}
+
+	public final boolean isMixin() {
+<span class="nc bnc" id="L240" title="All 2 branches missed.">		return getType() == MIXIN_TYPE;</span>
+	}
+
+	public final boolean isClass() {
+<span class="nc bnc" id="L244" title="All 2 branches missed.">		return getType() == CLASS_TYPE;</span>
+	}
+
+	public boolean isVariableBound() {
+<span class="nc bnc" id="L248" title="All 4 branches missed.">		return isVariable() &amp;&amp; getTerm() != this;</span>
+	}
+
+	public boolean isVariableNotBound() {
+<span class="nc bnc" id="L252" title="All 4 branches missed.">		return isVariable() &amp;&amp; getTerm() == this;</span>
+	}
+
+	public final boolean isClause() {
+<span class="nc" id="L256">		return false;</span>
+	}
+
+	public final boolean isTerm() {
+<span class="nc" id="L260">		return true;</span>
+	}
+
+	/**
+	 * Match to other term returning list of substitutions.
+	 * 
+	 * @param term - term to match check
+	 * @return list of substitutions.
+	 */
+	public final Map&lt;String, PrologTerm&gt; match(PrologTerm term) {
+<span class="nc" id="L270">		Deque&lt;PrologTerm&gt; stack = new ArrayDeque&lt;PrologTerm&gt;();</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">		if (unify(term, stack)) {</span>
+<span class="nc" id="L272">			int size = stack.size();</span>
+<span class="nc" id="L273">			HashMap&lt;String, PrologTerm&gt; substitution = new HashMap&lt;String, PrologTerm&gt;(size);</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">			while (size &gt; 0) {</span>
+<span class="nc" id="L275">				PrologVariable variable = (PrologVariable) stack.pop();</span>
+<span class="nc" id="L276">				substitution.put(variable.getName(), variable.getTerm());</span>
+				// variable.unbind();
+<span class="nc" id="L278">				size--;</span>
+<span class="nc" id="L279">			}</span>
+<span class="nc" id="L280">			return substitution;</span>
+		}
+<span class="nc" id="L282">		return new HashMap&lt;String, PrologTerm&gt;();</span>
+	}
+
+	/**
+	 * Unification is the basic primitive operation in logic programming. Check that
+	 * two terms (x and y) unify. Prolog unification algorithm is based on three
+	 * principals rules:
+	 * &lt;ul&gt;
+	 * &lt;li&gt;If x and y are atomics constants then x and y unify only if they are same
+	 * object.&lt;/li&gt;
+	 * &lt;li&gt;If x is a variable and y is anything then they unify and x is
+	 * instantiated to y. Conversely, if y is a variable then this is instantiated
+	 * to x.&lt;/li&gt;
+	 * &lt;li&gt;If x and y are structured terms then unify only if they match (equals
+	 * funtor and arity) and all their correspondents arguments unify.&lt;/li&gt;
+	 * &lt;/ul&gt;
+	 * 
+	 * 
+	 * @param term  - the term to unify with the current term
+	 * @param stack - the stack is used to store the addresses of variables which
+	 *              are bound by the unification. This is needed when backtracking.
+	 * @return true if the specified term unify whit the current term, false if not
+	 */
+	private boolean unify(PrologTerm term, Deque&lt;PrologTerm&gt; stack) throws PrologError {
+
+<span class="nc" id="L307">		PrologTerm thisTerm = this;</span>
+<span class="nc" id="L308">		PrologTerm otherTerm = term;</span>
+
+<span class="nc bnc" id="L310" title="All 2 branches missed.">		if (thisTerm.isVariableBound()) {</span>
+<span class="nc" id="L311">			return ((AbstractTerm) thisTerm.getTerm()).unify(otherTerm, stack);</span>
+		}
+
+<span class="nc bnc" id="L314" title="All 2 branches missed.">		else if (otherTerm.isVariableBound()) {</span>
+<span class="nc" id="L315">			return ((AbstractTerm) otherTerm.getTerm()).unify(thisTerm, stack);</span>
+		}
+
+		// current term is a free variable
+<span class="nc bnc" id="L319" title="All 2 branches missed.">		else if (thisTerm.isVariableNotBound()) {</span>
+			// if (!thisTerm.occurs(otherTerm)) {
+			// thisTerm.bind(otherTerm);
+<span class="nc" id="L322">			stack.push(thisTerm);</span>
+<span class="nc" id="L323">			return true;</span>
+			// }
+		}
+
+		// the other term is a free variable
+<span class="nc bnc" id="L328" title="All 2 branches missed.">		else if (otherTerm.isVariableNotBound()) {</span>
+			// if (!otherTerm.occurs(thisTerm)) {
+			// otherTerm.bind(thisTerm);
+<span class="nc" id="L331">			stack.push(otherTerm);</span>
+<span class="nc" id="L332">			return true;</span>
+			// }
+		}
+
+		// if at least term is a number then check equivalence
+<span class="nc bnc" id="L337" title="All 4 branches missed.">		else if (thisTerm.isNumber() || otherTerm.isNumber()) {</span>
+<span class="nc bnc" id="L338" title="All 8 branches missed.">			if ((thisTerm.isInteger() || thisTerm.isLong()) &amp;&amp; (otherTerm.isInteger() || otherTerm.isLong())) {</span>
+<span class="nc" id="L339">				int thisInt = ((PrologNumber) thisTerm).getIntegerValue();</span>
+<span class="nc" id="L340">				int otherInt = ((PrologNumber) otherTerm).getIntegerValue();</span>
+<span class="nc bnc" id="L341" title="All 2 branches missed.">				return thisInt == otherInt;</span>
+			}
+<span class="nc" id="L343">			return thisTerm.equals(otherTerm);</span>
+		}
+
+		else {
+
+<span class="nc" id="L348">			int thisArity = thisTerm.getArity();</span>
+<span class="nc" id="L349">			int otherArity = otherTerm.getArity();</span>
+<span class="nc" id="L350">			String thisFunctor = thisTerm.getFunctor();</span>
+<span class="nc" id="L351">			String otherFunctor = otherTerm.getFunctor();</span>
+
+<span class="nc bnc" id="L353" title="All 4 branches missed.">			if (thisFunctor.equals(otherFunctor) &amp;&amp; thisArity == otherArity) {</span>
+<span class="nc bnc" id="L354" title="All 2 branches missed.">				for (int i = 0; i &lt; thisArity; i++) {</span>
+<span class="nc bnc" id="L355" title="All 4 branches missed.">					if (thisTerm.getArgument(i) != null &amp;&amp; otherTerm.getArgument(i) != null) {</span>
+<span class="nc bnc" id="L356" title="All 2 branches missed.">						if (!((AbstractTerm) thisTerm.getArgument(i)).unify(otherTerm.getArgument(i), stack)) {</span>
+<span class="nc" id="L357">							return false;</span>
+						}
+					}
+				}
+<span class="nc" id="L361">				return true;</span>
+			}
+		}
+<span class="nc" id="L364">		return false;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

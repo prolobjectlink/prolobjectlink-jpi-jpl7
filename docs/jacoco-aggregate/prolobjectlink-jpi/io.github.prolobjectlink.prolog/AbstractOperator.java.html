@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>AbstractOperator.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">prolobjectlink-jpi-jpl7</a> &gt; <a href="../index.html" class="el_bundle">prolobjectlink-jpi</a> &gt; <a href="index.source.html" class="el_package">io.github.prolobjectlink.prolog</a> &gt; <span class="el_source">AbstractOperator.java</span></div><h1>AbstractOperator.java</h1><pre class="source lang-java linenums">/*
+ * #%L
+ * prolobjectlink-jpi
+ * %%
+ * Copyright (C) 2019 Prolobjectlink Project
+ * %%
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * #L%
+ */
+package io.github.prolobjectlink.prolog;
+
+/**
+ * Partial implementation of {@link PrologOperator}.
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
+public abstract class AbstractOperator implements PrologOperator {
+
+	private final int priority;
+	private final String specifier;
+	private final String operator;
+
+<span class="nc" id="L40">	public AbstractOperator(int priority, String specifier, String operator) {</span>
+<span class="nc" id="L41">		this.priority = priority;</span>
+<span class="nc" id="L42">		this.specifier = specifier;</span>
+<span class="nc" id="L43">		this.operator = operator;</span>
+<span class="nc" id="L44">	}</span>
+
+	public final int getPriority() {
+<span class="nc" id="L47">		return priority;</span>
+	}
+
+	public final String getSpecifier() {
+<span class="nc" id="L51">		return specifier;</span>
+	}
+
+	public final String getOperator() {
+<span class="nc" id="L55">		return operator;</span>
+	}
+
+	@Override
+	public final String toString() {
+<span class="nc" id="L60">		return &quot;op(&quot; + priority + &quot;,&quot; + specifier + &quot;,&quot; + operator + &quot;)&quot;;</span>
+	}
+
+	@Override
+	public final int hashCode() {
+<span class="nc" id="L65">		final int prime = 31;</span>
+<span class="nc" id="L66">		int result = 1;</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">		result = prime * result + ((operator == null) ? 0 : operator.hashCode());</span>
+<span class="nc" id="L68">		result = prime * result + priority;</span>
+<span class="nc bnc" id="L69" title="All 2 branches missed.">		result = prime * result + ((specifier == null) ? 0 : specifier.hashCode());</span>
+<span class="nc" id="L70">		return result;</span>
+	}
+
+	@Override
+	public final boolean equals(Object object) {
+<span class="nc bnc" id="L75" title="All 2 branches missed.">		if (this == object)</span>
+<span class="nc" id="L76">			return true;</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">		if (object == null)</span>
+<span class="nc" id="L78">			return false;</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">		if (getClass() != object.getClass())</span>
+<span class="nc" id="L80">			return false;</span>
+<span class="nc" id="L81">		AbstractOperator other = (AbstractOperator) object;</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">		if (operator == null) {</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">			if (other.operator != null)</span>
+<span class="nc" id="L84">				return false;</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">		} else if (!operator.equals(other.operator)) {</span>
+<span class="nc" id="L86">			return false;</span>
+		}
+<span class="nc bnc" id="L88" title="All 2 branches missed.">		if (priority != other.priority)</span>
+<span class="nc" id="L89">			return false;</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">		if (specifier == null) {</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">			if (other.specifier != null)</span>
+<span class="nc" id="L92">				return false;</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">		} else if (!specifier.equals(other.specifier)) {</span>
+<span class="nc" id="L94">			return false;</span>
+		}
+<span class="nc" id="L96">		return true;</span>
+	}
+
+	public int compareTo(PrologOperator o) {
+<span class="nc bnc" id="L100" title="All 2 branches missed.">		if (operator != null) {</span>
+<span class="nc bnc" id="L101" title="All 2 branches missed.">			if (priority &gt; o.getPriority()) {</span>
+<span class="nc" id="L102">				return 1;</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">			} else if (priority &lt; o.getPriority()) {</span>
+<span class="nc" id="L104">				return -1;</span>
+			}
+		}
+<span class="nc" id="L107">		return 0;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

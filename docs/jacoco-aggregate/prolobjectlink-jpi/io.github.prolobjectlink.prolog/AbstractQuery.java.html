@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>AbstractQuery.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">prolobjectlink-jpi-jpl7</a> &gt; <a href="../index.html" class="el_bundle">prolobjectlink-jpi</a> &gt; <a href="index.source.html" class="el_package">io.github.prolobjectlink.prolog</a> &gt; <span class="el_source">AbstractQuery.java</span></div><h1>AbstractQuery.java</h1><pre class="source lang-java linenums">/*
+ * #%L
+ * prolobjectlink-jpi
+ * %%
+ * Copyright (C) 2019 Prolobjectlink Project
+ * %%
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * #L%
+ */
+package io.github.prolobjectlink.prolog;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Partial implementation of {@link PrologQuery} interface.
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
+public abstract class AbstractQuery extends AbstractIterator&lt;Collection&lt;PrologTerm&gt;&gt; implements PrologQuery {
+
+	// engine for execute queries
+	protected final AbstractEngine engine;
+
+<span class="nc" id="L45">	public AbstractQuery(AbstractEngine engine) {</span>
+<span class="nc" id="L46">		this.engine = engine;</span>
+<span class="nc" id="L47">	}</span>
+
+	public final PrologEngine getEngine() {
+<span class="nc" id="L50">		return engine;</span>
+	}
+
+	public final PrologProvider getProvider() {
+<span class="nc" id="L54">		return engine.getProvider();</span>
+	}
+
+	protected final &lt;K extends PrologTerm&gt; K toTerm(Object o, Class&lt;K&gt; from) {
+<span class="nc" id="L58">		return engine.toTerm(o, from);</span>
+	}
+
+	protected final &lt;K extends PrologTerm, V extends Object&gt; Map&lt;String, PrologTerm&gt;[] toTermMapArray(
+			Map&lt;String, V&gt;[] map, Class&lt;K&gt; from) {
+<span class="nc" id="L63">		return engine.toTermMapArray(map, from);</span>
+	}
+
+	protected final &lt;K&gt; K fromTerm(PrologTerm term, Class&lt;K&gt; to) {
+<span class="nc" id="L67">		return engine.fromTerm(term, to);</span>
+	}
+
+	protected final boolean contains(List&lt;Map&lt;String, PrologTerm&gt;&gt; maps, Map&lt;String, PrologTerm&gt; map) {
+<span class="nc bnc" id="L71" title="All 2 branches missed.">		for (Map&lt;String, PrologTerm&gt; m : maps) {</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">			if (m.equals(map)) {</span>
+<span class="nc" id="L73">				return true;</span>
+			}
+<span class="nc" id="L75">		}</span>
+<span class="nc" id="L76">		return false;</span>
+	}
+
+	protected final boolean contains(List&lt;PrologTerm[]&gt; arrays, PrologTerm[] array) {
+<span class="nc bnc" id="L80" title="All 2 branches missed.">		for (PrologTerm[] a : arrays) {</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">			if (Arrays.equals(a, array)) {</span>
+<span class="nc" id="L82">				return true;</span>
+			}
+<span class="nc" id="L84">		}</span>
+<span class="nc" id="L85">		return false;</span>
+	}
+
+	protected final PrologLogger getLogger() {
+<span class="nc" id="L89">		return getProvider().getLogger();</span>
+	}
+
+	public final Iterator&lt;Collection&lt;PrologTerm&gt;&gt; iterator() {
+<span class="nc" id="L93">		return new PrologQueryIterator(this);</span>
+	}
+
+	public final boolean hasNext() {
+<span class="nc" id="L97">		return hasMoreSolutions();</span>
+	}
+
+	public final Collection&lt;PrologTerm&gt; next() {
+		// don't check has next
+		// don't raise NoSuchElementException
+<span class="nc" id="L103">		return nextVariablesSolution().values();</span>
+	}
+
+	@Override
+	public final void remove() {
+		// skip invoking next
+<span class="nc" id="L109">		nextSolution();</span>
+<span class="nc" id="L110">	}</span>
+
+	public final Map&lt;String, PrologTerm&gt; one() {
+<span class="nc" id="L113">		return oneVariablesSolution();</span>
+	}
+
+	public final List&lt;Map&lt;String, PrologTerm&gt;&gt; nths(int n) {
+<span class="nc" id="L117">		Map&lt;String, PrologTerm&gt;[] maps = nVariablesSolutions(n);</span>
+<span class="nc" id="L118">		return Arrays.asList(maps);</span>
+	}
+
+	public final Map&lt;String, PrologTerm&gt; more() {
+<span class="nc" id="L122">		return nextVariablesSolution();</span>
+	}
+
+	public final List&lt;Object&gt; oneResult() {
+<span class="nc" id="L126">		PrologTerm[] terms = oneSolution();</span>
+<span class="nc" id="L127">		return getProvider().getJavaConverter().toObjectList(terms);</span>
+	}
+
+	public final List&lt;Object&gt; nextResult() {
+<span class="nc" id="L131">		PrologTerm[] terms = nextSolution();</span>
+<span class="nc" id="L132">		return getProvider().getJavaConverter().toObjectList(terms);</span>
+	}
+
+	public final List&lt;List&lt;Object&gt;&gt; nResult(int n) {
+<span class="nc" id="L136">		PrologTerm[][] terms = allSolutions();</span>
+<span class="nc" id="L137">		return getProvider().getJavaConverter().toObjectLists(terms);</span>
+	}
+
+	public final List&lt;List&lt;Object&gt;&gt; allResults() {
+<span class="nc" id="L141">		PrologTerm[][] terms = allSolutions();</span>
+<span class="nc" id="L142">		return getProvider().getJavaConverter().toObjectLists(terms);</span>
+	}
+
+	public final Map&lt;String, Object&gt; oneVariablesResult() {
+<span class="nc" id="L146">		Map&lt;String, PrologTerm&gt; map = oneVariablesSolution();</span>
+<span class="nc" id="L147">		return getProvider().getJavaConverter().toObjectMap(map);</span>
+	}
+
+	@Override
+	public final Map&lt;String, Object&gt; nextVariablesResult() {
+<span class="nc" id="L152">		Map&lt;String, PrologTerm&gt; map = nextVariablesSolution();</span>
+<span class="nc" id="L153">		return getProvider().getJavaConverter().toObjectMap(map);</span>
+	}
+
+	@Override
+	public final List&lt;Map&lt;String, Object&gt;&gt; nVariablesResults(int n) {
+<span class="nc" id="L158">		Map&lt;String, PrologTerm&gt;[] maps = nVariablesSolutions(n);</span>
+<span class="nc" id="L159">		return getProvider().getJavaConverter().toObjectMaps(maps);</span>
+	}
+
+	public final List&lt;Map&lt;String, Object&gt;&gt; allVariablesResults() {
+<span class="nc" id="L163">		Map&lt;String, PrologTerm&gt;[] maps = allVariablesSolutions();</span>
+<span class="nc" id="L164">		return getProvider().getJavaConverter().toObjectMaps(maps);</span>
+	}
+
+	@Override
+	public int hashCode() {
+<span class="nc" id="L169">		final int prime = 31;</span>
+<span class="nc" id="L170">		int result = 1;</span>
+<span class="nc bnc" id="L171" title="All 2 branches missed.">		result = prime * result + ((engine == null) ? 0 : engine.hashCode());</span>
+<span class="nc" id="L172">		return result;</span>
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+<span class="nc bnc" id="L177" title="All 2 branches missed.">		if (this == obj)</span>
+<span class="nc" id="L178">			return true;</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">		if (obj == null)</span>
+<span class="nc" id="L180">			return false;</span>
+<span class="nc bnc" id="L181" title="All 2 branches missed.">		if (getClass() != obj.getClass())</span>
+<span class="nc" id="L182">			return false;</span>
+<span class="nc" id="L183">		AbstractQuery other = (AbstractQuery) obj;</span>
+<span class="nc bnc" id="L184" title="All 2 branches missed.">		if (engine == null) {</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">			if (other.engine != null)</span>
+<span class="nc" id="L186">				return false;</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">		} else if (!engine.equals(other.engine)) {</span>
+<span class="nc" id="L188">			return false;</span>
+		}
+<span class="nc" id="L190">		return true;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>

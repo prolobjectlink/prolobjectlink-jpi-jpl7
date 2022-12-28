@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../jacoco-resources/report.gif" type="image/gif"/><title>AbstractConsole.java</title><link rel="stylesheet" href="../../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../../index.html" class="el_report">prolobjectlink-jpi-jpl7</a> &gt; <a href="../index.html" class="el_bundle">prolobjectlink-jpi</a> &gt; <a href="index.source.html" class="el_package">io.github.prolobjectlink.prolog</a> &gt; <span class="el_source">AbstractConsole.java</span></div><h1>AbstractConsole.java</h1><pre class="source lang-java linenums">/*
+ * #%L
+ * prolobjectlink-jpi
+ * %%
+ * Copyright (C) 2019 Prolobjectlink Project
+ * %%
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the &quot;Software&quot;), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ * #L%
+ */
+package io.github.prolobjectlink.prolog;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.security.ProtectionDomain;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+/**
+ * Partial implementation of {@link PrologConsole} interface.
+ * 
+ * @author Jose Zalacain
+ * @since 1.0
+ */
+public abstract class AbstractConsole implements PrologConsole {
+
+	private static final String PROLOBJECTLINK = &quot;Prolobjectlink&quot;;
+	private static final String COPYRIHT = &quot; (C)&quot;;
+
+<span class="nc" id="L57">	private static final InputStream STDIN = System.in;</span>
+//	private static final OutputStream STDOUT = System.out
+
+	// default input stream
+<span class="nc" id="L61">	private final InputStreamReader input = new InputStreamReader(STDIN);</span>
+
+	// buffered reader for read from standard input stream
+<span class="nc" id="L64">	private final BufferedReader reader = new BufferedReader(input);</span>
+
+	// standard output stream
+//	private final PrintWriter output = System.console().writer()
+<span class="nc" id="L68">	private final PrintWriter output = new PrintWriter(System.out, true);</span>
+
+	//
+	private final PrologEngine engine;
+
+<span class="nc" id="L73">	public AbstractConsole(PrologProvider provider) {</span>
+<span class="nc" id="L74">		this.engine = provider.newEngine();</span>
+<span class="nc" id="L75">	}</span>
+
+	public final Map&lt;String, String&gt; getArguments(String[] args) {
+<span class="nc" id="L78">		final Map&lt;String, String&gt; map = new HashMap&lt;String, String&gt;();</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">		if (args.length &gt; 0) {</span>
+<span class="nc" id="L80">			Iterator&lt;String&gt; i = new ArrayIterator&lt;String&gt;(args);</span>
+<span class="nc" id="L81">			String name = i.next();</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">			if (i.hasNext()) {</span>
+<span class="nc" id="L83">				String value = i.next();</span>
+<span class="nc" id="L84">				map.put(name, value);</span>
+<span class="nc" id="L85">			} else {</span>
+<span class="nc" id="L86">				map.put(name, &quot;&quot;);</span>
+			}
+		}
+<span class="nc" id="L89">		return map;</span>
+	}
+
+	public final void printUsage() {
+<span class="nc" id="L93">		output.println(&quot;Usage: pllink option [file]&quot;);</span>
+<span class="nc" id="L94">		output.println(&quot;options:&quot;);</span>
+<span class="nc" id="L95">		output.println(&quot;	-r	consult/run a prolog file&quot;);</span>
+<span class="nc" id="L96">		output.println(&quot;	-v	print the prolog engine version&quot;);</span>
+<span class="nc" id="L97">		output.println(&quot;	-n	print the prolog engine name&quot;);</span>
+<span class="nc" id="L98">		output.println(&quot;	-l	print the prolog engine license&quot;);</span>
+<span class="nc" id="L99">		output.println(&quot;	-i	print the prolog engine information&quot;);</span>
+<span class="nc" id="L100">		output.println(&quot;	-a	print the prolog engine about&quot;);</span>
+<span class="nc" id="L101">		output.println(&quot;	-e	print the prolog engine enviroment paths&quot;);</span>
+<span class="nc" id="L102">		output.println(&quot;	-x	start the prolog engine execution&quot;);</span>
+<span class="nc" id="L103">		output.println(&quot;	-w	print the current work directory &quot;);</span>
+<span class="nc" id="L104">		output.println(&quot;	-f	consult a prolog file and save formatted code&quot;);</span>
+<span class="nc" id="L105">		output.println(&quot;	-t	test and report integration conditions&quot;);</span>
+<span class="nc" id="L106">		output.println(&quot;	-p	print in a file a snapshot of currents predicates&quot;);</span>
+<span class="nc" id="L107">		output.println(&quot;	-s	generate .project file for Prolog Development Tool&quot;);</span>
+
+<span class="nc" id="L109">	}</span>
+
+	public final void run(String[] args) {
+
+<span class="nc" id="L113">		Map&lt;String, String&gt; m = getArguments(args);</span>
+<span class="nc bnc" id="L114" title="All 2 branches missed.">		if (!m.isEmpty()) {</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">			if (m.containsKey(&quot;-v&quot;)) {</span>
+<span class="nc" id="L116">				output.println(engine.getVersion());</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">			} else if (m.containsKey(&quot;-n&quot;)) {</span>
+<span class="nc" id="L118">				output.println(engine.getName());</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">			} else if (m.containsKey(&quot;-l&quot;)) {</span>
+<span class="nc" id="L120">				output.println(engine.getLicense());</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">			} else if (m.containsKey(&quot;-i&quot;)) {</span>
+<span class="nc" id="L122">				output.print(PROLOBJECTLINK);</span>
+<span class="nc" id="L123">				output.print(COPYRIHT);</span>
+<span class="nc" id="L124">				output.print(&quot; &quot;);</span>
+<span class="nc" id="L125">				output.print(engine.getName());</span>
+<span class="nc" id="L126">				output.print(&quot; v&quot;);</span>
+<span class="nc" id="L127">				output.println(engine.getVersion());</span>
+<span class="nc" id="L128">				output.println(engine.getLicense());</span>
+<span class="nc" id="L129">				output.println(System.getProperty(&quot;java.vm.name&quot;));</span>
+<span class="nc" id="L130">				output.println(System.getProperty(&quot;java.vendor&quot;));</span>
+<span class="nc" id="L131">				output.println(System.getProperty(&quot;java.version&quot;));</span>
+<span class="nc" id="L132">				output.println();</span>
+<span class="nc bnc" id="L133" title="All 2 branches missed.">			} else if (m.containsKey(&quot;-w&quot;)) {</span>
+				try {
+<span class="nc" id="L135">					output.println(&quot;Working directory&quot;);</span>
+<span class="nc" id="L136">					ProtectionDomain p = getClass().getProtectionDomain();</span>
+<span class="nc" id="L137">					URI d = p.getCodeSource().getLocation().toURI();</span>
+<span class="nc" id="L138">					output.println(d);</span>
+<span class="nc" id="L139">				} catch (URISyntaxException e) {</span>
+<span class="nc" id="L140">					Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L141">				}</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">			} else if (m.containsKey(&quot;-e&quot;)) {</span>
+<span class="nc" id="L143">				output.println(&quot;Enviroment&quot;);</span>
+<span class="nc" id="L144">				output.println(&quot;Class path&quot;);</span>
+<span class="nc" id="L145">				output.println(System.getenv(&quot;java.class.path&quot;));</span>
+<span class="nc" id="L146">				output.println(&quot;System path&quot;);</span>
+<span class="nc" id="L147">				output.println(System.getenv(&quot;Path&quot;));</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">			} else if (m.containsKey(&quot;-a&quot;)) {</span>
+<span class="nc" id="L149">				output.print(PROLOBJECTLINK);</span>
+<span class="nc" id="L150">				output.print(COPYRIHT);</span>
+<span class="nc bnc" id="L151" title="All 2 branches missed.">			} else if (m.containsKey(&quot;-r&quot;)) {</span>
+<span class="nc" id="L152">				String file = m.get(&quot;-r&quot;);</span>
+<span class="nc" id="L153">				output.print(&quot;Consult &quot;);</span>
+<span class="nc" id="L154">				output.println(file);</span>
+<span class="nc" id="L155">				engine.consult(file);</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">			} else if (m.containsKey(&quot;-x&quot;)) {</span>
+				// do nothing silently execution
+<span class="nc bnc" id="L158" title="All 2 branches missed.">			} else if (m.containsKey(&quot;-f&quot;)) {</span>
+<span class="nc" id="L159">				String file = m.get(&quot;-r&quot;);</span>
+<span class="nc" id="L160">				output.print(&quot;Format &quot;);</span>
+<span class="nc" id="L161">				output.println(file);</span>
+<span class="nc" id="L162">				engine.consult(file);</span>
+<span class="nc" id="L163">				engine.persist(file);</span>
+<span class="nc bnc" id="L164" title="All 2 branches missed.">			} else if (m.containsKey(&quot;-t&quot;)) {</span>
+<span class="nc" id="L165">				List&lt;String&gt; status = engine.verify();</span>
+<span class="nc bnc" id="L166" title="All 2 branches missed.">				for (String string : status) {</span>
+<span class="nc" id="L167">					output.println(string);</span>
+<span class="nc" id="L168">				}</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">			} else if (m.containsKey(&quot;-p&quot;)) {</span>
+<span class="nc" id="L170">				String file = m.get(&quot;-p&quot;);</span>
+				try {
+<span class="nc" id="L172">					PrintWriter writter = new PrintWriter(file);</span>
+<span class="nc" id="L173">					Set&lt;PrologIndicator&gt; set = engine.currentPredicates();</span>
+<span class="nc bnc" id="L174" title="All 2 branches missed.">					for (PrologIndicator prologIndicator : set) {</span>
+<span class="nc" id="L175">						writter.println(prologIndicator);</span>
+<span class="nc" id="L176">					}</span>
+<span class="nc" id="L177">					writter.close();</span>
+<span class="nc" id="L178">				} catch (FileNotFoundException e) {</span>
+<span class="nc" id="L179">					Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L180">					System.exit(1);</span>
+<span class="nc" id="L181">				}</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">			} else if (m.containsKey(&quot;-h&quot;)) {</span>
+<span class="nc" id="L183">				System.exit(1);</span>
+<span class="nc" id="L184">				printUsage();</span>
+			} else {
+<span class="nc" id="L186">				printUsage();</span>
+<span class="nc" id="L187">				System.exit(1);</span>
+			}
+
+			try {
+
+				String queryString;
+<span class="nc" id="L193">				output.print(&quot;?- &quot;);</span>
+<span class="nc" id="L194">				output.flush();</span>
+<span class="nc" id="L195">				queryString = reader.readLine();</span>
+
+				while (true) {
+
+<span class="nc bnc" id="L199" title="All 2 branches missed.">					if (!queryString.equals(&quot;&quot;)) {</span>
+<span class="nc" id="L200">						output.println();</span>
+
+<span class="nc bnc" id="L202" title="All 2 branches missed.">						if (queryString.lastIndexOf('.') == queryString.length() - 1) {</span>
+<span class="nc" id="L203">							queryString = queryString.substring(0, queryString.length() - 1);</span>
+						}
+
+<span class="nc" id="L206">						PrologQuery query = engine.query(queryString);</span>
+<span class="nc bnc" id="L207" title="All 2 branches missed.">						if (query.hasSolution()) {</span>
+<span class="nc" id="L208">							Map&lt;String, PrologTerm&gt; s = query.oneVariablesSolution();</span>
+<span class="nc bnc" id="L209" title="All 2 branches missed.">							for (Entry&lt;String, PrologTerm&gt; e : s.entrySet()) {</span>
+<span class="nc" id="L210">								output.println(e.getKey() + &quot; = &quot; + e.getValue());</span>
+<span class="nc" id="L211">							}</span>
+<span class="nc" id="L212">							output.println();</span>
+<span class="nc" id="L213">							output.println(&quot;Yes.&quot;);</span>
+<span class="nc" id="L214">						}</span>
+
+						else {
+<span class="nc" id="L217">							output.println(&quot;No.&quot;);</span>
+						}
+
+<span class="nc" id="L220">						output.println();</span>
+<span class="nc" id="L221">						output.println();</span>
+
+<span class="nc" id="L223">					} else {</span>
+<span class="nc" id="L224">						output.println(&quot;Emty query&quot;);</span>
+<span class="nc" id="L225">						output.println();</span>
+					}
+
+<span class="nc" id="L228">					output.print(&quot;?- &quot;);</span>
+<span class="nc" id="L229">					output.flush();</span>
+<span class="nc" id="L230">					queryString = reader.readLine();</span>
+
+				}
+
+<span class="nc" id="L234">			} catch (UnsatisfiedLinkError e) {</span>
+<span class="nc" id="L235">				output.println(&quot;Prolog engine link conditions:&quot;);</span>
+<span class="nc" id="L236">				List&lt;String&gt; status = engine.verify();</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">				for (String string : status) {</span>
+<span class="nc" id="L238">					output.println(string);</span>
+<span class="nc" id="L239">				}</span>
+<span class="nc" id="L240">			} catch (IOException e) {</span>
+<span class="nc" id="L241">				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, e);</span>
+<span class="nc" id="L242">				System.exit(1);</span>
+<span class="nc" id="L243">			}</span>
+
+		} else {
+<span class="nc" id="L246">			printUsage();</span>
+<span class="nc" id="L247">			System.exit(1);</span>
+		}
+
+<span class="nc" id="L250">	}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.3.201901230119</span></div></body></html>
