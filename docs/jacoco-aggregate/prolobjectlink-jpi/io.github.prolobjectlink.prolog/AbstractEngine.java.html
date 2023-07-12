@@ -67,189 +67,193 @@ public abstract class AbstractEngine implements PrologEngine {
 <span class="nc" id="L67">				writer.write(&quot;&quot; + prologClause + &quot;&quot;);</span>
 <span class="nc" id="L68">			} catch (IOException e) {</span>
 <span class="nc" id="L69">				getLogger().error(getClass(), IO, e);</span>
-<span class="nc" id="L70">			}</span>
-<span class="nc" id="L71">		}</span>
+			}
+		}
 <span class="nc" id="L72">	}</span>
 
 	public final boolean unify(PrologTerm t1, PrologTerm t2) {
 <span class="nc" id="L75">		return t1.unify(t2);</span>
 	}
 
-	public final boolean contains(String goal) {
-<span class="nc" id="L79">		return query(goal).hasSolution();</span>
+	public Map&lt;String, PrologTerm&gt; match(PrologTerm t1, PrologTerm t2) {
+<span class="nc" id="L79">		return queryOne(t1 + &quot;=&quot; + t2);</span>
 	}
 
-	public final boolean contains(PrologTerm goal) {
+	public final boolean contains(String goal) {
 <span class="nc" id="L83">		return query(goal).hasSolution();</span>
 	}
 
+	public final boolean contains(PrologTerm goal) {
+<span class="nc" id="L87">		return query(goal).hasSolution();</span>
+	}
+
 	public final boolean contains(PrologTerm goal, PrologTerm... goals) {
-<span class="nc" id="L87">		return query(goal, goals).hasSolution();</span>
+<span class="nc" id="L91">		return query(goal, goals).hasSolution();</span>
 	}
 
 	public final Map&lt;String, PrologTerm&gt; queryOne(String goal) {
-<span class="nc" id="L91">		return query(goal).oneVariablesSolution();</span>
-	}
-
-	public final Map&lt;String, PrologTerm&gt; queryOne(PrologTerm goal) {
 <span class="nc" id="L95">		return query(goal).oneVariablesSolution();</span>
 	}
 
+	public final Map&lt;String, PrologTerm&gt; queryOne(PrologTerm goal) {
+<span class="nc" id="L99">		return query(goal).oneVariablesSolution();</span>
+	}
+
 	public final Map&lt;String, PrologTerm&gt; queryOne(PrologTerm goal, PrologTerm... goals) {
-<span class="nc" id="L99">		return query(goal, goals).oneVariablesSolution();</span>
+<span class="nc" id="L103">		return query(goal, goals).oneVariablesSolution();</span>
 	}
 
 	public final List&lt;Map&lt;String, PrologTerm&gt;&gt; queryN(int n, String goal) {
-<span class="nc" id="L103">		return Arrays.asList(query(goal).nVariablesSolutions(n));</span>
+<span class="nc" id="L107">		return Arrays.asList(query(goal).nVariablesSolutions(n));</span>
 	}
 
 	public final List&lt;Map&lt;String, PrologTerm&gt;&gt; queryN(int n, PrologTerm term) {
-<span class="nc" id="L107">		return Arrays.asList(query(term).nVariablesSolutions(n));</span>
+<span class="nc" id="L111">		return Arrays.asList(query(term).nVariablesSolutions(n));</span>
 	}
 
 	public final List&lt;Map&lt;String, PrologTerm&gt;&gt; queryN(int n, PrologTerm term, PrologTerm... terms) {
-<span class="nc" id="L111">		return Arrays.asList(query(term, terms).nVariablesSolutions(n));</span>
+<span class="nc" id="L115">		return Arrays.asList(query(term, terms).nVariablesSolutions(n));</span>
 	}
 
 	public final List&lt;Map&lt;String, PrologTerm&gt;&gt; queryAll(String goal) {
-<span class="nc" id="L115">		return query(goal).all();</span>
-	}
-
-	public final List&lt;Map&lt;String, PrologTerm&gt;&gt; queryAll(PrologTerm goal) {
 <span class="nc" id="L119">		return query(goal).all();</span>
 	}
 
+	public final List&lt;Map&lt;String, PrologTerm&gt;&gt; queryAll(PrologTerm goal) {
+<span class="nc" id="L123">		return query(goal).all();</span>
+	}
+
 	public final List&lt;Map&lt;String, PrologTerm&gt;&gt; queryAll(PrologTerm goal, PrologTerm... goals) {
-<span class="nc" id="L123">		return query(goal, goals).all();</span>
+<span class="nc" id="L127">		return query(goal, goals).all();</span>
 	}
 
 	public final Map&lt;String, List&lt;PrologClause&gt;&gt; getProgramMap() {
-<span class="nc" id="L127">		Map&lt;String, List&lt;PrologClause&gt;&gt; m = new HashMap&lt;String, List&lt;PrologClause&gt;&gt;();</span>
-<span class="nc bnc" id="L128" title="All 2 branches missed.">		for (PrologClause clause : this) {</span>
-<span class="nc" id="L129">			String key = clause.getIndicator();</span>
-<span class="nc" id="L130">			List&lt;PrologClause&gt; l = m.get(key);</span>
-<span class="nc bnc" id="L131" title="All 2 branches missed.">			if (l == null) {</span>
-<span class="nc" id="L132">				l = new ArrayList&lt;PrologClause&gt;();</span>
-<span class="nc" id="L133">				l.add(clause);</span>
-<span class="nc" id="L134">				m.put(key, l);</span>
-			} else {
-<span class="nc" id="L136">				l.add(clause);</span>
+<span class="nc" id="L131">		Map&lt;String, List&lt;PrologClause&gt;&gt; m = new HashMap&lt;String, List&lt;PrologClause&gt;&gt;();</span>
+<span class="nc bnc" id="L132" title="All 2 branches missed.">		for (PrologClause clause : this) {</span>
+<span class="nc" id="L133">			String key = clause.getIndicator();</span>
+<span class="nc" id="L134">			List&lt;PrologClause&gt; l = m.get(key);</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">			if (l == null) {</span>
+<span class="nc" id="L136">				l = new ArrayList&lt;PrologClause&gt;();</span>
+<span class="nc" id="L137">				l.add(clause);</span>
+<span class="nc" id="L138">				m.put(key, l);</span>
+<span class="nc" id="L139">			} else {</span>
+<span class="nc" id="L140">				l.add(clause);</span>
 			}
-<span class="nc" id="L138">		}</span>
-<span class="nc" id="L139">		return m;</span>
+		}
+<span class="nc" id="L143">		return m;</span>
 	}
 
 	public final Set&lt;PrologClause&gt; getProgramClauses() {
-<span class="nc" id="L143">		Set&lt;PrologClause&gt; c = new LinkedHashSet&lt;PrologClause&gt;();</span>
-<span class="nc bnc" id="L144" title="All 2 branches missed.">		for (PrologClause prologClause : this) {</span>
-<span class="nc" id="L145">			c.add(prologClause);</span>
-<span class="nc" id="L146">		}</span>
-<span class="nc" id="L147">		return c;</span>
+<span class="nc" id="L147">		Set&lt;PrologClause&gt; c = new LinkedHashSet&lt;PrologClause&gt;();</span>
+<span class="nc bnc" id="L148" title="All 2 branches missed.">		for (PrologClause prologClause : this) {</span>
+<span class="nc" id="L149">			c.add(prologClause);</span>
+		}
+<span class="nc" id="L151">		return c;</span>
 	}
 
 	public final boolean isProgramEmpty() {
-<span class="nc bnc" id="L151" title="All 2 branches missed.">		return getProgramSize() == 0;</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">		return getProgramSize() == 0;</span>
 	}
 
 	public final Set&lt;PrologIndicator&gt; currentPredicates() {
-<span class="nc" id="L155">		Set&lt;PrologIndicator&gt; pis = new HashSet&lt;PrologIndicator&gt;();</span>
-<span class="nc" id="L156">		pis.addAll(getPredicates());</span>
-<span class="nc" id="L157">		pis.addAll(getBuiltIns());</span>
-<span class="nc" id="L158">		return pis;</span>
+<span class="nc" id="L159">		Set&lt;PrologIndicator&gt; pis = new HashSet&lt;PrologIndicator&gt;();</span>
+<span class="nc" id="L160">		pis.addAll(getPredicates());</span>
+<span class="nc" id="L161">		pis.addAll(getBuiltIns());</span>
+<span class="nc" id="L162">		return pis;</span>
 	}
 
 	public final DefaultQueryBuilder newQueryBuilder() {
-<span class="nc" id="L162">		return new DefaultQueryBuilder(this);</span>
+<span class="nc" id="L166">		return new DefaultQueryBuilder(this);</span>
 	}
 
 	public final DefaultClauseBuilder newClauseBuilder() {
-<span class="nc" id="L166">		return new DefaultClauseBuilder(this);</span>
+<span class="nc" id="L170">		return new DefaultClauseBuilder(this);</span>
 	}
 
 	public final boolean runOnOSX() {
-<span class="nc bnc" id="L170" title="All 4 branches missed.">		return getOSName().equals(&quot;Mac OS X&quot;) || getOSName().equals(&quot;Darwin&quot;);</span>
+<span class="nc bnc" id="L174" title="All 4 branches missed.">		return getOSName().equals(&quot;Mac OS X&quot;) || getOSName().equals(&quot;Darwin&quot;);</span>
 	}
 
 	public final boolean runOnWindows() {
-<span class="nc" id="L174">		return getOSName().startsWith(&quot;Windows&quot;);</span>
+<span class="nc" id="L178">		return getOSName().startsWith(&quot;Windows&quot;);</span>
 	}
 
 	public final boolean runOnLinux() {
-<span class="nc" id="L178">		return getOSName().equals(&quot;Linux&quot;);</span>
+<span class="nc" id="L182">		return getOSName().equals(&quot;Linux&quot;);</span>
 	}
 
 	public final String getOSName() {
-<span class="nc" id="L182">		String os = System.getProperty(&quot;os.name&quot;);</span>
-<span class="nc bnc" id="L183" title="All 2 branches missed.">		if (os == null)</span>
-<span class="nc" id="L184">			return UNKNOWN;</span>
-<span class="nc" id="L185">		return os;</span>
+<span class="nc" id="L186">		String os = System.getProperty(&quot;os.name&quot;);</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">		if (os == null)</span>
+<span class="nc" id="L188">			return UNKNOWN;</span>
+<span class="nc" id="L189">		return os;</span>
 	}
 
 	public final String getOSVersion() {
-<span class="nc" id="L189">		return System.getProperty(&quot;os.version&quot;);</span>
+<span class="nc" id="L193">		return System.getProperty(&quot;os.version&quot;);</span>
 	}
 
 	public final String getOSArch() {
-<span class="nc" id="L193">		return System.getProperty(&quot;os.arch&quot;);</span>
+<span class="nc" id="L197">		return System.getProperty(&quot;os.arch&quot;);</span>
 	}
 
 	public final PrologLogger getLogger() {
-<span class="nc" id="L197">		return provider.getLogger();</span>
+<span class="nc" id="L201">		return provider.getLogger();</span>
 	}
 
 	protected final &lt;K extends PrologTerm&gt; K toTerm(Object o, Class&lt;K&gt; from) {
-<span class="nc" id="L201">		return provider.toTerm(o, from);</span>
+<span class="nc" id="L205">		return provider.toTerm(o, from);</span>
 	}
 
 	protected final &lt;K extends PrologTerm, V extends Object&gt; Map&lt;String, PrologTerm&gt;[] toTermMapArray(
 			Map&lt;String, V&gt;[] map, Class&lt;K&gt; from) {
-<span class="nc" id="L206">		return provider.toTermMapArray(map, from);</span>
+<span class="nc" id="L210">		return provider.toTermMapArray(map, from);</span>
 	}
 
 	protected final &lt;K&gt; K fromTerm(PrologTerm term, Class&lt;K&gt; to) {
-<span class="nc" id="L210">		return provider.fromTerm(term, to);</span>
+<span class="nc" id="L214">		return provider.fromTerm(term, to);</span>
 	}
 
 	protected final &lt;K&gt; K fromTerm(PrologTerm head, PrologTerm[] body, Class&lt;K&gt; to) {
-<span class="nc" id="L214">		return provider.fromTerm(head, body, to);</span>
+<span class="nc" id="L218">		return provider.fromTerm(head, body, to);</span>
 	}
 
 	protected final String removeQuoted(String functor) {
-<span class="nc bnc" id="L218" title="All 6 branches missed.">		if (functor != null &amp;&amp; functor.startsWith(&quot;\'&quot;) &amp;&amp; functor.endsWith(&quot;\'&quot;)) {</span>
-<span class="nc" id="L219">			return functor.substring(1, functor.length() - 1);</span>
+<span class="nc bnc" id="L222" title="All 6 branches missed.">		if (functor != null &amp;&amp; functor.startsWith(&quot;\'&quot;) &amp;&amp; functor.endsWith(&quot;\'&quot;)) {</span>
+<span class="nc" id="L223">			return functor.substring(1, functor.length() - 1);</span>
 		}
-<span class="nc" id="L221">		return functor;</span>
+<span class="nc" id="L225">		return functor;</span>
 	}
 
 	@Override
 	public final String toString() {
-<span class="nc" id="L226">		return getName() + &quot; &quot; + getVersion();</span>
+<span class="nc" id="L230">		return getName() + &quot; &quot; + getVersion();</span>
 	}
 
 	@Override
 	public int hashCode() {
-<span class="nc" id="L231">		final int prime = 31;</span>
-<span class="nc" id="L232">		int result = 1;</span>
-<span class="nc bnc" id="L233" title="All 2 branches missed.">		result = prime * result + ((provider == null) ? 0 : provider.hashCode());</span>
-<span class="nc" id="L234">		return result;</span>
+<span class="nc" id="L235">		final int prime = 31;</span>
+<span class="nc" id="L236">		int result = 1;</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">		result = prime * result + ((provider == null) ? 0 : provider.hashCode());</span>
+<span class="nc" id="L238">		return result;</span>
 	}
 
 	@Override
 	public boolean equals(Object object) {
-<span class="nc bnc" id="L239" title="All 2 branches missed.">		if (this == object)</span>
-<span class="nc" id="L240">			return true;</span>
-<span class="nc bnc" id="L241" title="All 2 branches missed.">		if (object == null)</span>
-<span class="nc" id="L242">			return false;</span>
-<span class="nc bnc" id="L243" title="All 2 branches missed.">		if (getClass() != object.getClass())</span>
-<span class="nc" id="L244">			return false;</span>
-<span class="nc" id="L245">		AbstractEngine other = (AbstractEngine) object;</span>
-<span class="nc bnc" id="L246" title="All 2 branches missed.">		if (provider == null) {</span>
-<span class="nc bnc" id="L247" title="All 2 branches missed.">			if (other.provider != null)</span>
-<span class="nc" id="L248">				return false;</span>
-<span class="nc bnc" id="L249" title="All 2 branches missed.">		} else if (!provider.equals(other.provider)) {</span>
-<span class="nc" id="L250">			return false;</span>
+<span class="nc bnc" id="L243" title="All 2 branches missed.">		if (this == object)</span>
+<span class="nc" id="L244">			return true;</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">		if (object == null)</span>
+<span class="nc" id="L246">			return false;</span>
+<span class="nc bnc" id="L247" title="All 2 branches missed.">		if (getClass() != object.getClass())</span>
+<span class="nc" id="L248">			return false;</span>
+<span class="nc" id="L249">		AbstractEngine other = (AbstractEngine) object;</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">		if (provider == null) {</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">			if (other.provider != null)</span>
+<span class="nc" id="L252">				return false;</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">		} else if (!provider.equals(other.provider)) {</span>
+<span class="nc" id="L254">			return false;</span>
 		}
-<span class="nc" id="L252">		return true;</span>
+<span class="nc" id="L256">		return true;</span>
 	}
 
 	protected class PrologProgramIterator extends AbstractIterator&lt;PrologClause&gt; implements Iterator&lt;PrologClause&gt; {
@@ -257,29 +261,29 @@ public abstract class AbstractEngine implements PrologEngine {
 		private PrologClause last;
 		private final Iterator&lt;PrologClause&gt; i;
 
-<span class="nc" id="L260">		public PrologProgramIterator(Collection&lt;PrologClause&gt; cls) {</span>
-<span class="nc" id="L261">			i = cls.iterator();</span>
-<span class="nc" id="L262">		}</span>
+<span class="nc" id="L264">		public PrologProgramIterator(Collection&lt;PrologClause&gt; cls) {</span>
+<span class="nc" id="L265">			i = cls.iterator();</span>
+<span class="nc" id="L266">		}</span>
 
 		public boolean hasNext() {
-<span class="nc" id="L265">			return i.hasNext();</span>
+<span class="nc" id="L269">			return i.hasNext();</span>
 		}
 
 		public PrologClause next() {
-<span class="nc bnc" id="L269" title="All 2 branches missed.">			if (!i.hasNext()) {</span>
-<span class="nc" id="L270">				throw new NoSuchElementException();</span>
+<span class="nc bnc" id="L273" title="All 2 branches missed.">			if (!i.hasNext()) {</span>
+<span class="nc" id="L274">				throw new NoSuchElementException();</span>
 			}
-<span class="nc" id="L272">			last = i.next();</span>
-<span class="nc" id="L273">			return last;</span>
+<span class="nc" id="L276">			last = i.next();</span>
+<span class="nc" id="L277">			return last;</span>
 		}
 
 		@Override
 		public void remove() {
-<span class="nc" id="L278">			PrologTerm h = last.getHead();</span>
-<span class="nc" id="L279">			PrologTerm b = last.getBody();</span>
-<span class="nc" id="L280">			retract(h, b);</span>
-<span class="nc" id="L281">			i.remove();</span>
-<span class="nc" id="L282">		}</span>
+<span class="nc" id="L282">			PrologTerm h = last.getHead();</span>
+<span class="nc" id="L283">			PrologTerm b = last.getBody();</span>
+<span class="nc" id="L284">			retract(h, b);</span>
+<span class="nc" id="L285">			i.remove();</span>
+<span class="nc" id="L286">		}</span>
 
 	}
 

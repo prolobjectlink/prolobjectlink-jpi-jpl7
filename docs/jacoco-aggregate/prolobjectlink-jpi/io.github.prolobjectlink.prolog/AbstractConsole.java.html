@@ -138,7 +138,7 @@ public abstract class AbstractConsole implements PrologConsole {
 <span class="nc" id="L138">					output.println(d);</span>
 <span class="nc" id="L139">				} catch (URISyntaxException e) {</span>
 <span class="nc" id="L140">					Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, e);</span>
-<span class="nc" id="L141">				}</span>
+				}
 <span class="nc bnc" id="L142" title="All 2 branches missed.">			} else if (m.containsKey(&quot;-e&quot;)) {</span>
 <span class="nc" id="L143">				output.println(&quot;Enviroment&quot;);</span>
 <span class="nc" id="L144">				output.println(&quot;Class path&quot;);</span>
@@ -165,7 +165,7 @@ public abstract class AbstractConsole implements PrologConsole {
 <span class="nc" id="L165">				List&lt;String&gt; status = engine.verify();</span>
 <span class="nc bnc" id="L166" title="All 2 branches missed.">				for (String string : status) {</span>
 <span class="nc" id="L167">					output.println(string);</span>
-<span class="nc" id="L168">				}</span>
+				}
 <span class="nc bnc" id="L169" title="All 2 branches missed.">			} else if (m.containsKey(&quot;-p&quot;)) {</span>
 <span class="nc" id="L170">				String file = m.get(&quot;-p&quot;);</span>
 				try {
@@ -173,16 +173,16 @@ public abstract class AbstractConsole implements PrologConsole {
 <span class="nc" id="L173">					Set&lt;PrologIndicator&gt; set = engine.currentPredicates();</span>
 <span class="nc bnc" id="L174" title="All 2 branches missed.">					for (PrologIndicator prologIndicator : set) {</span>
 <span class="nc" id="L175">						writter.println(prologIndicator);</span>
-<span class="nc" id="L176">					}</span>
+					}
 <span class="nc" id="L177">					writter.close();</span>
 <span class="nc" id="L178">				} catch (FileNotFoundException e) {</span>
 <span class="nc" id="L179">					Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, e);</span>
 <span class="nc" id="L180">					System.exit(1);</span>
-<span class="nc" id="L181">				}</span>
+				}
 <span class="nc bnc" id="L182" title="All 2 branches missed.">			} else if (m.containsKey(&quot;-h&quot;)) {</span>
 <span class="nc" id="L183">				System.exit(1);</span>
 <span class="nc" id="L184">				printUsage();</span>
-			} else {
+<span class="nc" id="L185">			} else {</span>
 <span class="nc" id="L186">				printUsage();</span>
 <span class="nc" id="L187">				System.exit(1);</span>
 			}
@@ -194,7 +194,7 @@ public abstract class AbstractConsole implements PrologConsole {
 <span class="nc" id="L194">				output.flush();</span>
 <span class="nc" id="L195">				queryString = reader.readLine();</span>
 
-				while (true) {
+<span class="nc" id="L197">				while (true) {</span>
 
 <span class="nc bnc" id="L199" title="All 2 branches missed.">					if (!queryString.equals(&quot;&quot;)) {</span>
 <span class="nc" id="L200">						output.println();</span>
@@ -208,7 +208,7 @@ public abstract class AbstractConsole implements PrologConsole {
 <span class="nc" id="L208">							Map&lt;String, PrologTerm&gt; s = query.oneVariablesSolution();</span>
 <span class="nc bnc" id="L209" title="All 2 branches missed.">							for (Entry&lt;String, PrologTerm&gt; e : s.entrySet()) {</span>
 <span class="nc" id="L210">								output.println(e.getKey() + &quot; = &quot; + e.getValue());</span>
-<span class="nc" id="L211">							}</span>
+							}
 <span class="nc" id="L212">							output.println();</span>
 <span class="nc" id="L213">							output.println(&quot;Yes.&quot;);</span>
 <span class="nc" id="L214">						}</span>
@@ -236,13 +236,13 @@ public abstract class AbstractConsole implements PrologConsole {
 <span class="nc" id="L236">				List&lt;String&gt; status = engine.verify();</span>
 <span class="nc bnc" id="L237" title="All 2 branches missed.">				for (String string : status) {</span>
 <span class="nc" id="L238">					output.println(string);</span>
-<span class="nc" id="L239">				}</span>
+				}
 <span class="nc" id="L240">			} catch (IOException e) {</span>
 <span class="nc" id="L241">				Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, e);</span>
 <span class="nc" id="L242">				System.exit(1);</span>
-<span class="nc" id="L243">			}</span>
+			}
 
-		} else {
+<span class="nc" id="L245">		} else {</span>
 <span class="nc" id="L246">			printUsage();</span>
 <span class="nc" id="L247">			System.exit(1);</span>
 		}

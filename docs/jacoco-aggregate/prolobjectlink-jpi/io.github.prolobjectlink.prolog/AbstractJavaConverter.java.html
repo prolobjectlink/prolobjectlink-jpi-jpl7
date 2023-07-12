@@ -178,7 +178,7 @@ public abstract class AbstractJavaConverter implements PrologJavaConverter {
 <span class="nc" id="L178">		Map&lt;String, Object&gt; objects = new HashMap&lt;String, Object&gt;(map.size());</span>
 <span class="nc bnc" id="L179" title="All 2 branches missed.">		for (Entry&lt;String, PrologTerm&gt; entry : map.entrySet()) {</span>
 <span class="nc" id="L180">			objects.put(entry.getKey(), toObject(entry.getValue()));</span>
-<span class="nc" id="L181">		}</span>
+		}
 <span class="nc" id="L182">		return objects;</span>
 	}
 
