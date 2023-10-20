@@ -51,7 +51,7 @@ public abstract class AbstractProgram extends AbstractMap&lt;String, PrologClaus
 <span class="nc" id="L51">		PrologClauses clauses = newClauses(functor, arity);</span>
 <span class="nc bnc" id="L52" title="All 2 branches missed.">		for (PrologClause prologClause : l) {</span>
 <span class="nc" id="L53">			clauses.add(prologClause);</span>
-		}
+<span class="nc" id="L54">		}</span>
 <span class="nc" id="L55">		return clauses;</span>
 	}
 
@@ -63,8 +63,8 @@ public abstract class AbstractProgram extends AbstractMap&lt;String, PrologClaus
 <span class="nc bnc" id="L63" title="All 2 branches missed.">		for (PrologClauses prologClauses : program) {</span>
 <span class="nc bnc" id="L64" title="All 2 branches missed.">			for (PrologClause clause : prologClauses) {</span>
 <span class="nc" id="L65">				engine.assertz(clause.getHead(), clause.getBody());</span>
-			}
-		}
+<span class="nc" id="L66">			}</span>
+<span class="nc" id="L67">		}</span>
 <span class="nc" id="L68">	}</span>
 
 	public void push(PrologClause clause) {
@@ -121,7 +121,7 @@ public abstract class AbstractProgram extends AbstractMap&lt;String, PrologClaus
 	public boolean removeAll(PrologProgram program) {
 <span class="nc bnc" id="L122" title="All 2 branches missed.">		for (Entry&lt;String, PrologClauses&gt; entry : program.entrySet()) {</span>
 <span class="nc" id="L123">			getClauses().remove(entry.getKey());</span>
-		}
+<span class="nc" id="L124">		}</span>
 <span class="nc" id="L125">		return true;</span>
 	}
 
@@ -140,8 +140,8 @@ public abstract class AbstractProgram extends AbstractMap&lt;String, PrologClaus
 <span class="nc" id="L140">					c = newClauses(clause.getFunctor(), clause.getArity());</span>
 				}
 <span class="nc" id="L142">				c.add(clause);</span>
-			}
-		}
+<span class="nc" id="L143">			}</span>
+<span class="nc" id="L144">		}</span>
 <span class="nc" id="L145">		return m;</span>
 	}
 
@@ -150,22 +150,22 @@ public abstract class AbstractProgram extends AbstractMap&lt;String, PrologClaus
 <span class="nc" id="L150">		Set&lt;String&gt; i = new HashSet&lt;String&gt;(is.size());</span>
 <span class="nc bnc" id="L151" title="All 2 branches missed.">		for (PrologIndicator prologIndicator : is) {</span>
 <span class="nc" id="L152">			i.add(prologIndicator.toString());</span>
-		}
+<span class="nc" id="L153">		}</span>
 <span class="nc" id="L154">		return i;</span>
 	}
 
 	public void add(PrologClauses clauses) {
 <span class="nc bnc" id="L158" title="All 2 branches missed.">		for (PrologClause prologClause : clauses) {</span>
 <span class="nc" id="L159">			engine.assertz(prologClause.getHead(), prologClause.getBody());</span>
-		}
+<span class="nc" id="L160">		}</span>
 <span class="nc" id="L161">	}</span>
 
 	public void addAll(PrologProgram program) {
 <span class="nc bnc" id="L164" title="All 2 branches missed.">		for (PrologClauses clauses : program) {</span>
 <span class="nc bnc" id="L165" title="All 2 branches missed.">			for (PrologClause prologClause : clauses) {</span>
 <span class="nc" id="L166">				engine.assertz(prologClause.getHead(), prologClause.getBody());</span>
-			}
-		}
+<span class="nc" id="L167">			}</span>
+<span class="nc" id="L168">		}</span>
 <span class="nc" id="L169">	}</span>
 
 	public boolean retainAll(PrologClauses parents) {
@@ -176,7 +176,7 @@ public abstract class AbstractProgram extends AbstractMap&lt;String, PrologClaus
 <span class="nc" id="L176">				int arity = prologClauses.get(0).getArity();</span>
 <span class="nc" id="L177">				engine.abolish(functor, arity);</span>
 			}
-		}
+<span class="nc" id="L179">		}</span>
 <span class="nc" id="L180">		return true;</span>
 	}
 

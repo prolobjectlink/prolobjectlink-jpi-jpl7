@@ -101,7 +101,7 @@ public abstract class AbstractConverter&lt;T&gt; implements PrologConverter&lt;T
 <span class="nc" id="L101">		Set&lt;String&gt; keys = map.keySet();</span>
 <span class="nc bnc" id="L102" title="All 2 branches missed.">		for (String key : keys) {</span>
 <span class="nc" id="L103">			solutionMap.put(key, toTerm(map.get(key)));</span>
-		}
+<span class="nc" id="L104">		}</span>
 <span class="nc" id="L105">		return solutionMap;</span>
 	}
 
@@ -123,7 +123,7 @@ public abstract class AbstractConverter&lt;T&gt; implements PrologConverter&lt;T
 		}
 <span class="nc" id="L124">		throw new PrologError(</span>
 
-<span class="nc" id="L126">				IMPOSIBLE_CONVERT + o + FROM + from + &quot;'&quot;</span>
+				IMPOSIBLE_CONVERT + o + FROM + from + &quot;'&quot;
 
 		);
 	}
@@ -139,11 +139,11 @@ public abstract class AbstractConverter&lt;T&gt; implements PrologConverter&lt;T
 		}
 <span class="nc" id="L140">		throw new PrologError(</span>
 
-<span class="nc" id="L142">				IMPOSIBLE_CONVERT +</span>
+				IMPOSIBLE_CONVERT +
 
 <span class="nc" id="L144">						Arrays.toString(os) +</span>
 
-<span class="nc" id="L146">						FROM + from + &quot;'&quot;</span>
+						FROM + from + &quot;'&quot;
 
 		);
 	}
@@ -160,11 +160,11 @@ public abstract class AbstractConverter&lt;T&gt; implements PrologConverter&lt;T
 		}
 <span class="nc" id="L161">		throw new PrologError(</span>
 
-<span class="nc" id="L163">				IMPOSIBLE_CONVERT +</span>
+				IMPOSIBLE_CONVERT +
 
 <span class="nc" id="L165">						Arrays.toString(oss) +</span>
 
-<span class="nc" id="L167">						FROM + from + &quot;'&quot;</span>
+						FROM + from + &quot;'&quot;
 
 		);
 	}
@@ -177,7 +177,7 @@ public abstract class AbstractConverter&lt;T&gt; implements PrologConverter&lt;T
 <span class="nc" id="L177">			Object o = map.get(key);</span>
 <span class="nc" id="L178">			PrologTerm term = toTerm(o, from);</span>
 <span class="nc" id="L179">			solutionMap.put(key, term);</span>
-		}
+<span class="nc" id="L180">		}</span>
 <span class="nc" id="L181">		return solutionMap;</span>
 	}
 
@@ -197,7 +197,7 @@ public abstract class AbstractConverter&lt;T&gt; implements PrologConverter&lt;T
 		}
 <span class="nc" id="L198">		throw new PrologError(</span>
 
-<span class="nc" id="L200">				IMPOSIBLE_CONVERT + term + TO + to + &quot;'&quot;</span>
+				IMPOSIBLE_CONVERT + term + TO + to + &quot;'&quot;
 
 		);
 	}
@@ -221,11 +221,11 @@ public abstract class AbstractConverter&lt;T&gt; implements PrologConverter&lt;T
 		}
 <span class="nc" id="L222">		throw new PrologError(</span>
 
-<span class="nc" id="L224">				IMPOSIBLE_CONVERT +</span>
+				IMPOSIBLE_CONVERT +
 
 <span class="nc" id="L226">						head + &quot; and &quot; + Arrays.toString(body) +</span>
 
-<span class="nc" id="L228">						TO + to + &quot;'&quot;</span>
+						TO + to + &quot;'&quot;
 
 		);
 	}

@@ -67,8 +67,8 @@ public abstract class AbstractEngine implements PrologEngine {
 <span class="nc" id="L67">				writer.write(&quot;&quot; + prologClause + &quot;&quot;);</span>
 <span class="nc" id="L68">			} catch (IOException e) {</span>
 <span class="nc" id="L69">				getLogger().error(getClass(), IO, e);</span>
-			}
-		}
+<span class="nc" id="L70">			}</span>
+<span class="nc" id="L71">		}</span>
 <span class="nc" id="L72">	}</span>
 
 	public final boolean unify(PrologTerm t1, PrologTerm t2) {
@@ -136,10 +136,10 @@ public abstract class AbstractEngine implements PrologEngine {
 <span class="nc" id="L136">				l = new ArrayList&lt;PrologClause&gt;();</span>
 <span class="nc" id="L137">				l.add(clause);</span>
 <span class="nc" id="L138">				m.put(key, l);</span>
-<span class="nc" id="L139">			} else {</span>
+			} else {
 <span class="nc" id="L140">				l.add(clause);</span>
 			}
-		}
+<span class="nc" id="L142">		}</span>
 <span class="nc" id="L143">		return m;</span>
 	}
 
@@ -147,7 +147,7 @@ public abstract class AbstractEngine implements PrologEngine {
 <span class="nc" id="L147">		Set&lt;PrologClause&gt; c = new LinkedHashSet&lt;PrologClause&gt;();</span>
 <span class="nc bnc" id="L148" title="All 2 branches missed.">		for (PrologClause prologClause : this) {</span>
 <span class="nc" id="L149">			c.add(prologClause);</span>
-		}
+<span class="nc" id="L150">		}</span>
 <span class="nc" id="L151">		return c;</span>
 	}
 

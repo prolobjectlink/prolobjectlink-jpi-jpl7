@@ -85,7 +85,7 @@ public final class PrologScriptEngine extends AbstractScriptEngine implements Sc
 			}
 <span class="nc" id="L86">		} catch (IOException ex) {</span>
 <span class="nc" id="L87">			throw new ScriptException(ex);</span>
-		}
+<span class="nc" id="L88">		}</span>
 <span class="nc" id="L89">		return eval(&quot;&quot; + script + &quot;&quot;, bindings);</span>
 	}
 
@@ -100,7 +100,7 @@ public final class PrologScriptEngine extends AbstractScriptEngine implements Sc
 			// replace all bindings
 <span class="nc bnc" id="L101" title="All 2 branches missed.">			for (Entry&lt;String, Object&gt; entry : bindings.entrySet()) {</span>
 <span class="nc" id="L102">				code = code.replace(entry.getKey(), &quot;&quot; + entry.getValue() + &quot;&quot;);</span>
-			}
+<span class="nc" id="L103">			}</span>
 
 <span class="nc" id="L105">			code = code.substring(2).trim();</span>
 
@@ -118,7 +118,7 @@ public final class PrologScriptEngine extends AbstractScriptEngine implements Sc
 <span class="nc" id="L118">			Map&lt;String, Object&gt; map = query.oneVariablesResult();</span>
 <span class="nc bnc" id="L119" title="All 2 branches missed.">			for (Entry&lt;String, Object&gt; entry : map.entrySet()) {</span>
 <span class="nc" id="L120">				put(entry.getKey(), entry.getValue());</span>
-			}
+<span class="nc" id="L121">			}</span>
 
 <span class="nc" id="L123">		}</span>
 

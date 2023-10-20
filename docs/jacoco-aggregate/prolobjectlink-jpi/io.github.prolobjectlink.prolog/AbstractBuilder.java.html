@@ -52,7 +52,7 @@ abstract class AbstractBuilder implements PrologBuilder {
 	protected final void append(String functor, PrologTerm... arguments) {
 <span class="nc bnc" id="L53" title="All 4 branches missed.">		if (arguments != null &amp;&amp; arguments.length &gt; 0) {</span>
 <span class="nc" id="L54">			builder.append(provider.newStructure(functor, arguments));</span>
-<span class="nc" id="L55">		} else {</span>
+		} else {
 <span class="nc" id="L56">			builder.append(provider.newAtom(functor));</span>
 		}
 <span class="nc" id="L58">	}</span>
