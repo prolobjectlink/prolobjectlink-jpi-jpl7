@@ -38,6 +38,12 @@ import java.util.NoSuchElementException;
  */
 public abstract class AbstractClause implements PrologClause {
 
+<span class="nc" id="L41">	private String see = &quot;&quot;;</span>
+<span class="nc" id="L42">	private String since = &quot;&quot;;</span>
+<span class="nc" id="L43">	private String author = &quot;&quot;;</span>
+<span class="nc" id="L44">	private String version = &quot;&quot;;</span>
+<span class="nc" id="L45">	private String description = &quot;&quot;;</span>
+
 	private boolean dynamic;
 	private boolean multifile;
 	private boolean discontiguous;
@@ -62,8 +68,8 @@ public abstract class AbstractClause implements PrologClause {
 	 */
 	protected AbstractClause(PrologProvider provider, PrologTerm head, boolean dynamic, boolean multifile,
 			boolean discontiguous) {
-<span class="nc" id="L65">		this(provider, head, null, dynamic, multifile, discontiguous);</span>
-<span class="nc" id="L66">	}</span>
+<span class="nc" id="L71">		this(provider, head, null, dynamic, multifile, discontiguous);</span>
+<span class="nc" id="L72">	}</span>
 
 	/**
 	 * Create a new rule clause. A rule clause is represented by clause head and
@@ -79,179 +85,249 @@ public abstract class AbstractClause implements PrologClause {
 	 * @since 1.0
 	 */
 	protected AbstractClause(PrologProvider provider, PrologTerm head, PrologTerm body, boolean dynamic,
-<span class="nc" id="L82">			boolean multifile, boolean discontiguous) {</span>
-<span class="nc" id="L83">		this.head = head;</span>
-<span class="nc" id="L84">		this.body = body;</span>
-<span class="nc" id="L85">		this.provider = provider;</span>
-<span class="nc" id="L86">		this.dynamic = dynamic;</span>
-<span class="nc" id="L87">		this.multifile = multifile;</span>
-<span class="nc" id="L88">		this.discontiguous = discontiguous;</span>
-<span class="nc" id="L89">	}</span>
+<span class="nc" id="L88">			boolean multifile, boolean discontiguous) {</span>
+<span class="nc" id="L89">		this.head = head;</span>
+<span class="nc" id="L90">		this.body = body;</span>
+<span class="nc" id="L91">		this.provider = provider;</span>
+<span class="nc" id="L92">		this.dynamic = dynamic;</span>
+<span class="nc" id="L93">		this.multifile = multifile;</span>
+<span class="nc" id="L94">		this.discontiguous = discontiguous;</span>
+<span class="nc" id="L95">	}</span>
 
 	public PrologTerm getTerm() {
-<span class="nc" id="L92">		PrologTerm h = getHead();</span>
-<span class="nc bnc" id="L93" title="All 2 branches missed.">		if (isRule()) {</span>
-<span class="nc" id="L94">			PrologTerm b = getBody();</span>
-<span class="nc" id="L95">			return provider.newStructure(&quot;:-&quot;, h, b);</span>
+<span class="nc" id="L98">		PrologTerm h = getHead();</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">		if (isRule()) {</span>
+<span class="nc" id="L100">			PrologTerm b = getBody();</span>
+<span class="nc" id="L101">			return provider.newStructure(&quot;:-&quot;, h, b);</span>
 		}
-<span class="nc" id="L97">		return h;</span>
+<span class="nc" id="L103">		return h;</span>
 	}
 
 	public final PrologTerm getHead() {
-<span class="nc" id="L101">		return head;</span>
+<span class="nc" id="L107">		return head;</span>
 	}
 
 	public final PrologTerm getBody() {
-<span class="nc" id="L105">		return body;</span>
+<span class="nc" id="L111">		return body;</span>
 	}
 
 	public final PrologTerm[] getBodyArray() {
-<span class="nc" id="L109">		PrologTerm ptr = getBody();</span>
-<span class="nc" id="L110">		List&lt;PrologTerm&gt; terms = new ArrayList&lt;PrologTerm&gt;();</span>
-<span class="nc bnc" id="L111" title="All 6 branches missed.">		while (ptr != null &amp;&amp; ptr.isCompound() &amp;&amp; ptr.hasIndicator(&quot;,&quot;, 2)) {</span>
-<span class="nc" id="L112">			terms.add(ptr.getArgument(0));</span>
-<span class="nc" id="L113">			ptr = ptr.getArgument(1);</span>
+<span class="nc" id="L115">		PrologTerm ptr = getBody();</span>
+<span class="nc" id="L116">		List&lt;PrologTerm&gt; terms = new ArrayList&lt;PrologTerm&gt;();</span>
+<span class="nc bnc" id="L117" title="All 6 branches missed.">		while (ptr != null &amp;&amp; ptr.isCompound() &amp;&amp; ptr.hasIndicator(&quot;,&quot;, 2)) {</span>
+<span class="nc" id="L118">			terms.add(ptr.getArgument(0));</span>
+<span class="nc" id="L119">			ptr = ptr.getArgument(1);</span>
 		}
-<span class="nc" id="L115">		terms.add(ptr);</span>
-<span class="nc" id="L116">		return terms.toArray(new PrologTerm[0]);</span>
+<span class="nc" id="L121">		terms.add(ptr);</span>
+<span class="nc" id="L122">		return terms.toArray(new PrologTerm[0]);</span>
 	}
 
 	public final Iterator&lt;PrologTerm&gt; getBodyIterator() {
-<span class="nc" id="L120">		return new BodyIterator(getBodyArray());</span>
+<span class="nc" id="L126">		return new BodyIterator(getBodyArray());</span>
 	}
 
 	public final String getFunctor() {
-<span class="nc" id="L124">		return head.getFunctor();</span>
+<span class="nc" id="L130">		return head.getFunctor();</span>
 	}
 
 	public final int getArity() {
-<span class="nc" id="L128">		return head.getArity();</span>
+<span class="nc" id="L134">		return head.getArity();</span>
 	}
 
 	public PrologTerm[] getArguments() {
-<span class="nc" id="L132">		return head.getArguments();</span>
+<span class="nc" id="L138">		return head.getArguments();</span>
 	}
 
 	public PrologTerm getArgument(int index) {
-<span class="nc" id="L136">		return head.getArgument(index);</span>
+<span class="nc" id="L142">		return head.getArgument(index);</span>
 	}
 
 	public final boolean hasIndicator(String functor, int arity) {
-<span class="nc" id="L140">		return getHead().hasIndicator(functor, arity);</span>
+<span class="nc" id="L146">		return getHead().hasIndicator(functor, arity);</span>
 	}
 
 	public final String getIndicator() {
-<span class="nc" id="L144">		return head.getIndicator();</span>
+<span class="nc" id="L150">		return head.getIndicator();</span>
 	}
 
 	public final boolean isDirective() {
-<span class="nc bnc" id="L148" title="All 4 branches missed.">		return head == null &amp;&amp; body != null;</span>
+<span class="nc bnc" id="L154" title="All 4 branches missed.">		return head == null &amp;&amp; body != null;</span>
 	}
 
 	public final boolean isFact() {
-<span class="nc bnc" id="L152" title="All 4 branches missed.">		return head != null &amp;&amp; body == null;</span>
+<span class="nc bnc" id="L158" title="All 4 branches missed.">		return head != null &amp;&amp; body == null;</span>
 	}
 
 	public final boolean isRule() {
-<span class="nc bnc" id="L156" title="All 4 branches missed.">		return head != null &amp;&amp; body != null;</span>
+<span class="nc bnc" id="L162" title="All 4 branches missed.">		return head != null &amp;&amp; body != null;</span>
 	}
 
 	public boolean isMethod() {
-<span class="nc" id="L160">		return false;</span>
+<span class="nc" id="L166">		return false;</span>
 	}
 
 	public boolean isFunction() {
-<span class="nc" id="L164">		return false;</span>
+<span class="nc" id="L170">		return false;</span>
 	}
 
 	public final boolean isClause() {
-<span class="nc" id="L168">		return true;</span>
+<span class="nc" id="L174">		return true;</span>
 	}
 
 	public final boolean isTerm() {
-<span class="nc" id="L172">		return false;</span>
+<span class="nc" id="L178">		return false;</span>
 	}
 
 	public final boolean unify(PrologClause clause) {
-<span class="nc bnc" id="L176" title="All 4 branches missed.">		return head.unify(clause.getHead()) &amp;&amp; body.unify(clause.getBody());</span>
+<span class="nc bnc" id="L182" title="All 4 branches missed.">		return head.unify(clause.getHead()) &amp;&amp; body.unify(clause.getBody());</span>
 	}
 
 	public final boolean isDynamic() {
-<span class="nc" id="L180">		return dynamic;</span>
+<span class="nc" id="L186">		return dynamic;</span>
 	}
 
 	public final boolean isMultifile() {
-<span class="nc" id="L184">		return multifile;</span>
+<span class="nc" id="L190">		return multifile;</span>
 	}
 
 	public final boolean isDiscontiguous() {
-<span class="nc" id="L188">		return discontiguous;</span>
+<span class="nc" id="L194">		return discontiguous;</span>
 	}
 
 	public PrologIndicator getPrologIndicator() {
-<span class="nc" id="L192">		return new DefaultPrologIndicator(getFunctor(), getArity());</span>
+<span class="nc" id="L198">		return new DefaultPrologIndicator(getFunctor(), getArity());</span>
 	}
 
 	public final &lt;T extends PrologClause&gt; T cast() {
-<span class="nc" id="L196">		return (T) this;</span>
+<span class="nc" id="L202">		return (T) this;</span>
 	}
+
+	public final String getSee() {
+<span class="nc" id="L206">		return see;</span>
+	}
+
+	public final void setSee(String see) {
+<span class="nc" id="L210">		this.see = see;</span>
+<span class="nc" id="L211">	}</span>
+
+	public final String getSince() {
+<span class="nc" id="L214">		return since;</span>
+	}
+
+	public final void setSince(String since) {
+<span class="nc" id="L218">		this.since = since;</span>
+<span class="nc" id="L219">	}</span>
+
+	public final String getAuthor() {
+<span class="nc" id="L222">		return author;</span>
+	}
+
+	public final void setAuthor(String author) {
+<span class="nc" id="L226">		this.author = author;</span>
+<span class="nc" id="L227">	}</span>
+
+	public final String getVersion() {
+<span class="nc" id="L230">		return version;</span>
+	}
+
+	public final void setVersion(String version) {
+<span class="nc" id="L234">		this.version = version;</span>
+<span class="nc" id="L235">	}</span>
+
+	public final String getDescription() {
+<span class="nc" id="L238">		return description;</span>
+	}
+
+	public final void setDescription(String description) {
+<span class="nc" id="L242">		this.description = description;</span>
+<span class="nc" id="L243">	}</span>
 
 	@Override
 	public int hashCode() {
-<span class="nc" id="L201">		final int prime = 31;</span>
-<span class="nc" id="L202">		int result = 1;</span>
-<span class="nc bnc" id="L203" title="All 2 branches missed.">		result = prime * result + ((body == null) ? 0 : body.hashCode());</span>
-<span class="nc bnc" id="L204" title="All 2 branches missed.">		result = prime * result + (discontiguous ? 1231 : 1237);</span>
-<span class="nc bnc" id="L205" title="All 2 branches missed.">		result = prime * result + (dynamic ? 1231 : 1237);</span>
-<span class="nc bnc" id="L206" title="All 2 branches missed.">		result = prime * result + ((head == null) ? 0 : head.hashCode());</span>
-<span class="nc bnc" id="L207" title="All 2 branches missed.">		result = prime * result + (multifile ? 1231 : 1237);</span>
-<span class="nc" id="L208">		return result;</span>
+<span class="nc" id="L247">		final int prime = 31;</span>
+<span class="nc" id="L248">		int result = 1;</span>
+<span class="nc bnc" id="L249" title="All 2 branches missed.">		result = prime * result + ((author == null) ? 0 : author.hashCode());</span>
+<span class="nc bnc" id="L250" title="All 2 branches missed.">		result = prime * result + ((body == null) ? 0 : body.hashCode());</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">		result = prime * result + ((description == null) ? 0 : description.hashCode());</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">		result = prime * result + (discontiguous ? 1231 : 1237);</span>
+<span class="nc bnc" id="L253" title="All 2 branches missed.">		result = prime * result + (dynamic ? 1231 : 1237);</span>
+<span class="nc bnc" id="L254" title="All 2 branches missed.">		result = prime * result + ((head == null) ? 0 : head.hashCode());</span>
+<span class="nc bnc" id="L255" title="All 2 branches missed.">		result = prime * result + (multifile ? 1231 : 1237);</span>
+<span class="nc bnc" id="L256" title="All 2 branches missed.">		result = prime * result + ((see == null) ? 0 : see.hashCode());</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">		result = prime * result + ((since == null) ? 0 : since.hashCode());</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">		result = prime * result + ((version == null) ? 0 : version.hashCode());</span>
+<span class="nc" id="L259">		return result;</span>
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-<span class="nc bnc" id="L213" title="All 2 branches missed.">		if (this == obj)</span>
-<span class="nc" id="L214">			return true;</span>
-<span class="nc bnc" id="L215" title="All 2 branches missed.">		if (obj == null)</span>
-<span class="nc" id="L216">			return false;</span>
-<span class="nc bnc" id="L217" title="All 2 branches missed.">		if (getClass() != obj.getClass())</span>
-<span class="nc" id="L218">			return false;</span>
-<span class="nc" id="L219">		AbstractClause other = (AbstractClause) obj;</span>
-<span class="nc bnc" id="L220" title="All 2 branches missed.">		if (body == null) {</span>
-<span class="nc bnc" id="L221" title="All 2 branches missed.">			if (other.body != null)</span>
-<span class="nc" id="L222">				return false;</span>
-<span class="nc bnc" id="L223" title="All 2 branches missed.">		} else if (!body.equals(other.body)) {</span>
-<span class="nc" id="L224">			return false;</span>
-		}
-<span class="nc bnc" id="L226" title="All 2 branches missed.">		if (discontiguous != other.discontiguous)</span>
-<span class="nc" id="L227">			return false;</span>
-<span class="nc bnc" id="L228" title="All 2 branches missed.">		if (dynamic != other.dynamic)</span>
-<span class="nc" id="L229">			return false;</span>
-<span class="nc bnc" id="L230" title="All 2 branches missed.">		if (head == null) {</span>
-<span class="nc bnc" id="L231" title="All 2 branches missed.">			if (other.head != null)</span>
-<span class="nc" id="L232">				return false;</span>
-<span class="nc bnc" id="L233" title="All 2 branches missed.">		} else if (!head.equals(other.head)) {</span>
-<span class="nc" id="L234">			return false;</span>
-		}
-<span class="nc bnc" id="L236" title="All 2 branches missed.">		return multifile == other.multifile;</span>
+<span class="nc bnc" id="L264" title="All 2 branches missed.">		if (this == obj)</span>
+<span class="nc" id="L265">			return true;</span>
+<span class="nc bnc" id="L266" title="All 2 branches missed.">		if (obj == null)</span>
+<span class="nc" id="L267">			return false;</span>
+<span class="nc bnc" id="L268" title="All 2 branches missed.">		if (getClass() != obj.getClass())</span>
+<span class="nc" id="L269">			return false;</span>
+<span class="nc" id="L270">		AbstractClause other = (AbstractClause) obj;</span>
+<span class="nc bnc" id="L271" title="All 2 branches missed.">		if (author == null) {</span>
+<span class="nc bnc" id="L272" title="All 2 branches missed.">			if (other.author != null)</span>
+<span class="nc" id="L273">				return false;</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">		} else if (!author.equals(other.author))</span>
+<span class="nc" id="L275">			return false;</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">		if (body == null) {</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">			if (other.body != null)</span>
+<span class="nc" id="L278">				return false;</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">		} else if (!body.equals(other.body))</span>
+<span class="nc" id="L280">			return false;</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">		if (description == null) {</span>
+<span class="nc bnc" id="L282" title="All 2 branches missed.">			if (other.description != null)</span>
+<span class="nc" id="L283">				return false;</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">		} else if (!description.equals(other.description))</span>
+<span class="nc" id="L285">			return false;</span>
+<span class="nc bnc" id="L286" title="All 2 branches missed.">		if (discontiguous != other.discontiguous)</span>
+<span class="nc" id="L287">			return false;</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">		if (dynamic != other.dynamic)</span>
+<span class="nc" id="L289">			return false;</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">		if (head == null) {</span>
+<span class="nc bnc" id="L291" title="All 2 branches missed.">			if (other.head != null)</span>
+<span class="nc" id="L292">				return false;</span>
+<span class="nc bnc" id="L293" title="All 2 branches missed.">		} else if (!head.equals(other.head))</span>
+<span class="nc" id="L294">			return false;</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">		if (multifile != other.multifile)</span>
+<span class="nc" id="L296">			return false;</span>
+<span class="nc bnc" id="L297" title="All 2 branches missed.">		if (see == null) {</span>
+<span class="nc bnc" id="L298" title="All 2 branches missed.">			if (other.see != null)</span>
+<span class="nc" id="L299">				return false;</span>
+<span class="nc bnc" id="L300" title="All 2 branches missed.">		} else if (!see.equals(other.see))</span>
+<span class="nc" id="L301">			return false;</span>
+<span class="nc bnc" id="L302" title="All 2 branches missed.">		if (since == null) {</span>
+<span class="nc bnc" id="L303" title="All 2 branches missed.">			if (other.since != null)</span>
+<span class="nc" id="L304">				return false;</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">		} else if (!since.equals(other.since))</span>
+<span class="nc" id="L306">			return false;</span>
+<span class="nc bnc" id="L307" title="All 2 branches missed.">		if (version == null) {</span>
+<span class="nc bnc" id="L308" title="All 2 branches missed.">			if (other.version != null)</span>
+<span class="nc" id="L309">				return false;</span>
+<span class="nc bnc" id="L310" title="All 2 branches missed.">		} else if (!version.equals(other.version))</span>
+<span class="nc" id="L311">			return false;</span>
+<span class="nc" id="L312">		return true;</span>
 	}
 
 	@Override
 	public String toString() {
-<span class="nc" id="L241">		StringBuilder b = new StringBuilder();</span>
-<span class="nc" id="L242">		b.append(getHead());</span>
-<span class="nc bnc" id="L243" title="All 2 branches missed.">		if (isRule()) {</span>
-<span class="nc" id="L244">			b.append(&quot;:-\n\t&quot;);</span>
-<span class="nc" id="L245">			Iterator&lt;PrologTerm&gt; i = getBodyIterator();</span>
-<span class="nc bnc" id="L246" title="All 2 branches missed.">			while (i.hasNext()) {</span>
-<span class="nc" id="L247">				b.append(i.next());</span>
-<span class="nc bnc" id="L248" title="All 2 branches missed.">				if (i.hasNext()) {</span>
-<span class="nc" id="L249">					b.append(&quot;,\n\t&quot;);</span>
+<span class="nc" id="L317">		StringBuilder b = new StringBuilder();</span>
+<span class="nc" id="L318">		b.append(getHead());</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">		if (isRule()) {</span>
+<span class="nc" id="L320">			b.append(&quot;:-\n\t&quot;);</span>
+<span class="nc" id="L321">			Iterator&lt;PrologTerm&gt; i = getBodyIterator();</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">			while (i.hasNext()) {</span>
+<span class="nc" id="L323">				b.append(i.next());</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">				if (i.hasNext()) {</span>
+<span class="nc" id="L325">					b.append(&quot;,\n\t&quot;);</span>
 				}
 			}
 		}
-<span class="nc" id="L253">		b.append('.');</span>
-<span class="nc" id="L254">		return &quot;&quot; + b + &quot;&quot;;</span>
+<span class="nc" id="L329">		b.append('.');</span>
+<span class="nc" id="L330">		return &quot;&quot; + b + &quot;&quot;;</span>
 	}
 
 	private class BodyIterator extends AbstractIterator&lt;PrologTerm&gt; implements Iterator&lt;PrologTerm&gt; {
@@ -260,19 +336,19 @@ public abstract class AbstractClause implements PrologClause {
 
 		private final PrologTerm[] elements;
 
-<span class="nc" id="L263">		protected BodyIterator(PrologTerm[] elements) {</span>
-<span class="nc" id="L264">			this.elements = elements;</span>
-<span class="nc" id="L265">		}</span>
+<span class="nc" id="L339">		protected BodyIterator(PrologTerm[] elements) {</span>
+<span class="nc" id="L340">			this.elements = elements;</span>
+<span class="nc" id="L341">		}</span>
 
 		public boolean hasNext() {
-<span class="nc bnc" id="L268" title="All 2 branches missed.">			return nextIndex &lt; elements.length;</span>
+<span class="nc bnc" id="L344" title="All 2 branches missed.">			return nextIndex &lt; elements.length;</span>
 		}
 
 		public PrologTerm next() {
-<span class="nc bnc" id="L272" title="All 2 branches missed.">			if (!hasNext()) {</span>
-<span class="nc" id="L273">				throw new NoSuchElementException();</span>
+<span class="nc bnc" id="L348" title="All 2 branches missed.">			if (!hasNext()) {</span>
+<span class="nc" id="L349">				throw new NoSuchElementException();</span>
 			}
-<span class="nc" id="L275">			return elements[nextIndex++];</span>
+<span class="nc" id="L351">			return elements[nextIndex++];</span>
 		}
 
 	}
