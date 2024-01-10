@@ -84,8 +84,8 @@ public abstract class AbstractClause implements PrologClause {
 	 * @param discontiguous true if clause is discontiguous, false otherwise
 	 * @since 1.0
 	 */
-	protected AbstractClause(PrologProvider provider, PrologTerm head, PrologTerm body, boolean dynamic,
-<span class="nc" id="L88">			boolean multifile, boolean discontiguous) {</span>
+<span class="nc" id="L87">	protected AbstractClause(PrologProvider provider, PrologTerm head, PrologTerm body, boolean dynamic,</span>
+			boolean multifile, boolean discontiguous) {
 <span class="nc" id="L89">		this.head = head;</span>
 <span class="nc" id="L90">		this.body = body;</span>
 <span class="nc" id="L91">		this.provider = provider;</span>
@@ -242,92 +242,140 @@ public abstract class AbstractClause implements PrologClause {
 <span class="nc" id="L242">		this.description = description;</span>
 <span class="nc" id="L243">	}</span>
 
+	public final boolean hasDescription() {
+<span class="nc bnc" id="L246" title="All 2 branches missed.">		return !getDescription().isEmpty();</span>
+	}
+
+	public final boolean hasVersion() {
+<span class="nc bnc" id="L250" title="All 2 branches missed.">		return !getVersion().isEmpty();</span>
+	}
+
+	public final boolean hasAuthor() {
+<span class="nc bnc" id="L254" title="All 2 branches missed.">		return !getAuthor().isEmpty();</span>
+	}
+
+	public final boolean hasSince() {
+<span class="nc bnc" id="L258" title="All 2 branches missed.">		return !getSince().isEmpty();</span>
+	}
+
+	public final boolean hasSee() {
+<span class="nc bnc" id="L262" title="All 2 branches missed.">		return !getSee().isEmpty();</span>
+	}
+
+	public final boolean hasDocumentation() {
+<span class="nc bnc" id="L266" title="All 10 branches missed.">		return hasDescription() || hasVersion() || hasAuthor() || hasSince() || hasSee();</span>
+	}
+
 	@Override
 	public int hashCode() {
-<span class="nc" id="L247">		final int prime = 31;</span>
-<span class="nc" id="L248">		int result = 1;</span>
-<span class="nc bnc" id="L249" title="All 2 branches missed.">		result = prime * result + ((author == null) ? 0 : author.hashCode());</span>
-<span class="nc bnc" id="L250" title="All 2 branches missed.">		result = prime * result + ((body == null) ? 0 : body.hashCode());</span>
-<span class="nc bnc" id="L251" title="All 2 branches missed.">		result = prime * result + ((description == null) ? 0 : description.hashCode());</span>
-<span class="nc bnc" id="L252" title="All 2 branches missed.">		result = prime * result + (discontiguous ? 1231 : 1237);</span>
-<span class="nc bnc" id="L253" title="All 2 branches missed.">		result = prime * result + (dynamic ? 1231 : 1237);</span>
-<span class="nc bnc" id="L254" title="All 2 branches missed.">		result = prime * result + ((head == null) ? 0 : head.hashCode());</span>
-<span class="nc bnc" id="L255" title="All 2 branches missed.">		result = prime * result + (multifile ? 1231 : 1237);</span>
-<span class="nc bnc" id="L256" title="All 2 branches missed.">		result = prime * result + ((see == null) ? 0 : see.hashCode());</span>
-<span class="nc bnc" id="L257" title="All 2 branches missed.">		result = prime * result + ((since == null) ? 0 : since.hashCode());</span>
-<span class="nc bnc" id="L258" title="All 2 branches missed.">		result = prime * result + ((version == null) ? 0 : version.hashCode());</span>
-<span class="nc" id="L259">		return result;</span>
+<span class="nc" id="L271">		final int prime = 31;</span>
+<span class="nc" id="L272">		int result = 1;</span>
+<span class="nc bnc" id="L273" title="All 2 branches missed.">		result = prime * result + ((author == null) ? 0 : author.hashCode());</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">		result = prime * result + ((body == null) ? 0 : body.hashCode());</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">		result = prime * result + ((description == null) ? 0 : description.hashCode());</span>
+<span class="nc bnc" id="L276" title="All 2 branches missed.">		result = prime * result + (discontiguous ? 1231 : 1237);</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">		result = prime * result + (dynamic ? 1231 : 1237);</span>
+<span class="nc bnc" id="L278" title="All 2 branches missed.">		result = prime * result + ((head == null) ? 0 : head.hashCode());</span>
+<span class="nc bnc" id="L279" title="All 2 branches missed.">		result = prime * result + (multifile ? 1231 : 1237);</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">		result = prime * result + ((see == null) ? 0 : see.hashCode());</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">		result = prime * result + ((since == null) ? 0 : since.hashCode());</span>
+<span class="nc bnc" id="L282" title="All 2 branches missed.">		result = prime * result + ((version == null) ? 0 : version.hashCode());</span>
+<span class="nc" id="L283">		return result;</span>
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-<span class="nc bnc" id="L264" title="All 2 branches missed.">		if (this == obj)</span>
-<span class="nc" id="L265">			return true;</span>
-<span class="nc bnc" id="L266" title="All 2 branches missed.">		if (obj == null)</span>
-<span class="nc" id="L267">			return false;</span>
-<span class="nc bnc" id="L268" title="All 2 branches missed.">		if (getClass() != obj.getClass())</span>
-<span class="nc" id="L269">			return false;</span>
-<span class="nc" id="L270">		AbstractClause other = (AbstractClause) obj;</span>
-<span class="nc bnc" id="L271" title="All 2 branches missed.">		if (author == null) {</span>
-<span class="nc bnc" id="L272" title="All 2 branches missed.">			if (other.author != null)</span>
-<span class="nc" id="L273">				return false;</span>
-<span class="nc bnc" id="L274" title="All 2 branches missed.">		} else if (!author.equals(other.author))</span>
-<span class="nc" id="L275">			return false;</span>
-<span class="nc bnc" id="L276" title="All 2 branches missed.">		if (body == null) {</span>
-<span class="nc bnc" id="L277" title="All 2 branches missed.">			if (other.body != null)</span>
-<span class="nc" id="L278">				return false;</span>
-<span class="nc bnc" id="L279" title="All 2 branches missed.">		} else if (!body.equals(other.body))</span>
-<span class="nc" id="L280">			return false;</span>
-<span class="nc bnc" id="L281" title="All 2 branches missed.">		if (description == null) {</span>
-<span class="nc bnc" id="L282" title="All 2 branches missed.">			if (other.description != null)</span>
-<span class="nc" id="L283">				return false;</span>
-<span class="nc bnc" id="L284" title="All 2 branches missed.">		} else if (!description.equals(other.description))</span>
-<span class="nc" id="L285">			return false;</span>
-<span class="nc bnc" id="L286" title="All 2 branches missed.">		if (discontiguous != other.discontiguous)</span>
-<span class="nc" id="L287">			return false;</span>
-<span class="nc bnc" id="L288" title="All 2 branches missed.">		if (dynamic != other.dynamic)</span>
-<span class="nc" id="L289">			return false;</span>
-<span class="nc bnc" id="L290" title="All 2 branches missed.">		if (head == null) {</span>
-<span class="nc bnc" id="L291" title="All 2 branches missed.">			if (other.head != null)</span>
-<span class="nc" id="L292">				return false;</span>
-<span class="nc bnc" id="L293" title="All 2 branches missed.">		} else if (!head.equals(other.head))</span>
-<span class="nc" id="L294">			return false;</span>
-<span class="nc bnc" id="L295" title="All 2 branches missed.">		if (multifile != other.multifile)</span>
-<span class="nc" id="L296">			return false;</span>
-<span class="nc bnc" id="L297" title="All 2 branches missed.">		if (see == null) {</span>
-<span class="nc bnc" id="L298" title="All 2 branches missed.">			if (other.see != null)</span>
-<span class="nc" id="L299">				return false;</span>
-<span class="nc bnc" id="L300" title="All 2 branches missed.">		} else if (!see.equals(other.see))</span>
-<span class="nc" id="L301">			return false;</span>
-<span class="nc bnc" id="L302" title="All 2 branches missed.">		if (since == null) {</span>
-<span class="nc bnc" id="L303" title="All 2 branches missed.">			if (other.since != null)</span>
-<span class="nc" id="L304">				return false;</span>
-<span class="nc bnc" id="L305" title="All 2 branches missed.">		} else if (!since.equals(other.since))</span>
-<span class="nc" id="L306">			return false;</span>
-<span class="nc bnc" id="L307" title="All 2 branches missed.">		if (version == null) {</span>
-<span class="nc bnc" id="L308" title="All 2 branches missed.">			if (other.version != null)</span>
-<span class="nc" id="L309">				return false;</span>
-<span class="nc bnc" id="L310" title="All 2 branches missed.">		} else if (!version.equals(other.version))</span>
+<span class="nc bnc" id="L288" title="All 2 branches missed.">		if (this == obj)</span>
+<span class="nc" id="L289">			return true;</span>
+<span class="nc bnc" id="L290" title="All 2 branches missed.">		if (obj == null)</span>
+<span class="nc" id="L291">			return false;</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">		if (getClass() != obj.getClass())</span>
+<span class="nc" id="L293">			return false;</span>
+<span class="nc" id="L294">		AbstractClause other = (AbstractClause) obj;</span>
+<span class="nc bnc" id="L295" title="All 2 branches missed.">		if (author == null) {</span>
+<span class="nc bnc" id="L296" title="All 2 branches missed.">			if (other.author != null)</span>
+<span class="nc" id="L297">				return false;</span>
+<span class="nc bnc" id="L298" title="All 2 branches missed.">		} else if (!author.equals(other.author))</span>
+<span class="nc" id="L299">			return false;</span>
+<span class="nc bnc" id="L300" title="All 2 branches missed.">		if (body == null) {</span>
+<span class="nc bnc" id="L301" title="All 2 branches missed.">			if (other.body != null)</span>
+<span class="nc" id="L302">				return false;</span>
+<span class="nc bnc" id="L303" title="All 2 branches missed.">		} else if (!body.equals(other.body))</span>
+<span class="nc" id="L304">			return false;</span>
+<span class="nc bnc" id="L305" title="All 2 branches missed.">		if (description == null) {</span>
+<span class="nc bnc" id="L306" title="All 2 branches missed.">			if (other.description != null)</span>
+<span class="nc" id="L307">				return false;</span>
+<span class="nc bnc" id="L308" title="All 2 branches missed.">		} else if (!description.equals(other.description))</span>
+<span class="nc" id="L309">			return false;</span>
+<span class="nc bnc" id="L310" title="All 2 branches missed.">		if (discontiguous != other.discontiguous)</span>
 <span class="nc" id="L311">			return false;</span>
-<span class="nc" id="L312">		return true;</span>
+<span class="nc bnc" id="L312" title="All 2 branches missed.">		if (dynamic != other.dynamic)</span>
+<span class="nc" id="L313">			return false;</span>
+<span class="nc bnc" id="L314" title="All 2 branches missed.">		if (head == null) {</span>
+<span class="nc bnc" id="L315" title="All 2 branches missed.">			if (other.head != null)</span>
+<span class="nc" id="L316">				return false;</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">		} else if (!head.equals(other.head))</span>
+<span class="nc" id="L318">			return false;</span>
+<span class="nc bnc" id="L319" title="All 2 branches missed.">		if (multifile != other.multifile)</span>
+<span class="nc" id="L320">			return false;</span>
+<span class="nc bnc" id="L321" title="All 2 branches missed.">		if (see == null) {</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">			if (other.see != null)</span>
+<span class="nc" id="L323">				return false;</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">		} else if (!see.equals(other.see))</span>
+<span class="nc" id="L325">			return false;</span>
+<span class="nc bnc" id="L326" title="All 2 branches missed.">		if (since == null) {</span>
+<span class="nc bnc" id="L327" title="All 2 branches missed.">			if (other.since != null)</span>
+<span class="nc" id="L328">				return false;</span>
+<span class="nc bnc" id="L329" title="All 2 branches missed.">		} else if (!since.equals(other.since))</span>
+<span class="nc" id="L330">			return false;</span>
+<span class="nc bnc" id="L331" title="All 2 branches missed.">		if (version == null) {</span>
+<span class="nc bnc" id="L332" title="All 2 branches missed.">			if (other.version != null)</span>
+<span class="nc" id="L333">				return false;</span>
+<span class="nc bnc" id="L334" title="All 2 branches missed.">		} else if (!version.equals(other.version))</span>
+<span class="nc" id="L335">			return false;</span>
+<span class="nc" id="L336">		return true;</span>
 	}
 
 	@Override
 	public String toString() {
-<span class="nc" id="L317">		StringBuilder b = new StringBuilder();</span>
-<span class="nc" id="L318">		b.append(getHead());</span>
-<span class="nc bnc" id="L319" title="All 2 branches missed.">		if (isRule()) {</span>
-<span class="nc" id="L320">			b.append(&quot;:-\n\t&quot;);</span>
-<span class="nc" id="L321">			Iterator&lt;PrologTerm&gt; i = getBodyIterator();</span>
-<span class="nc bnc" id="L322" title="All 2 branches missed.">			while (i.hasNext()) {</span>
-<span class="nc" id="L323">				b.append(i.next());</span>
-<span class="nc bnc" id="L324" title="All 2 branches missed.">				if (i.hasNext()) {</span>
-<span class="nc" id="L325">					b.append(&quot;,\n\t&quot;);</span>
+<span class="nc" id="L341">		StringBuilder b = new StringBuilder();</span>
+<span class="nc bnc" id="L342" title="All 2 branches missed.">		if (hasDocumentation()) {</span>
+<span class="nc" id="L343">			b.append(&quot;/*&quot;);</span>
+<span class="nc bnc" id="L344" title="All 2 branches missed.">			if (hasDescription()) {</span>
+<span class="nc" id="L345">				b.append(getDescription());</span>
+<span class="nc" id="L346">				b.append(&quot;\n&quot;);</span>
+			}
+<span class="nc bnc" id="L348" title="All 2 branches missed.">			if (hasVersion()) {</span>
+<span class="nc" id="L349">				b.append(getVersion());</span>
+<span class="nc" id="L350">				b.append(&quot;\n&quot;);</span>
+			}
+<span class="nc bnc" id="L352" title="All 2 branches missed.">			if (hasAuthor()) {</span>
+<span class="nc" id="L353">				b.append(getAuthor());</span>
+<span class="nc" id="L354">				b.append(&quot;\n&quot;);</span>
+			}
+<span class="nc bnc" id="L356" title="All 2 branches missed.">			if (hasSince()) {</span>
+<span class="nc" id="L357">				b.append(getSince());</span>
+<span class="nc" id="L358">				b.append(&quot;\n&quot;);</span>
+			}
+<span class="nc bnc" id="L360" title="All 2 branches missed.">			if (hasSee()) {</span>
+<span class="nc" id="L361">				b.append(getSee());</span>
+<span class="nc" id="L362">				b.append(&quot;\n&quot;);</span>
+			}
+<span class="nc" id="L364">			b.append(&quot;*/&quot;);</span>
+		}
+<span class="nc" id="L366">		b.append(getHead());</span>
+<span class="nc bnc" id="L367" title="All 2 branches missed.">		if (isRule()) {</span>
+<span class="nc" id="L368">			b.append(&quot;:-\n\t&quot;);</span>
+<span class="nc" id="L369">			Iterator&lt;PrologTerm&gt; i = getBodyIterator();</span>
+<span class="nc bnc" id="L370" title="All 2 branches missed.">			while (i.hasNext()) {</span>
+<span class="nc" id="L371">				b.append(i.next());</span>
+<span class="nc bnc" id="L372" title="All 2 branches missed.">				if (i.hasNext()) {</span>
+<span class="nc" id="L373">					b.append(&quot;,\n\t&quot;);</span>
 				}
 			}
 		}
-<span class="nc" id="L329">		b.append('.');</span>
-<span class="nc" id="L330">		return &quot;&quot; + b + &quot;&quot;;</span>
+<span class="nc" id="L377">		b.append('.');</span>
+<span class="nc" id="L378">		return &quot;&quot; + b + &quot;&quot;;</span>
 	}
 
 	private class BodyIterator extends AbstractIterator&lt;PrologTerm&gt; implements Iterator&lt;PrologTerm&gt; {
@@ -336,19 +384,19 @@ public abstract class AbstractClause implements PrologClause {
 
 		private final PrologTerm[] elements;
 
-<span class="nc" id="L339">		protected BodyIterator(PrologTerm[] elements) {</span>
-<span class="nc" id="L340">			this.elements = elements;</span>
-<span class="nc" id="L341">		}</span>
+<span class="nc" id="L387">		protected BodyIterator(PrologTerm[] elements) {</span>
+<span class="nc" id="L388">			this.elements = elements;</span>
+<span class="nc" id="L389">		}</span>
 
 		public boolean hasNext() {
-<span class="nc bnc" id="L344" title="All 2 branches missed.">			return nextIndex &lt; elements.length;</span>
+<span class="nc bnc" id="L392" title="All 2 branches missed.">			return nextIndex &lt; elements.length;</span>
 		}
 
 		public PrologTerm next() {
-<span class="nc bnc" id="L348" title="All 2 branches missed.">			if (!hasNext()) {</span>
-<span class="nc" id="L349">				throw new NoSuchElementException();</span>
+<span class="nc bnc" id="L396" title="All 2 branches missed.">			if (!hasNext()) {</span>
+<span class="nc" id="L397">				throw new NoSuchElementException();</span>
 			}
-<span class="nc" id="L351">			return elements[nextIndex++];</span>
+<span class="nc" id="L399">			return elements[nextIndex++];</span>
 		}
 
 	}
